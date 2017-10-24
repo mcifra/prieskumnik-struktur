@@ -8,15 +8,15 @@ Aplikácia je naprogramovaná cez JS framework [React](https://reactjs.org/).
 * [Node.js](https://nodejs.org/en/)
 * [Gulp](https://gulpjs.com/)
 
-###Inštalácia
+### Inštalácia
 Projekt sa lokálne nainštaluje nasledovne:
-```
+```shell
 git clone https://gitlab.matfyz.sk/milan.cifra/bakalarka.git prieskumnik
 cd prieskumnik
 npm install
 ```
 Následne je potrebné zapnúť virtuálny server nasledovne:
-```
+```shell
 npm start
 ```
 Po úspešnom zbehnutí by mala fungovať adresa `localhost:3000/` na ktorej bude tento projekt.
