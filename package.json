@@ -1,9 +1,23 @@
 {
-  "name": "bakalarka",
+  "name": "prieskumnik_struktur",
   "version": "0.1.0",
+  "description": "Prieskumnik struktur v prvoradovej logike ako pomocka pri vyucbe predmetu Matematika (4) na FMFI UK",
+  "homepage": "http://www.st.fmph.uniba.sk/~cifra9/BP/",
+  "author": {
+    "name": "Milan Cifra",
+    "email": "milan3362@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.matfyz.sk/milan.cifra/bakalarka.git"
+  },
   "private": true,
   "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
     "react": "^16.0.0",
+    "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.14"
   },
