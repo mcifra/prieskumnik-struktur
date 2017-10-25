@@ -18,14 +18,14 @@ class Navigation extends React.Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <LinkContainer to='/about'>
-                                <NavItem eventKey={1}>O práci</NavItem>
-                            </LinkContainer>
                             <LinkContainer to='/plan'>
-                                <NavItem eventKey={2} href="/plan">Etapy vývoja</NavItem>
+                                <NavItem eventKey={2}>Etapy vývoja</NavItem>
                             </LinkContainer>
                             <LinkContainer to='/diary'>
-                                <NavItem eventKey={3} href="/diary">Denník</NavItem>
+                                <NavItem eventKey={3}>Denník</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to='/references'>
+                                <NavItem eventKey={3}>Zdroje</NavItem>
                             </LinkContainer>
                         </Nav>
                         <Nav pullRight>

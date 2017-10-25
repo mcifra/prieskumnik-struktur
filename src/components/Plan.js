@@ -3,7 +3,10 @@ import React from 'react';
 class Plan extends React.Component {
     render() {
         return (
-            <h1>Etapy vývoja</h1>
+            <div className={"plan"}>
+                <h1>Etapy vývoja</h1>
+                <p className={"center"}>Pribudnú čoskoro</p>
+            </div>
         );
     }
 }
