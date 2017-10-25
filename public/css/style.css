@@ -1,0 +1,27 @@
+body {
+  font-family: Georgia !important; }
+
+h2, h1 {
+  text-align: center; }
+
+.line-break {
+  width: 40%;
+  height: 1px;
+  background: #eaeaea;
+  margin: 3rem auto; }
+
+.block .center {
+  text-align: center; }
+  .block .center h2 {
+    font-size: 20px; }
+
+.center {
+  text-align: center; }
+
+.about p {
+  line-height: 2.5rem; }
+
+.about .long-text {
+  text-align: justify;
+  width: 80%;
+  margin: 0 auto; }
