@@ -1,18 +1,14 @@
-class Constant {
+import Term from "./Term";
+
+class Constant extends Term {
+
     constructor(name) {
+        super();
         this.name = name;
     }
 
-    /**
-     *
-     * @param {ModelItem} i
-     */
-    interpretAs(i) {
-        this.i = i;
-    }
-
-    interpret(e) {
-        return this.i;
+    interpret(structure, e) {
+        return structure.iConstant.get(this.name);
     }
 
 }

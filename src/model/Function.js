@@ -1,23 +1,19 @@
-class Function {
-    constructor(name, terms) {
-        this.name = name;
+import Term from "./Term";
+
+class Function extends Term {
+
+    constructor(info, terms) {
+        super();
+        this.info = info;
         this.terms = terms;
     }
 
-    /**
-     *
-     * @param {Map} iFunction
-     */
-    interpretAs(i) {
-        this.i = i;
-    }
-
-    interpret(e) {
+    interpret(structure, e) {
         var interpretedParams = [];
-        for (var i = 0; i < this.terms.length; i++) {
-            interpretedParams.push(this.terms[i].interpret(e));
+        for (var i=0;i<this.terms.length;i++) {
+            interpretedParams.push(this.terms[i].interpret(structure, e));
         }
-        return this.i.get(interpretedParams);
+        return structure.iFunction.get(this.info.name).get(JSON.stringify(interpretedParams));
     }
 }
 
