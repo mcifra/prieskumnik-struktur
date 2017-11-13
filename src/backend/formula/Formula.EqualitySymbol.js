@@ -1,5 +1,9 @@
-class EqualitySymbol {
+import Formula from "./Formula";
+
+class EqualitySymbol extends Formula {
+
     constructor(subLeft, subRight) {
+        super();
         this.subLeft = subLeft;
         this.subRight = subRight;
     }

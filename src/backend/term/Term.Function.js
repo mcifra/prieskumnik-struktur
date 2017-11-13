@@ -10,7 +10,7 @@ class Function extends Term {
 
     interpret(structure, e) {
         var interpretedParams = [];
-        for (var i=0;i<this.terms.length;i++) {
+        for (var i = 0; i < this.terms.length; i++) {
             interpretedParams.push(this.terms[i].interpret(structure, e));
         }
         return structure.iFunction.get(this.info.name).get(JSON.stringify(interpretedParams));

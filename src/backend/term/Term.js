@@ -1,4 +1,4 @@
-import Expression from "./Expression";
+import Expression from "../Expression";
 
 class Term extends Expression {
 

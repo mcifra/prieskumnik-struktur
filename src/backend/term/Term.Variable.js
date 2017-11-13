@@ -8,7 +8,7 @@ class Variable extends Term {
     }
 
     interpret(e) {
-        return e.get(this);
+        return e.get(this.name);
     }
 }
 
