@@ -1,23 +1,46 @@
+/**
+ * Represent language of logic
+ * @author Milan Cifra
+ * @class
+ */
 class Language {
 
-    constructor(constants = new Set(), functions = new Set(), predicates = new Set()) {
+    /**
+     *
+     * @param {Set.<string>} constants Names of constants
+     * @param {Map.<string, int>} functions Names of functions
+     * @param {Map.<string, int>} predicates Names of predicates
+     */
+    constructor(constants = new Set(), functions = new Map(), predicates = new Map()) {
         this.constants = constants;
         this.functions = functions;
         this.predicates = predicates;
     }
 
+    /**
+     * Add constant name to the language
+     * @param {string} constantName Constant name
+     */
     addConstant(constantName) {
         this.constants.add(constantName);
     }
 
+    /**
+     * Add function name to the language
+     * @param {string} functionName Name of function
+     * @param {int} arity Arity of function
+     */
     addFunction(functionName, arity) {
-        if (this._findFunction(functionName) === null) {
-            this.functions.add({'name': functionName, 'arity': arity});
-        }
+        this.functions.set(functionName, arity);
     }
 
+    /**
+     * Add predicate name to the language
+     * @param {string} predicateName Name of the predicate
+     * @param {int} arity Arity of predicate
+     */
     addPredicate(predicateName, arity) {
-        this.predicates.add({'name': predicateName, 'arity': arity});
+        this.predicates.set(predicateName, arity);
     }
 
     hasConstant(constantName) {
@@ -25,11 +48,11 @@ class Language {
     }
 
     hasFunction(functionName) {
-        return this._findFunction(functionName) !== null;
+        return this.functions.has(functionName);
     }
 
     hasPredicate(predicateName) {
-        return this._findPredicate(predicateName) !== null;
+        return this.predicates.has(predicateName);
     }
 
     deleteConstant(constantName) {
@@ -37,43 +60,29 @@ class Language {
     }
 
     deleteFunction(functionName) {
-        var obj = this._findFunction(functionName);
-        if (obj !== null) {
-            this.functions.delete(obj);
-        }
+        this.functions.delete(functionName);
     }
 
     deletePredicate(predicateName) {
-        var obj = this._findPredicate(predicateName);
-        if (obj !== null) {
-            this.predicates.delete(obj);
-        }
+        this.predicates.delete(predicateName);
     }
 
+    /**
+     * Return arity of the function
+     * @param {string} functionName
+     * @return {int} arity of the function
+     */
     getFunction(functionName) {
-        return this._findFunction(functionName);
+        return this.functions.get(functionName);
     }
 
+    /**
+     * Return arity of the predicate
+     * @param {string} predicateName
+     * @return {int} arity of the predicate
+     */
     getPredicate(predicateName) {
-        return this._findPredicate(predicateName);
-    }
-
-    _findFunction(functionName) {
-        for (let obj of this.functions) {
-            if (obj.name === functionName) {
-                return obj;
-            }
-        }
-        return null;
-    }
-
-    _findPredicate(predicateName) {
-        for (let obj of this.predicates) {
-            if (obj.name === predicateName) {
-                return obj;
-            }
-        }
-        return null;
+        return this.predicates.get(predicateName);
     }
 
 }
