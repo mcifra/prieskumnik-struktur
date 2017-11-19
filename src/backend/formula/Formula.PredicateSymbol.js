@@ -1,31 +1,50 @@
 import Formula from "./Formula";
 
+/**
+ * Represent predicate symbol
+ * @author Milan Cifra
+ * @class
+ * @extends Formula
+ */
 class PredicateSymbol extends Formula {
 
-    constructor(info, terms = []) {
+    /**
+     *
+     * @param {string} name
+     * @param {Array} terms
+     */
+    constructor(name, terms = []) {
         super();
-        this.info = info;
-        if (terms.length > 0 && info.arity === terms.length) {
-            this.terms = terms;
-        } else {
-            throw 'arity not equals terms length';
-        }
+        this.name = name;
+        this.terms = terms;
     }
 
+    /**
+     *
+     * @param {Structure} structure
+     * @param {Map} e
+     * @return {boolean}
+     */
     isSatisfied(structure, e) {
         var translatedTerms = [];
-
-        for (let term in this.terms) {
-            translatedTerms.push(term.interpret(structure, e));
+        for (var i = 0; i < this.terms.length; i++) {
+            translatedTerms.push(this.terms[i].interpret(structure, e));
         }
+        var allTerms = structure.getPredicateValue(this.name);
 
-        var i = structure.iPredicate.get(this.info.name);
+        return JSON.stringify(allTerms).indexOf(JSON.stringify(translatedTerms)) > -1;
+    }
 
-        var iJSON = JSON.stringify(i);
-        var translatedTermsJSON = JSON.stringify(translatedTerms);
-
-        return iJSON.indexOf(translatedTermsJSON) > -1;
-
+    toString() {
+        var res = this.name + "(";
+        for (var i = 0; i < this.terms.length; i++) {
+            if (i > 0) {
+                res += ", ";
+            }
+            res += this.terms[i].toString();
+        }
+        res += ")";
+        return res;
     }
 
 }

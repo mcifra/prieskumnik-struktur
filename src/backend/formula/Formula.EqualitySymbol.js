@@ -1,15 +1,36 @@
 import Formula from "./Formula";
 
+/**
+ * Represent equality symbol
+ * @author Milan Cifra
+ * @class
+ * @extends Formula
+ */
 class EqualitySymbol extends Formula {
 
+    /**
+     *
+     * @param {Term} subLeft
+     * @param {Term} subRight
+     */
     constructor(subLeft, subRight) {
         super();
         this.subLeft = subLeft;
         this.subRight = subRight;
     }
 
-    isSatisfied(e) {
-        return this.subLeft.translate(e) == this.subRight.translate(e);
+    /**
+     *
+     * @param {Structure} structure
+     * @param {Map} e
+     * @return {boolean}
+     */
+    isSatisfied(structure, e) {
+        return this.subLeft.interpret(structure, e) === this.subRight.interpret(structure, e);
+    }
+
+    toString() {
+        return "(" + this.subLeft.toString() + " = " + this.subRight.toString() + ")";
     }
 
 }
