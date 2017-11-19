@@ -34,7 +34,7 @@ class Function extends Term {
     }
 
     toString() {
-        res = this.name + "(";
+        var res = this.name + "(";
         for (var i = 0; i < this.terms.length; i++) {
             if (i > 0) {
                 res += ", ";
