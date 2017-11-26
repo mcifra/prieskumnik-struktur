@@ -86,11 +86,7 @@ class Structure {
      */
     getFunctionValue(functionName, functionParams) {
         var functionValue = this.iFunction.get(functionName);
-        var res = undefined;
-        if (functionValue !== undefined) {
-            res = functionValue.get(JSON.stringify(functionParams));
-        }
-        return res;
+        return functionValue.get(JSON.stringify(functionParams));
     }
 
 
