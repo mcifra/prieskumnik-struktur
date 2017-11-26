@@ -27,8 +27,8 @@ class UniversalQuant extends Formula {
      */
     isSatisfied(structure, e) {
         var eCopy = new Map(e);
-        for (var i = 0; i < structure.domain.length(); i++) {
-            eCopy.set(this.variableName, structure.domain[i]);
+        for (let item of structure.domain) {
+            eCopy.set(this.variableName, item);
             if (!this.subFormula.isSatisfied(structure, eCopy)) {
                 return false;
             }
