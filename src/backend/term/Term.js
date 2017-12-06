@@ -15,8 +15,7 @@ class Term extends Expression {
 
     /**
      * Abstract method
-     * @param structure Structure
-     * @param structure.domain Structure domain
+     * @param {Structure} structure
      * @param {Map} e
      * @returns {null}
      */

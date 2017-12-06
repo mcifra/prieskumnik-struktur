@@ -1,6 +1,6 @@
 
 
-import Function from "../backend/term/Term.Function";
+import FunctionAtom from "../backend/term/Term.FunctionAtom";
 import Constant from "../backend/term/Term.Constant";
 import Language from "../backend/Language";
 import Structure from "../backend/Structure";
@@ -23,12 +23,12 @@ var c1 = new Constant("C1");
 s.setConstantValue("C1", "c");
 
 // fun1(C1)
-var fun1 = new Function("fun1", [c1]);
+var fun1 = new FunctionAtom("fun1", [c1]);
 s.setFunctionValue("fun1", ["c"], "a");
 
 // fun2(C1, x)
 var v1 = new Variable("x");
-var fun2 = new Function("fun2", [c1, v1]);
+var fun2 = new FunctionAtom("fun2", [c1, v1]);
 s.setFunctionValue("fun2", ["c", "a"], "b");
 
 

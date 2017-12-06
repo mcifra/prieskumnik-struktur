@@ -6,7 +6,7 @@ import Formula from "./Formula";
  * @class
  * @extends Formula
  */
-class EqualitySymbol extends Formula {
+class EqualityAtom extends Formula {
 
     /**
      *
@@ -35,4 +35,4 @@ class EqualitySymbol extends Formula {
 
 }
 
-export default EqualitySymbol;
+export default EqualityAtom;

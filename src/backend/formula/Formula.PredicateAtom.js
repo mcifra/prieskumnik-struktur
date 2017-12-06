@@ -6,7 +6,7 @@ import Formula from "./Formula";
  * @class
  * @extends Formula
  */
-class PredicateSymbol extends Formula {
+class PredicateAtom extends Formula {
 
     /**
      *
@@ -49,4 +49,4 @@ class PredicateSymbol extends Formula {
 
 }
 
-export default PredicateSymbol;
+export default PredicateAtom;

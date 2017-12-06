@@ -3,8 +3,8 @@ import Language from "../backend/Language";
 import Structure from "../backend/Structure";
 import Conjunction from "../backend/formula/Formula.Conjunction";
 import Constant from "../backend/term/Term.Constant";
-import Function from "../backend/term/Term.Function";
-import PredicateSymbol from "../backend/formula/Formula.PredicateSymbol";
+import FunctionAtom from "../backend/term/Term.FunctionAtom";
+import PredicateSymbol from "../backend/formula/Formula.PredicateAtom";
 import Variable from "../backend/term/Term.Variable";
 import Negation from "../backend/formula/Formula.Negation";
 import Disjunction from "../backend/formula/Formula.Disjunction";
@@ -41,7 +41,7 @@ var c3 = new Constant("C3");
 var v1 = new Variable("x");
 var v2 = new Variable("y");
 // mother(C1)
-var f1 = new Function("mother", [c1]);
+var f1 = new FunctionAtom("mother", [c1]);
 // likes(mother(C1), x)
 var p1 = new PredicateSymbol("likes", [f1, v1]);
 // hates(C2, y)

@@ -21,7 +21,7 @@ class Variable extends Term {
      * Return intepretation of variable.
      * @param {Structure} structure
      * @param {Map} e
-     * @return {string|null}
+     * @return {string}
      */
     interpret(structure, e) {
         return e.get(this.name);
