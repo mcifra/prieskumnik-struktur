@@ -6,8 +6,10 @@
     const UniversalQuant = options.universalQuant;
     const Negation = options.negation;
     const Constant = options.constant;
+    const Variable = options.variable;
     const Language = options.language;
     const FunctionTerm = options.functionTerm;
+    const Predicate = options.predicate;
 }
 
 start
@@ -22,7 +24,7 @@ formula
     / spaces negation_symbol f:formula spaces {return new Negation(f)}
     / spaces t:term spaces {return t}
     / spaces "(" spaces f:formula spaces ")" spaces {return f}
-git
+
 spaces
     = [ \t\n\r]*
 
@@ -65,12 +67,12 @@ arguments
     = "(" spaces t:terms spaces")" {return t}
 
 terms
-    = t:term spaces "," spaces ts:terms {return t.concat(ts)}
+    = t:term spaces "," spaces ts:terms {return [t].concat(ts)}
     / t:term {return [t]}
 
 term
-    = spaces i:identifier spaces a:arguments {return new FunctionTerm(i, a)}
-    / i:identifier {return new Constant(i)}
+    = spaces i:identifier spaces a:arguments {if (Language.hasFunction(i)) return new FunctionTerm(i,a); else if (Language.hasPredicate(i)) return new Predicate(i,a); else throw "ERROR";}
+    / i:identifier { return Language.hasConstant(i) ? new Constant(i) : new Variable(i); }
 
 identifier
     = i:$ [a-zA-Z0-9_]+ {return i}

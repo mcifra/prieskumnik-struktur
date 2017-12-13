@@ -3,7 +3,7 @@ import Language from "../backend/Language";
 import Structure from "../backend/Structure";
 import Conjunction from "../backend/formula/Formula.Conjunction";
 import Constant from "../backend/term/Term.Constant";
-import FunctionAtom from "../backend/term/Term.FunctionAtom";
+import FunctionAtom from "../backend/term/Term.FunctionTerm";
 import PredicateSymbol from "../backend/formula/Formula.PredicateAtom";
 import Variable from "../backend/term/Term.Variable";
 import Negation from "../backend/formula/Formula.Negation";

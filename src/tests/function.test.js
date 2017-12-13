@@ -1,6 +1,6 @@
 
 
-import FunctionAtom from "../backend/term/Term.FunctionAtom";
+import FunctionAtom from "../backend/term/Term.FunctionTerm";
 import Constant from "../backend/term/Term.Constant";
 import Language from "../backend/Language";
 import Structure from "../backend/Structure";

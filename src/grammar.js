@@ -207,10 +207,10 @@ function peg$parse(input, options) {
       peg$c63 = peg$literalExpectation("\xAC", false),
       peg$c64 = ",",
       peg$c65 = peg$literalExpectation(",", false),
-      peg$c66 = function(t, ts) {return t.concat(ts)},
+      peg$c66 = function(t, ts) {return [t].concat(ts)},
       peg$c67 = function(t) {return [t]},
-      peg$c68 = function(i, a) {return new FunctionTerm(i, a)},
-      peg$c69 = function(i) {return new Constant(i)},
+      peg$c68 = function(i, a) {if (Language.hasFunction(i)) return new FunctionTerm(i,a); else if (Language.hasPredicate(i)) return new Predicate(i,a); else throw "ERROR";},
+      peg$c69 = function(i) { return Language.hasConstant(i) ? new Constant(i) : new Variable(i); },
       peg$c70 = /^[a-zA-Z0-9_]/,
       peg$c71 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"], "_"], false, false),
       peg$c72 = function(i) {return i},
@@ -1332,8 +1332,10 @@ function peg$parse(input, options) {
       const UniversalQuant = options.universalQuant;
       const Negation = options.negation;
       const Constant = options.constant;
+      const Variable = options.variable;
       const Language = options.language;
       const FunctionTerm = options.functionTerm;
+      const Predicate = options.predicate;
 
 
   peg$result = peg$startRuleFunction();

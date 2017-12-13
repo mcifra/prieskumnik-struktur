@@ -6,12 +6,12 @@ import Term from "./Term";
  * @class
  * @extends Term
  */
-class FunctionAtom extends Term {
+class FunctionTerm extends Term {
 
     /**
      *
      * @param {string} name Name of the function
-     * @param {Term[]} terms FunctionAtom terms (parameters)
+     * @param {Term[]} terms terms (parameters)
      */
     constructor(name, terms) {
         super();
@@ -47,4 +47,4 @@ class FunctionAtom extends Term {
 
 }
 
-export default FunctionAtom;
+export default FunctionTerm;
