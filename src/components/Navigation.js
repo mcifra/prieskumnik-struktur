@@ -21,11 +21,11 @@ class Navigation extends React.Component {
                             <LinkContainer to='/plan'>
                                 <NavItem eventKey={2}>Etapy vývoja</NavItem>
                             </LinkContainer>
-                            {/*<LinkContainer to='/diary'>*/}
-                                {/*<NavItem eventKey={3}>Denník</NavItem>*/}
-                            {/*</LinkContainer>*/}
                             <LinkContainer to='/references'>
                                 <NavItem eventKey={3}>Zdroje</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to='/app'>
+                                <NavItem eventKey={4}>Aplikácia</NavItem>
                             </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>

@@ -31,14 +31,14 @@ spaces
 conjunction_symbol
     = "\\wedge"
     / "\\land"
-    / "&"
     / "&&"
+    / "&"
     / "∧"
     / "/\\"
 
 disjunction_symbol
-    = "|"
-    / "||"
+    = "||"
+    / "|"
     / "\\vee"
     / "∨"
     / "\\/"
