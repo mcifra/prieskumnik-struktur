@@ -13,51 +13,54 @@ import Negation from "../../backend/formula/Formula.Negation";
 
 
 class FormulaStorage extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
             formulas: [],
-            formulaOK: false,
-            formula: ''
         };
-        //this.handleClick = this.handleClick.bind(this);
-        //this.deleteFormula = this.deleteFormula.bind(this);
     }
 
     render() {
-        console.log(this.state.formulas);
+        console.log('JAZYK: ', this.props.language);
         return (
-            <div className="list">
-                <ul>
-                    {
-                        this.state.formulas.map((current, index) =>
-                            <li key={index}>
-                                <span>{current}</span>
-                                <button className={"delete-formula"}
-                                        onClick={() => this.deleteFormula(index)}>Odstranit
-                                </button>
-                            </li>
-                        )
-                    }
-                </ul>
-                <input type={"text"} name={"formula"} id={"formula"} onChange={(e) => this.checkFormula(e)}
-                       />
+            <div className={"formula-storage"}>
+                <h2>Zoznam formúl</h2>
                 {
-                    this.state.formulaOK ? <span>OK</span> : <span>CHYBA</span>
+                    this.state.formulas.map((current, index) =>
+                        <div className={'row'}>
+                            <div className={'col-lg-6'}>
+                                <div className={'input-group'} key={index}>
+
+                                    <input className={'form-control'} type={"text"} value={current.formula}
+                                           onChange={(e) => this.checkFormula(e, index)}/>
+
+                                    <span className={'input-group-btn'}>
+                                    <button className={'btn btn-danger'} onClick={() => this.deleteFormula(index)}>Odstrániť</button>
+                                        {/*{current.validationMessage}*/}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    )
                 }
-                <button id={"add-formula"} onClick={() => this.addFormula()}>Pridaj</button>
+                <button className={'btn btn-primary'} id={"add-formula"} onClick={() => this.addFormula()}>Pridaj</button>
             </div>
         );
     }
 
     addFormula() {
-        if (this.state.formulaOK) {
-            this.setState({
-                formulas: [...this.state.formulas, this.state.formula],
-                formulaOK: false,
-                formula: ''
-            });
-        }
+        var formulas = this.state.formulas;
+        formulas.push({
+            formula: '',
+            valid: false,
+            validationMessage: '',
+            formulaObj: null
+        });
+        console.log(this.state);
+        this.setState({
+            formulas: formulas
+        });
     }
 
     deleteFormula(i) {
@@ -68,7 +71,7 @@ class FormulaStorage extends React.Component {
 
     getOptions() {
         return {
-            language: Language,
+            language: this.props.language,
             conjunction: Conjunction,
             disjunction: Disjunction,
             implication: Implication,
@@ -82,30 +85,26 @@ class FormulaStorage extends React.Component {
         }
     }
 
-    checkFormula(e) {
-        var l = new Language();
+    checkFormula(e, index) {
         var options = this.getOptions();
-        options.language = l;
-        //console.log(options)
+        var formulas = this.state.formulas;
+        formulas[index].formula = e.target.value;
         var parser = require('../../backend/parser/grammar.js');
         try {
             var formula = parser.parse(e.target.value, options);
             console.log(formula);
-            this.setState({
-                formulaOK: true,
-                formulas: this.state.formulas,
-                formula: e.target.value
-            });
+            formulas[index].validationMessage = '';
+            formulas[index].valid = true;
+            formulas[index].formulaObj = formula;
         } catch (e) {
             console.error(e);
-            this.setState({
-                formulaOK: false,
-                formulas: this.state.formulas,
-                formula: ''
-            });
+            formulas[index].validationMessage = e.message;
+            formulas[index].valid = false;
+            formulas[index].formulaObj = null;
         }
-        //console.log(e.target.value);
-
+        this.setState({
+            formulas: formulas
+        });
     }
 }
 

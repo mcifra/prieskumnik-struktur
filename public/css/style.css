@@ -15,6 +15,13 @@ h1 {
   background: #eaeaea;
   margin: 3rem auto; }
 
+.input-group {
+  margin-bottom: 1rem; }
+
+.alert {
+  padding: 6px 12px;
+  margin: 0 !important; }
+
 .about h1, .about h2, .about h3, .about p {
   text-align: center; }
 

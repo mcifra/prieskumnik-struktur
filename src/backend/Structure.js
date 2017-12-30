@@ -17,6 +17,10 @@ class Structure {
         this.iFunction = new Map();
     }
 
+    clearDomain() {
+        this.domain=new Set();
+    }
+
     addDomainItem(name) {
         this.domain.add(name);
     }
