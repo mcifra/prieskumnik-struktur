@@ -86,12 +86,16 @@ class FormulaStorage extends React.Component {
     }
 
     checkFormula(e, index) {
-        var options = this.getOptions();
-        var formulas = this.state.formulas;
-        formulas[index].formula = e.target.value;
-        var parser = require('../../backend/parser/grammar.js');
+        let givenFormula = e.target.value;
+        let options = this.getOptions();
+        let formulas = this.state.formulas;
+        formulas[index].formula = givenFormula;
+        let parser = require('../../backend/parser/grammar.js');
         try {
-            var formula = parser.parse(e.target.value, options);
+            let formula = null;
+            if (givenFormula.length > 0) {
+                formula = parser.parse("(" + givenFormula + ")", options);
+            }
             console.log(formula);
             formulas[index].validationMessage = '';
             formulas[index].valid = true;

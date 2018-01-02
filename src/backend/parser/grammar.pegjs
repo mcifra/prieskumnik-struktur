@@ -15,6 +15,23 @@
         if (Language.hasConstant(i)) {return new Constant(i);}
         else {return new Variable(i);}
     }
+    function predicateOrFunction(i, a) {
+        if (Language.hasFunction(i)) {
+            if (Language.getFunction(i) == a.length) {
+                return new FunctionTerm(i, a);
+            } else {
+                error("Function term " + i + " has arity " + Language.getFunction(i));
+            }
+        } else if (Language.hasPredicate(i)) {
+            if (Language.getPredicate(i) === a.length) {
+                return new Predicate(i, a);
+            } else {
+                error("Predicate " + i + " has arity " + Language.getPredicate(i));
+            }
+        } else {
+            error("Function or predicate " + i + " not found in language");
+        }
+    }
 }
 
 start
@@ -30,7 +47,7 @@ formula
     / spaces t:term spaces {return t}
     / spaces "(" spaces f:formula spaces ")" spaces {return f}
 
-spaces
+spaces "spaces"
     = [ \t\n\r]*
 
 conjunction_symbol
@@ -69,15 +86,15 @@ negation_symbol
     / "¬"
 
 arguments
-    = "(" spaces t:terms spaces")" {return t}
+    = "(" spaces t:terms spaces ")" {return t}
 
 terms
     = t:term spaces "," spaces ts:terms {return [t].concat(ts)}
     / t:term {return [t]}
 
 term
-    = spaces i:identifier spaces a:arguments {if (Language.hasFunction(i)) return new FunctionTerm(i,a); else if (Language.hasPredicate(i)) return new Predicate(i,a); else throw "ERROR";}
+    = spaces i:identifier spaces a:arguments {return predicateOrFunction(i, a)}
     / i:identifier { return varOrConst(i) }
 
-identifier
+identifier "identifier"
     = i:$ [a-zA-Z0-9_]+ {return i}

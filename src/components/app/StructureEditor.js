@@ -55,9 +55,13 @@ class StructureEditor extends React.Component {
             domain_error: ''
         });
         try {
-            var res = parser.parse(items);
+            let res = [];
+            if (items.length > 0) {
+                res = parser.parse(items);
+            }
             this.props.onDomainChange(res);
         } catch (e) {
+            console.error(e);
             this.setState({
                 domain_error: e.message
             });
