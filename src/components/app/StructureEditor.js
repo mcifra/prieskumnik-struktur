@@ -15,14 +15,14 @@ class StructureEditor extends React.Component {
             <div className={'structure-editor'}>
                 <h2>Editor štruktúry</h2>
                 <div className={'row'}>
-                    <div className={'col-lg-6'}>
+                    <div className={'col-lg-12'}>
                         <div className={'input-group'}>
                             <span className={'input-group-addon'} htmlFor={'domain'}>Doména</span>
                             <input className={'form-control'} id={'domain'} type={'text'}
                                    onChange={(e) => this.updateDomain(e)}/>
                         </div>
                     </div>
-                    <div className={'col-lg-6'}>
+                    <div className={'col-lg-12'}>
                         {
                             this.state.domain_error !== '' ? (
                                 <div className={'alert alert-danger'}>{this.state.domain_error}</div>
@@ -32,16 +32,18 @@ class StructureEditor extends React.Component {
                         }
                     </div>
                 </div>
+                <div className={'row'}>
                 {
                     constants.map((current, index) =>
-                        <div className={'row'}>
-                            <div className={'col-lg-6'}>
+
+
                                 <ConstantValueEditor constantName={current} key={index}
                                                      domain={this.props.structure.domain}/>
-                            </div>
-                        </div>
+
+
                     )
                 }
+                </div>
             </div>
         );
     }

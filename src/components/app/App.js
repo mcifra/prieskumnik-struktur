@@ -70,16 +70,18 @@ class App extends React.Component {
     render() {
         return (
             <div className={"app"}>
-
+                <div className={"col-lg-6"}>
                 <LanguageEditor
                     onConstantsChange={this.updateLanguageConstants}
                     onFunctionsChange={this.updateLanguageFunctions}
                     onPredicatesChange={this.updateLanguagePredicates}/>
-
-                <StructureEditor language={this.state.language} structure={this.state.structure} onDomainChange={this.updateDomain} />
-
+                </div>
+                <div className={"col-lg-6"}>
+                    <StructureEditor language={this.state.language} structure={this.state.structure} onDomainChange={this.updateDomain} />
+                </div>
+                <div className={"col-lg-12"}>
                 <FormulaStorage language={this.state.language} structure={this.state.structure} />
-
+                </div>
             </div>
         );
     }

@@ -7,7 +7,7 @@ class ConstantValueEditor extends React.Component {
     render() {
         var domainItems=[...this.props.domain];
         return (
-            <div>
+            <div className={'col-lg-4'}>
                 <label htmlFor={'domain-items-constant'}>{'i(' + this.props.constantName + '): '}</label>
                 <select className={'form-control'} id={'domain-items-constant'}>
                     {

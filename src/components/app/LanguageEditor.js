@@ -14,13 +14,9 @@ class LanguageEditor extends React.Component {
         return (
             <div className={'language-editor'}>
                 <h2>Editor jazyka</h2>
-                <p>
-                    Nižšie vyplň zoznam konštánt, predikátov a funkcií ktoé bude obsahovať jazyk. Každý identifikátor
-                    oddeľ čiarkou.
-                </p>
                 <div className={'bs-example-form'}>
                     <div className={'row'}>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
 
                             <div className={'input-group'}>
                                 <span className={'input-group-addon'} htmlFor={"constants-list"}>Konštanty</span>
@@ -29,7 +25,7 @@ class LanguageEditor extends React.Component {
                                        onChange={(e) => this.updateConstants(e)}/>
                             </div>
                         </div>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
                             {
                                 this.state.constants_error !== '' ? (
                                     <div className={'alert alert-danger'}>{this.state.constants_error}</div>
@@ -40,7 +36,7 @@ class LanguageEditor extends React.Component {
                         </div>
                     </div>
                     <div className={'row'}>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
 
                             <div className={'input-group'}>
                                 <span className={'input-group-addon'} htmlFor={"predicates-list"}>Predikáty</span>
@@ -49,7 +45,7 @@ class LanguageEditor extends React.Component {
                                        onChange={(e) => this.updatePredicates(e)}/>
                             </div>
                         </div>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
                             {
                                 this.state.predicates_error !== '' ? (
                                     <div className={'alert alert-danger'}>{this.state.predicates_error}</div>
@@ -60,7 +56,7 @@ class LanguageEditor extends React.Component {
                         </div>
                     </div>
                     <div className={'row'}>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
 
                             <div className={'input-group'}>
                                 <span className={'input-group-addon'} htmlFor={"functions-list"}>Funkcie</span>
@@ -69,7 +65,7 @@ class LanguageEditor extends React.Component {
                                        onChange={(e) => this.updateFunctions(e)}/>
                             </div>
                         </div>
-                        <div className={'col-lg-6'}>
+                        <div className={'col-lg-12'}>
                             {
                                 this.state.functions_erros !== '' ? (
                                     <div className={'alert alert-danger'}>{this.state.functions_erros}</div>
@@ -92,10 +88,13 @@ class LanguageEditor extends React.Component {
             predicates_error: this.state.predicates_error,
             functions_erros: this.state.functions_erros
         });
-        var constantName = e.target.value;
-        var parser = require('../../backend/parser/language_editor_constants.js');
+        let constantName = e.target.value;
+        let parser = require('../../backend/parser/language_editor_constants.js');
         try {
-            var res = parser.parse(e.target.value);
+            let res = [];
+            if (e.target.value.length > 0) {
+                res = parser.parse(constantName);
+            }
             this.props.onConstantsChange(res);
         } catch (e) {
             console.error(e);
@@ -116,7 +115,10 @@ class LanguageEditor extends React.Component {
         });
         var parser = require('../../backend/parser/language_editor_predicates.js');
         try {
-            var res = parser.parse(e.target.value);
+            var res = [];
+            if (e.target.value.length > 0) {
+                res = parser.parse(e.target.value);
+            }
             this.props.onPredicatesChange(res);
         } catch (e) {
             console.error(e);
@@ -137,7 +139,10 @@ class LanguageEditor extends React.Component {
         });
         var parser = require('../../backend/parser/language_editor_functions.js');
         try {
-            var res = parser.parse(e.target.value);
+            var res = [];
+            if (e.target.value.length > 0) {
+                res = parser.parse(e.target.value);
+            }
             this.props.onFunctionsChange(res);
         } catch (e) {
             console.error(e);
