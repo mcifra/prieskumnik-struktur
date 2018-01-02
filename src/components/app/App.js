@@ -29,7 +29,7 @@ class App extends React.Component {
 
     updateLanguageConstants(constants) {
 
-        var l=this.state.language;
+        var l = this.state.language;
         l.clearConstants();
 
         for (let i = 0; i < constants.length; i++) {
@@ -42,13 +42,19 @@ class App extends React.Component {
     }
 
     updateLanguageFunctions(functions) {
-        this.state.language.clearFunctions();
+        let l = this.state.language;
+        l.clearFunctions();
         for (let i = 0; i < functions.length; i++) {
-            this.state.language.addFunction(functions[i].name, functions[i].arity);
+            l.addFunction(functions[i].name, functions[i].arity);
         }
+        this.setState({
+            language: l,
+            structure: this.state.structure
+        });
     }
 
     updateLanguagePredicates(predicates) {
+
         this.state.language.clearPredicates();
         for (let i = 0; i < predicates.length; i++) {
             this.state.language.addPredicate(predicates[i].name, predicates[i].arity);
@@ -71,16 +77,17 @@ class App extends React.Component {
         return (
             <div className={"app"}>
                 <div className={"col-lg-6"}>
-                <LanguageEditor
-                    onConstantsChange={this.updateLanguageConstants}
-                    onFunctionsChange={this.updateLanguageFunctions}
-                    onPredicatesChange={this.updateLanguagePredicates}/>
+                    <LanguageEditor
+                        onConstantsChange={this.updateLanguageConstants}
+                        onFunctionsChange={this.updateLanguageFunctions}
+                        onPredicatesChange={this.updateLanguagePredicates}/>
                 </div>
                 <div className={"col-lg-6"}>
-                    <StructureEditor language={this.state.language} structure={this.state.structure} onDomainChange={this.updateDomain} />
+                    <StructureEditor language={this.state.language} structure={this.state.structure}
+                                     onDomainChange={this.updateDomain}/>
                 </div>
                 <div className={"col-lg-12"}>
-                <FormulaStorage language={this.state.language} structure={this.state.structure} />
+                    <FormulaStorage language={this.state.language} structure={this.state.structure}/>
                 </div>
             </div>
         );

@@ -137,9 +137,9 @@ class LanguageEditor extends React.Component {
             predicates_error: this.state.predicates_error,
             functions_erros: ''
         });
-        var parser = require('../../backend/parser/language_editor_functions.js');
+        let parser = require('../../backend/parser/language_editor_functions.js');
         try {
-            var res = [];
+            let res = [];
             if (e.target.value.length > 0) {
                 res = parser.parse(e.target.value);
             }

@@ -8,11 +8,11 @@ predicates_list
 predicate
     = spaces i:identifier spaces "/" spaces a:arity spaces {return {name: i, arity: a}}
 
-arity
+arity "arity"
     = a:$ [0-9]+ {return a}
 
-identifier
+identifier "identifier"
     = i:$ [a-zA-Z0-9_]+ {return i}
 
-spaces
+spaces "spaces"
     = [ \t\n\r]*
