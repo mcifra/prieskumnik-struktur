@@ -4,9 +4,9 @@ class LanguageEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            constants_error: '',
-            predicates_error: '',
-            functions_erros: ''
+            constants_error: null,
+            predicates_error: null,
+            functions_error: null
         };
     }
 
@@ -27,8 +27,16 @@ class LanguageEditor extends React.Component {
                         </div>
                         <div className={'col-lg-12'}>
                             {
-                                this.state.constants_error !== '' ? (
-                                    <div className={'alert alert-danger'}>{this.state.constants_error}</div>
+                                this.state.constants_error !== null ? (
+                                    <div className={'alert alert-danger'}>
+                                        {
+                                            this.state.constants_error.location !== undefined ? (
+                                                this.state.constants_error.message + " on position " + (this.state.constants_error.location.start.offset+1)
+                                            ) : (
+                                                this.state.constants_error.message
+                                            )
+                                        }
+                                    </div>
                                 ) : (
                                     ''
                                 )
@@ -47,8 +55,16 @@ class LanguageEditor extends React.Component {
                         </div>
                         <div className={'col-lg-12'}>
                             {
-                                this.state.predicates_error !== '' ? (
-                                    <div className={'alert alert-danger'}>{this.state.predicates_error}</div>
+                                this.state.predicates_error !== null ? (
+                                    <div className={'alert alert-danger'}>
+                                        {
+                                            this.state.predicates_error.location !== undefined ? (
+                                                this.state.predicates_error.message + " on position " + (this.state.predicates_error.location.start.offset+1)
+                                            ) : (
+                                                this.state.predicates_error.message
+                                            )
+                                        }
+                                    </div>
                                 ) : (
                                     ''
                                 )
@@ -67,8 +83,16 @@ class LanguageEditor extends React.Component {
                         </div>
                         <div className={'col-lg-12'}>
                             {
-                                this.state.functions_erros !== '' ? (
-                                    <div className={'alert alert-danger'}>{this.state.functions_erros}</div>
+                                this.state.functions_error !== null ? (
+                                    <div className={'alert alert-danger'}>
+                                        {
+                                            this.state.functions_error.location !== undefined ? (
+                                                this.state.functions_error.message + " on position " + (this.state.functions_error.location.start.offset+1)
+                                            ) : (
+                                                this.state.functions_error.message
+                                            )
+                                        }
+                                    </div>
                                 ) : (
                                     ''
                                 )
@@ -84,9 +108,9 @@ class LanguageEditor extends React.Component {
 
     updateConstants(e) {
         this.setState({
-            constants_error: '',
+            constants_error: null,
             predicates_error: this.state.predicates_error,
-            functions_erros: this.state.functions_erros
+            functions_error: this.state.functions_error
         });
         let constantName = e.target.value;
         let parser = require('../../backend/parser/language_editor_constants.js');
@@ -100,9 +124,9 @@ class LanguageEditor extends React.Component {
             console.error(e);
             this.setState({
                 language: this.state.language,
-                constants_error: e.message,
+                constants_error: e,
                 predicates_error: this.state.predicates_error,
-                functions_erros: this.state.functions_erros
+                functions_error: this.state.functions_error
             });
         }
     }
@@ -110,12 +134,12 @@ class LanguageEditor extends React.Component {
     updatePredicates(e) {
         this.setState({
             constants_error: this.state.constants_error,
-            predicates_error: '',
-            functions_erros: this.state.functions_erros
+            predicates_error: null,
+            functions_error: this.state.functions_error
         });
-        var parser = require('../../backend/parser/language_editor_predicates.js');
+        let parser = require('../../backend/parser/language_editor_predicates.js');
         try {
-            var res = [];
+            let res = [];
             if (e.target.value.length > 0) {
                 res = parser.parse(e.target.value);
             }
@@ -125,8 +149,8 @@ class LanguageEditor extends React.Component {
             this.setState({
                 language: this.state.language,
                 constants_error: this.state.constants_error,
-                predicates_error: e.message,
-                functions_erros: this.state.functions_erros
+                predicates_error: e,
+                functions_error: this.state.functions_error
             });
         }
     }
@@ -135,7 +159,7 @@ class LanguageEditor extends React.Component {
         this.setState({
             constants_error: this.state.constants_error,
             predicates_error: this.state.predicates_error,
-            functions_erros: ''
+            functions_error: null
         });
         let parser = require('../../backend/parser/language_editor_functions.js');
         try {
@@ -150,7 +174,7 @@ class LanguageEditor extends React.Component {
                 language: this.state.language,
                 constants_error: this.state.constants_error,
                 predicates_error: this.state.predicates_error,
-                functions_erros: e.message
+                functions_error: e
             });
         }
     }
