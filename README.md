@@ -8,6 +8,7 @@ Aplikácia je naprogramovaná cez JS framework [React](https://reactjs.org/).
 * [Node.js](https://nodejs.org/en/)
 * [Gulp](https://gulpjs.com/)
 
+
 ### Inštalácia
 Projekt sa lokálne nainštaluje nasledovne:
 ```shell
