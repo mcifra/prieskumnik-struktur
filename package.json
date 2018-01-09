@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.matfyz.sk/milan.cifra/bakalarka.git"
+    "url": "https://github.com/mcifra/prieskumnik-struktur.git"
   },
   "private": true,
   "dependencies": {
