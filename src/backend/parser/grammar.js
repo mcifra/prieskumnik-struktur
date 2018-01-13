@@ -152,8 +152,8 @@ function peg$parse(input, options) {
       peg$c8 = function(v, f) {return new UniversalQuant(v, f)},
       peg$c9 = function(f) {return new Negation(f)},
       peg$c10 = function(ps) {return ps},
-      peg$c11 = function(t1, t2) {return new EqualitySymbol(t1, t2)},
-      peg$c12 = function(t1, t2) {return new Negation(new EqualitySymbol(t1, t2))},
+      peg$c11 = function(t1, t2) {return new EqualityAtom(t1, t2)},
+      peg$c12 = function(t1, t2) {return new Negation(new EqualityAtom(t1, t2))},
       peg$c13 = function(f) {return f},
       peg$c14 = peg$otherExpectation("spaces"),
       peg$c15 = /^[ \t\n\r]/,
@@ -1728,6 +1728,7 @@ function peg$parse(input, options) {
       const Language = options.language;
       const FunctionTerm = options.functionTerm;
       const Predicate = options.predicate;
+      const EqualityAtom = options.equalityAtom;
 
       function varOrConst(i) {
           if (Language.hasConstant(i)) {return new Constant(i);}

@@ -10,6 +10,7 @@ import UniversalQuant from "../../backend/formula/Formula.UniversalQuant";
 import FunctionTerm from "../../backend/term/Term.FunctionTerm";
 import PredicateAtom from "../../backend/formula/Formula.PredicateAtom";
 import Negation from "../../backend/formula/Formula.Negation";
+import EqualityAtom from "../../backend/formula/Formula.EqualityAtom";
 
 
 class FormulaStorage extends React.Component {
@@ -81,7 +82,8 @@ class FormulaStorage extends React.Component {
             universalQuant: UniversalQuant,
             functionTerm: FunctionTerm,
             predicate: PredicateAtom,
-            negation: Negation
+            negation: Negation,
+            equalityAtom: EqualityAtom
         }
     }
 

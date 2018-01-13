@@ -10,6 +10,7 @@
     const Language = options.language;
     const FunctionTerm = options.functionTerm;
     const Predicate = options.predicate;
+    const EqualityAtom = options.equalityAtom;
 
     function varOrConst(i) {
         if (Language.hasConstant(i)) {return new Constant(i);}
@@ -45,8 +46,8 @@ formula
     / spaces uni_symbol spaces v:variable_symbol spaces f:formula spaces {return new UniversalQuant(v, f)}
     / spaces negation_symbol f:formula spaces {return new Negation(f)}
     / ps:predicate_symbol {return ps}
-    / t1:term equality_symbol t2:term {return new EqualitySymbol(t1, t2)}
-    / t1:term non_equality_symbol t2:term {return new Negation(new EqualitySymbol(t1, t2))}
+    / t1:term equality_symbol t2:term {return new EqualityAtom(t1, t2)}
+    / t1:term non_equality_symbol t2:term {return new Negation(new EqualityAtom(t1, t2))}
     / spaces "(" spaces f:formula spaces ")" spaces {return f}
 
 spaces "spaces"
