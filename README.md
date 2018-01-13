@@ -12,7 +12,7 @@ Aplikácia je naprogramovaná cez JS framework [React](https://reactjs.org/).
 ### Inštalácia
 Projekt sa lokálne nainštaluje nasledovne:
 ```shell
-git clone https://gitlab.matfyz.sk/milan.cifra/bakalarka.git prieskumnik
+git clone git@github.com:mcifra/prieskumnik-struktur.git prieskumnik
 cd prieskumnik
 npm install
 ```
