@@ -14,11 +14,6 @@
 
     function checkPredicateArity(id, terms) {
         if (Language.getPredicate(id) == terms.length) {
-            for (var i = 0; i < terms.length; i++) {
-                if (Array.isArray(terms[i])) {
-                    terms[i] = terms[i][3];
-                }
-            }
             return new Predicate(id, terms);
         } else {
             error("Predicate " + id + " has arity " + Language.getPredicate(id))
@@ -115,7 +110,7 @@ variable_symbol
     = $ (i:Identifier & {return (!Language.hasPredicate(i) && !Language.hasConstant(i) && !Language.hasFunction(i))})
 
 terms
-    = t:term ts:(spaces "," spaces term)* {return [t].concat(ts)}
+    = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
 
 term
     = f:function_symbol {return new Function(f[0], f[1])}
