@@ -29,12 +29,12 @@ formula
     = spaces f:formula_cases spaces {return f}
 
 formula_cases
-    = "(" left:(formula / term) spaces conjunction_symbol spaces right:(formula / term) ")" {return new Conjunction(left, right)}
-    / "(" left:(formula / term) spaces disjunction_symbol spaces right:(formula / term) ")" {return new Disjunction(left, right)}
-    / "(" left:(formula / term) spaces implication_symbol spaces right:(formula / term) ")" {return new Implication(left, right)}
+    = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
+    / "(" left:formula spaces disjunction_symbol spaces right:formula ")" {return new Disjunction(left, right)}
+    / "(" left:formula spaces implication_symbol spaces right:formula ")" {return new Implication(left, right)}
     / ps:predicate_symbol {return ps}
-    / exists_symbol spaces v:variable_symbol f:(formula / term) {return new ExistentialQuant(v, f)}
-    / uni_symbol spaces v:variable_symbol f:(formula / term) {return new UniversalQuant(v, f)}
+    / exists_symbol spaces v:variable_symbol f:formula {return new ExistentialQuant(v, f)}
+    / uni_symbol spaces v:variable_symbol f:formula {return new UniversalQuant(v, f)}
     / negation_symbol f:formula {return new Negation(f)}
     / "(" t1:term spaces equality_symbol spaces t2:term ")" {return new EqualityAtom(t1, t2)}
     / "(" t1:term spaces non_equality_symbol spaces t2:term ")" {return new Negation(new EqualityAtom(t1, t2))}

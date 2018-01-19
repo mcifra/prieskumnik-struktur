@@ -460,9 +460,6 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       s2 = peg$parseformula();
-      if (s2 === peg$FAILED) {
-        s2 = peg$parseterm();
-      }
       if (s2 !== peg$FAILED) {
         s3 = peg$parsespaces();
         if (s3 !== peg$FAILED) {
@@ -471,9 +468,6 @@ function peg$parse(input, options) {
             s5 = peg$parsespaces();
             if (s5 !== peg$FAILED) {
               s6 = peg$parseformula();
-              if (s6 === peg$FAILED) {
-                s6 = peg$parseterm();
-              }
               if (s6 !== peg$FAILED) {
                 if (input.charCodeAt(peg$currPos) === 41) {
                   s7 = peg$c3;
@@ -525,9 +519,6 @@ function peg$parse(input, options) {
       }
       if (s1 !== peg$FAILED) {
         s2 = peg$parseformula();
-        if (s2 === peg$FAILED) {
-          s2 = peg$parseterm();
-        }
         if (s2 !== peg$FAILED) {
           s3 = peg$parsespaces();
           if (s3 !== peg$FAILED) {
@@ -536,9 +527,6 @@ function peg$parse(input, options) {
               s5 = peg$parsespaces();
               if (s5 !== peg$FAILED) {
                 s6 = peg$parseformula();
-                if (s6 === peg$FAILED) {
-                  s6 = peg$parseterm();
-                }
                 if (s6 !== peg$FAILED) {
                   if (input.charCodeAt(peg$currPos) === 41) {
                     s7 = peg$c3;
@@ -590,9 +578,6 @@ function peg$parse(input, options) {
         }
         if (s1 !== peg$FAILED) {
           s2 = peg$parseformula();
-          if (s2 === peg$FAILED) {
-            s2 = peg$parseterm();
-          }
           if (s2 !== peg$FAILED) {
             s3 = peg$parsespaces();
             if (s3 !== peg$FAILED) {
@@ -601,9 +586,6 @@ function peg$parse(input, options) {
                 s5 = peg$parsespaces();
                 if (s5 !== peg$FAILED) {
                   s6 = peg$parseformula();
-                  if (s6 === peg$FAILED) {
-                    s6 = peg$parseterm();
-                  }
                   if (s6 !== peg$FAILED) {
                     if (input.charCodeAt(peg$currPos) === 41) {
                       s7 = peg$c3;
@@ -661,9 +643,6 @@ function peg$parse(input, options) {
                 s3 = peg$parsevariable_symbol();
                 if (s3 !== peg$FAILED) {
                   s4 = peg$parseformula();
-                  if (s4 === peg$FAILED) {
-                    s4 = peg$parseterm();
-                  }
                   if (s4 !== peg$FAILED) {
                     peg$savedPos = s0;
                     s1 = peg$c9(s3, s4);
@@ -693,9 +672,6 @@ function peg$parse(input, options) {
                   s3 = peg$parsevariable_symbol();
                   if (s3 !== peg$FAILED) {
                     s4 = peg$parseformula();
-                    if (s4 === peg$FAILED) {
-                      s4 = peg$parseterm();
-                    }
                     if (s4 !== peg$FAILED) {
                       peg$savedPos = s0;
                       s1 = peg$c10(s3, s4);
@@ -2144,13 +2120,7 @@ function peg$parse(input, options) {
       const EqualityAtom = options.equalityAtom;
 
       function checkPredicateArity(id, terms) {
-          console.log(terms);
           if (Language.getPredicate(id) == terms.length) {
-              /*for (var i = 0; i < terms.length; i++) {
-                  if (Array.isArray(terms[i])) {
-                      terms[i] = terms[i][3];
-                  }
-              }*/
               return new Predicate(id, terms);
           } else {
               error("Predicate " + id + " has arity " + Language.getPredicate(id))
