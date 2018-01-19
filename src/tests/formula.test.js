@@ -11,6 +11,8 @@ import Disjunction from "../backend/formula/Formula.Disjunction";
 import Implication from "../backend/formula/Formula.Implication";
 import UniversalQuant from "../backend/formula/Formula.UniversalQuant";
 import ExistentialQuant from "../backend/formula/Formula.ExistentialQuant";
+import EqualityAtom from "../backend/formula/Formula.EqualityAtom";
+let parser = require('../backend/parser/grammar');
 
 var l = new Language();
 l.addConstant("C1");
@@ -66,12 +68,28 @@ var exi1 = new ExistentialQuant("x", p3);
 var p5 = new PredicateSymbol("likes", [v1, c3]);
 var exi2 = new ExistentialQuant("x", p5);
 
-
+var parserOptions = {
+    language: l,
+    conjunction: Conjunction,
+    disjunction: Disjunction,
+    implication: Implication,
+    variable: Variable,
+    constant: Constant,
+    existentialQuant: ExistentialQuant,
+    universalQuant: UniversalQuant,
+    functionTerm: FunctionAtom,
+    predicate: PredicateSymbol,
+    negation: Negation,
+    equalityAtom: EqualityAtom
+};
 
 test("t1", () => {
     expect(con1.toString()).toBe("(likes(mother(C1), x) && -(hates(C2, y)))");
 });
 
+test('t1-p', ()=>{
+   expect(JSON.stringify(parser.parse(con1.toString(), parserOptions))).toBe(JSON.stringify(con1));
+});
 test("t2", () => {
     expect(con1.isSatisfied(s, e)).toBe(true);
 });
@@ -79,7 +97,9 @@ test("t2", () => {
 test("t3", () => {
     expect(dis1.toString()).toBe("(likes(mother(C1), x) || hates(C2, y))");
 });
-
+test('t3-p', ()=>{
+    expect(JSON.stringify(parser.parse(dis1.toString(), parserOptions))).toBe(JSON.stringify(dis1));
+});
 test("t4", () => {
     expect(dis1.isSatisfied(s, e)).toBe(true);
 });
@@ -87,7 +107,9 @@ test("t4", () => {
 test("t5", () => {
     expect(imp1.toString()).toBe("(likes(mother(C1), x) -> hates(C2, y))");
 });
-
+test('t5-p', ()=>{
+    expect(JSON.stringify(parser.parse(imp1.toString(), parserOptions))).toBe(JSON.stringify(imp1));
+});
 test("t6", () => {
     expect(imp1.isSatisfied(s, e)).toBe(false);
 });
