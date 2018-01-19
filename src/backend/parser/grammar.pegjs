@@ -12,46 +12,37 @@
     const Predicate = options.predicate;
     const EqualityAtom = options.equalityAtom;
 
-    function varOrConst(i) {
-        if (Language.hasConstant(i)) {return new Constant(i);}
-        else {return new Variable(i);}
-    }
-    function predicateOrFunction(i, a) {
-        if (Language.hasFunction(i)) {
-            if (Language.getFunction(i) == a.length) {
-                return new FunctionTerm(i, a);
-            } else {
-                error("Function term " + i + " has arity " + Language.getFunction(i));
+    function checkPredicateArity(id, terms) {
+        if (Language.getPredicate(id) == terms.length) {
+            for (var i = 0; i < terms.length; i++) {
+                if (Array.isArray(terms[i])) {
+                    terms[i] = terms[i][3];
+                }
             }
-        } else if (Language.hasPredicate(i)) {
-            if (Language.getPredicate(i) === a.length) {
-                return new Predicate(i, a);
-            } else {
-                error("Predicate " + i + " has arity " + Language.getPredicate(i));
-            }
+            return new Predicate(id, terms);
         } else {
-            error("Function or predicate " + i + " not found in language");
+            error("Predicate " + id + " has arity " + Language.getPredicate(id))
         }
     }
+
 }
 
 start
     = formula
 
-
 formula
-    = spaces formula_cases spaces
+    = spaces f:formula_cases spaces {return f}
 
 formula_cases
-    = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
-    / "(" left:formula spaces disjunction_symbol spaces right:formula ")" {return new Disjunction(left, right)}
-    / "(" left:formula spaces implication_symbol spaces right:formula ")" {return new Implication(left, right)}
-    / spaces exists_symbol spaces v:variable_symbol f:formula {return new ExistentialQuant(v, f)}
-    / spaces uni_symbol spaces v:variable_symbol f:formula {return new UniversalQuant(v, f)}
-    / negation_symbol f:formula {return new Negation(f)}
+    = "(" left:(formula / term) spaces conjunction_symbol spaces right:(formula / term) ")" {return new Conjunction(left, right)}
+    / "(" left:(formula / term) spaces disjunction_symbol spaces right:(formula / term) ")" {return new Disjunction(left, right)}
+    / "(" left:(formula / term) spaces implication_symbol spaces right:(formula / term) ")" {return new Implication(left, right)}
     / ps:predicate_symbol {return ps}
-    / t1:term equality_symbol t2:term {return new EqualityAtom(t1, t2)}
-    / t1:term non_equality_symbol t2:term {return new Negation(new EqualityAtom(t1, t2))}
+    / exists_symbol spaces v:variable_symbol f:(formula / term) {return new ExistentialQuant(v, f)}
+    / uni_symbol spaces v:variable_symbol f:(formula / term) {return new UniversalQuant(v, f)}
+    / negation_symbol f:formula {return new Negation(f)}
+    / "(" t1:term spaces equality_symbol spaces t2:term ")" {return new EqualityAtom(t1, t2)}
+    / "(" t1:term spaces non_equality_symbol spaces t2:term ")" {return new Negation(new EqualityAtom(t1, t2))}
     / "(" f:formula ")" {return f}
 
 spaces "spaces"
@@ -111,16 +102,17 @@ non_equality_symbol
     / "≠"
 
 constant_symbol
-    = i:identifier & {Language.hasConstant(i)} {return i}
+    = $ (i:Identifier & {return Language.hasConstant(i)})
 
 function_symbol
-    = i:identifier & {Language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
+    = i:Identifier & {return Language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
 
 predicate_symbol
-    = i:identifier & {Language.hasPredicate(i)} spaces "("  ts:terms ")" {return new Predicate(i, ts)}
+    = i:Identifier & {return Language.hasPredicate(i)} spaces "("  ts:terms ")" {return checkPredicateArity(i, ts)}
+    / i:Identifier & {return Language.hasPredicate(i)} {return checkPredicateArity(i, [])}
 
 variable_symbol
-    = i:identifier & {!Language.hasPredicate(i) && !Language.hasConstant(i) && !Language.hasFunction(i)} {return i}
+    = $ (i:Identifier & {return (!Language.hasPredicate(i) && !Language.hasConstant(i) && !Language.hasFunction(i))})
 
 terms
     = t:term ts:(spaces "," spaces term)* {return [t].concat(ts)}
