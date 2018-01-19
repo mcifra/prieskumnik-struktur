@@ -52,8 +52,8 @@ required_space
     = [ \t\n\r]+
 
 conjunction_symbol
-    = "\\wedge"
-    / "\\land"
+    = "\\wedge" required_space
+    / "\\land" required_space
     / "&&"
     / "&"
     / "∧"
@@ -62,35 +62,35 @@ conjunction_symbol
 disjunction_symbol
     = "||"
     / "|"
-    / "\\vee"
+    / "\\vee" required_space
     / "∨"
     / "\\/"
-    / "\\lor"
+    / "\\lor" required_space
 
 implication_symbol
     = "->"
-    / "\\to"
+    / "\\to" required_space
     / "→"
 
 exists_symbol
     = "∃"
-    / "\\exists"
-    / "\\e"
-    / "\\E"
+    / "\\exists" required_space
+    / "\\e" required_space
+    / "\\E" required_space
 
 uni_symbol
     = "∀"
-    / "\\forall"
-    / "\\a"
-    / "\\A"
+    / "\\forall" required_space
+    / "\\a" required_space
+    / "\\A" required_space
 
 negation_symbol
     = "-"
     / "!"
     / "~"
-    / "\\neg"
+    / "\\neg" required_space
     / "¬"
-    / "\\lnot"
+    / "\\lnot" required_space
 
 equality_symbol
     = "="
