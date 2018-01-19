@@ -113,7 +113,7 @@ terms
     = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
 
 term
-    = f:function_symbol {return new Function(f[0], f[1])}
+    = f:function_symbol {return new FunctionTerm(f[0], f[1])}
     / c:constant_symbol {return new Constant(c)}
     / v:variable_symbol {return new Variable(v)}
 

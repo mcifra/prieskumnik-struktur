@@ -237,7 +237,7 @@ function peg$parse(input, options) {
       peg$c93 = peg$literalExpectation(",", false),
       peg$c94 = function(t, t1) {return t1},
       peg$c95 = function(t, ts) {return [t].concat(ts)},
-      peg$c96 = function(f) {return new Function(f[0], f[1])},
+      peg$c96 = function(f) {return new FunctionTerm(f[0], f[1])},
       peg$c97 = function(c) {return new Constant(c)},
       peg$c98 = function(v) {return new Variable(v)},
       peg$c99 = function(name) { return name; },
