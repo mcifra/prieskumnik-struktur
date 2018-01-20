@@ -32,12 +32,12 @@ class FormulaStorage extends React.Component {
                         <div className={'row'}>
                             <div className={'col-lg-6'}>
                                 <div className={'input-group'} key={index}>
-
+                                    <span class="input-group-addon" for="predicates-list">{current.ok}</span>
                                     <input className={'form-control'} type={"text"} value={current.formula}
                                            onChange={(e) => this.checkFormula(e, index)}/>
-
                                     <span className={'input-group-btn'}>
-                                    <button className={'btn btn-danger'} onClick={() => this.deleteFormula(index)}>Odstrániť</button>
+                                        <button className={'btn btn-danger'}
+                                                onClick={() => this.deleteFormula(index)}>Odstrániť</button>
                                         {/*{current.validationMessage}*/}
                                     </span>
                                 </div>
@@ -45,7 +45,8 @@ class FormulaStorage extends React.Component {
                         </div>
                     )
                 }
-                <button className={'btn btn-primary'} id={"add-formula"} onClick={() => this.addFormula()}>Pridaj</button>
+                <button className={'btn btn-primary'} id={"add-formula"} onClick={() => this.addFormula()}>Pridaj
+                </button>
             </div>
         );
     }
@@ -56,7 +57,8 @@ class FormulaStorage extends React.Component {
             formula: '',
             valid: false,
             validationMessage: '',
-            formulaObj: null
+            formulaObj: null,
+            ok: false
         });
         // console.log(this.state);
         this.setState({
@@ -99,20 +101,45 @@ class FormulaStorage extends React.Component {
                 formula = parser.parse("(" + givenFormula + ")", options);
             }
             console.log('formula:', formula);
-            console.log('formula JSON:', JSON.stringify(formula));
+            //console.log('formula JSON:', JSON.stringify(formula));
+
+            let ok = this.evaluateFormula(formula);
+
+            if (!ok){
+                ok='✘';
+            }else{
+                ok='✔';
+            }
+
             formulas[index].validationMessage = '';
             formulas[index].valid = true;
             formulas[index].formulaObj = formula;
+            formulas[index].ok=ok;
+
+            console.log(formulas[index]);
+
         } catch (e) {
             console.error('parser chyba:', e);
             formulas[index].validationMessage = e.message;
             formulas[index].valid = false;
             formulas[index].formulaObj = null;
+            formulas[index].ok='✘';
         }
         this.setState({
             formulas: formulas
         });
     }
+
+    evaluateFormula(formula) {
+        let e = new Map();
+        e.set('x','a');
+        e.set('y','b');
+
+        let ok = formula.isSatisfied(this.props.structure,e);
+        console.log(ok);
+        return ok;
+    }
+
 }
 
 export default FormulaStorage;

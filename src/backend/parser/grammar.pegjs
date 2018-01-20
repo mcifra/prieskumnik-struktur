@@ -30,6 +30,15 @@
         }
    }
 
+   function checkTupleArity(tuple) {
+        var requiredArity = options.arity;
+        console.log(requiredArity,tuple.length);
+        if (requiredArity == tuple.length)
+            return tuple;
+        else
+            error('N-tica ' + tuple + ' nema povoleny pocet prvkov!');
+   }
+
 }
 
 start
@@ -139,17 +148,12 @@ language_predicate_arity
 language_function_arity
     = $ ([1-9]+)
 
-
-
 //  START
 // KONSTANTY
 // C
 
 language_constants_list
     = spaces c1:Identifier c_list:(spaces "," spaces c2:Identifier {return c2})* spaces {return [c1].concat(c_list)}
-
-
-
 
 // START
 // PREDIKATY
@@ -160,9 +164,6 @@ language_predicates_list
 
 language_predicate
     = spaces i:Identifier "/" arity:language_predicate_arity spaces {return {name: i, arity: arity}}
-
-
-
 
 // START
 // FUNKCIE
@@ -175,27 +176,25 @@ language_function
     = spaces i:Identifier "/" arity:language_function_arity spaces {return {name: i, arity: arity}}
 
 
-
-
 //
 //  Structure parsing
 //
 
+// START
+// DOMENA
 
 structure_domain_items_list
     = spaces i1:Identifier ids:(spaces "," spaces i2:Identifier {return i2})* spaces {return [i1].concat(ids)}
 
-structure_domain_item_symbol
-    = $ (i:Identifier)
+// START
+// PREDIKAT + FUNKCIA
 
-
-// POTOM
-
-structure_predicate_tuples_list
+structure_tuples_list
     = spaces t1:structure_tuple tl:(spaces "," spaces t2:structure_tuple {return t2})* spaces {return [t1].concat(tl)}
 
 structure_tuple
-    = "(" spaces item1:structure_domain_item_symbol items:(spaces "," spaces item2:structure_domain_item_symbol {return item2})* spaces ")" {return [item1].concat(items)}
+    = "(" spaces item1:Identifier items:(spaces "," spaces item2:Identifier {return item2})+ spaces ")" {return checkTupleArity([item1].concat(items))}
+    / spaces item:Identifier spaces {return checkTupleArity(item)}
 
 
 

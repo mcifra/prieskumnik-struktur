@@ -120,7 +120,7 @@ class LanguageEditor extends React.Component {
         let inputValue = e.target.value;
         try {
             let parsedValue = [];
-            this.props.structure.language.clearConstants();
+            //this.props.structure.language.clearConstants();
             if (inputValue.length > 0)
                 parsedValue = parser.parse(inputValue, {startRule: 'language_constants_list'});
             // this.lastConstantsValue=parsedValue;
@@ -137,10 +137,10 @@ class LanguageEditor extends React.Component {
         let inputValue = e.target.value;
         try {
             let parsedValue = [];
-            this.props.structure.language.clearPredicates();
+            // this.props.structure.language.clearPredicates();
             if (inputValue.length > 0)
                 parsedValue = parser.parse(inputValue, {startRule: 'language_predicates_list'});
-            console.log(parsedValue);
+            //console.log(parsedValue);
             this.props.structure.setLanguagePredicates(parsedValue);
             this.props.onChange(this.props.structure);
         } catch (e) {
@@ -151,9 +151,10 @@ class LanguageEditor extends React.Component {
     updateFunctions(e) {
         let parser = require('../../backend/parser/grammar');
         let inputValue = e.target.value;
+        console.log('e: ',e.target.value);
         try {
             let parsedValue = [];
-            this.props.structure.language.clearFunctions();
+            // this.props.structure.language.clearFunctions();
             if (inputValue.length > 0)
                 parsedValue = parser.parse(inputValue, {startRule: 'language_functions_list'});
             this.props.structure.setLanguageFunctions(parsedValue);

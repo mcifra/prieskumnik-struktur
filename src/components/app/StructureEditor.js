@@ -1,8 +1,4 @@
 import React from 'react';
-import ConstantEditor from './ConstantEditor';
-import DomainEditor from "./DomainEditor";
-import FunctionEditor from "./FunctionEditor";
-import PredicateEditor from "./PredicateEditor";
 
 class StructureEditor extends React.Component {
 
@@ -17,27 +13,67 @@ class StructureEditor extends React.Component {
         let constants = [...this.props.structure.language.constants];
         let predicates = [...this.props.structure.language.predicates];
         let functions = [...this.props.structure.language.functions];
+        let domain = [...this.props.structure.domain];
         return (
             <div>
                 <h2>Štruktúra</h2>
-                <DomainEditor onChange={(items) => this.updateDomain(items)}/>
+                <div className={"row"}>
+                    <div className={'col-lg-12'}>
+                        <div className={"input-group"}>
+                            <span class="input-group-addon">Doména</span>
+                            <input className={"form-control"} type={"text"}
+                                   onChange={(items) => this.updateDomain(items)}
+                                   onFocus={(items) => this.updateDomain(items)} key={"test"}/>
+                        </div>
+                    </div>
+                </div>
                 {
                     constants.map((curr, i) =>
-                        <ConstantEditor constantName={curr}
-                                        onChange={(constantName, value) => this.updateConstantValue(constantName, value)}
-                                        domain={this.props.structure.domain}/>
+                        <div className={"row"}>
+                            <div className={'col-lg-12'}>
+                                <div className={"input-group"}>
+                                    <span className={'input-group-addon'}
+                                          htmlFor={"constants-list"}>{curr}</span>
+                                    <select className={'form-control'} id={'domain-items-constant'}
+                                            onChange={(e) => this.updateConstantValue(curr, e)}>
+                                        {
+                                            domain.map((current, index) =>
+                                                <option key={index} value={current}>{current}</option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     )
                 }
                 {
                     predicates.map((curr, i) =>
-                        <PredicateEditor predicateName={curr[0]}
-                                         onChange={(predicateName, value) => this.updatePredicateValue(predicateName, value)}/>
+                        <div className={"row"}>
+                            <div className={'col-lg-12'}>
+                                <div className={"input-group"}>
+                                    <span className={'input-group-addon'}
+                                          htmlFor={"constants-list"}>{'P ' + curr[i][0]}</span>
+                                    {/*<label>{this.props.predicateName}</label>*/}
+                                    <input className={"form-control"} type={"text"}
+                                           onChange={(e) => this.updatePredicateValue(curr[i][0], e)}/>
+                                </div>
+                            </div>
+                        </div>
                     )
                 }
                 {
                     functions.map((curr, i) =>
-                        <FunctionEditor functionName={curr[0]}
-                                        onChange={(functionName, value) => this.updateFunctionValue(functionName, value)}/>
+                        <div className={"row"}>
+                            <div className={'col-lg-12'}>
+                                <div className={"input-group"}>
+                                    <span className={'input-group-addon'}
+                                          htmlFor={"constants-list"}>{'F ' + curr[i][0]}</span>
+                                    <input className={"form-control"} type={"text"}
+                                           onChange={(e) => this.updateFunctionValue(curr[i][0], e)}/>
+                                </div>
+                            </div>
+                        </div>
                     )
                 }
             </div>
@@ -84,6 +120,7 @@ class StructureEditor extends React.Component {
     }
 
     updateDomain(items) {
+        items = items.target.value;
         let parser = require('../../backend/parser/grammar');
         let s = this.props.structure;
         try {
@@ -99,16 +136,21 @@ class StructureEditor extends React.Component {
     }
 
     updateConstantValue(constantName, value) {
+        value = value.target.value;
         let structure = this.props.structure;
         structure.setConstantValue(constantName, value);
         this.props.onChange(structure);
     }
 
     updatePredicateValue(predicateName, value) {
+        value = value.target.value;
         let parser = require('../../backend/parser/grammar');
         let structure = this.props.structure;
         try {
-            let valueParsed = parser.parse(value, {startRule: 'structure_predicate_tuples_list'});
+            let valueParsed = parser.parse(value, {
+                startRule: 'structure_tuples_list',
+                arity: structure.language.getPredicate(predicateName)
+            });
             for (let i = 0; i < valueParsed.length; i++) {
                 for (let j = 0; j < valueParsed[i].length; j++) {
                     if (!structure.domain.has(valueParsed[i][j])) {
@@ -124,15 +166,21 @@ class StructureEditor extends React.Component {
     }
 
     updateFunctionValue(functionName, value) {
-        // let parser = require('../../backend/parser/grammar');
-        // try {
-        //     let valueParsed = parser.parse(value, this.setParserOptions('structure_predicate_tuples_list'));
-        //     let structure = this.props.structure;
-        //     structure.setFunctionValue(functionName, valueParsed);
-        //     this.props.onChange(structure);
-        // } catch (e) {
-        //     console.error(e);
-        // }
+        value = value.target.value;
+        let parser = require('../../backend/parser/grammar');
+        let structure = this.props.structure;
+        try {
+            let valueParsed = parser.parse(value, {
+                startRule: 'structure_tuples_list',
+                arity: parseInt(structure.language.getFunction(functionName)) + 1
+            });
+            for (let i = 0; i < valueParsed.length; i++) {
+                structure.setFunctionValue(functionName, valueParsed[i].slice(0, 2), valueParsed[i][2]);
+            }
+            this.props.onChange(structure);
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 
