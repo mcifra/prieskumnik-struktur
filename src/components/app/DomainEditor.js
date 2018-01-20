@@ -11,7 +11,7 @@ class DomainEditor extends React.Component {
         return (
             <div className={'col-lg-12'}>
                 <label>Domena</label>
-                <input type={"text"} onChange={(e) => this.handleChange(e)}/>
+                <input type={"text"} onChange={(e) => this.handleChange(e)} onFocus={(e) => this.handleChange(e)}/>
             </div>
         )
     }

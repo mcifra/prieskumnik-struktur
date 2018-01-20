@@ -19,6 +19,10 @@ class Language {
         this.predicates = predicates;
     }
 
+    hasItem(item) {
+        return this.hasConstant(item) || this.hasFunction(item) || this.hasPredicate(item);
+    }
+
     clearAll() {
         this.constants = new Set();
         this.functions = new Map();
@@ -26,15 +30,15 @@ class Language {
     }
 
     clearConstants() {
-        this.constants = new Set();
+        this.constants.clear();
     }
 
     clearFunctions() {
-        this.functions = new Map();
+        this.functions.clear();
     }
 
     clearPredicates() {
-        this.predicates = new Map();
+        this.predicates.clear();
     }
 
     setConstants(constants) {
@@ -54,15 +58,6 @@ class Language {
      * @param {string} constantName Constant name
      */
     addConstant(constantName) {
-        // if (this.hasConstant(constantName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje konstantu ' + constantName);
-        // }
-        // if (this.hasFunction(constantName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje funkciu ' + constantName);
-        // }
-        // if (this.hasPredicate(constantName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje predikat ' + constantName);
-        // }
         this.constants.add(constantName);
     }
 
@@ -72,15 +67,6 @@ class Language {
      * @param {int} arity Arity of function
      */
     addFunction(functionName, arity) {
-        // if (this.hasConstant(functionName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje konstantu ' + functionName);
-        // }
-        // if (this.hasFunction(functionName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje funkciu ' + functionName);
-        // }
-        // if (this.hasPredicate(functionName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje predikat ' + functionName);
-        // }
         this.functions.set(functionName, arity);
     }
 
@@ -90,15 +76,6 @@ class Language {
      * @param {int} arity Arity of predicate
      */
     addPredicate(predicateName, arity) {
-        // if (this.hasConstant(predicateName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje konstantu ' + predicateName);
-        // }
-        // if (this.hasFunction(predicateName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje funkciu ' + predicateName);
-        // }
-        // if (this.hasPredicate(predicateName)) {
-        //     throw new InvalidLanguageException('Jazyk uz obsahuje predikat ' + predicateName);
-        // }
         this.predicates.set(predicateName, arity);
     }
 

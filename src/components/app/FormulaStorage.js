@@ -72,7 +72,7 @@ class FormulaStorage extends React.Component {
 
     getOptions() {
         return {
-            language: this.props.language,
+            structure: this.props.structure,
             conjunction: Conjunction,
             disjunction: Disjunction,
             implication: Implication,

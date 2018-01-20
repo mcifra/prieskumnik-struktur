@@ -14,16 +14,15 @@
     const Structure = options.structure;
 
     function checkPredicateArity(id, terms) {
-        if (Language.getPredicate(id) == terms.length) {
+        if (Structure.language.getPredicate(id) == terms.length) {
             return new Predicate(id, terms);
         } else {
-            error("Predicate " + id + " has arity " + Language.getPredicate(id))
+            error("Predicate " + id + " has arity " + Structure.language.getPredicate(id))
         }
     }
 
 
-   function itemInDomain(item) {
-   console.log(item);
+   function isItemInDomain(item) {
         if (Structure.hasDomainItem(item)) {
             return true;
         } else {
@@ -43,12 +42,12 @@ formula_cases
     = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
     / "(" left:formula spaces disjunction_symbol spaces right:formula ")" {return new Disjunction(left, right)}
     / "(" left:formula spaces implication_symbol spaces right:formula ")" {return new Implication(left, right)}
-    / ps:predicate_symbol {return ps}
+    / "(" t1:term spaces equality_symbol spaces t2:term ")" {return new EqualityAtom(t1, t2)}
+    / "(" t1:term spaces non_equality_symbol spaces t2:term ")" {return new Negation(new EqualityAtom(t1, t2))}
     / exists_symbol spaces v:variable_symbol f:formula {return new ExistentialQuant(v, f)}
     / uni_symbol spaces v:variable_symbol f:formula {return new UniversalQuant(v, f)}
     / negation_symbol f:formula {return new Negation(f)}
-    / "(" t1:term spaces equality_symbol spaces t2:term ")" {return new EqualityAtom(t1, t2)}
-    / "(" t1:term spaces non_equality_symbol spaces t2:term ")" {return new Negation(new EqualityAtom(t1, t2))}
+    / ps:predicate_symbol {return ps}
     / "(" f:formula ")" {return f}
 
 spaces "spaces"
@@ -108,17 +107,17 @@ non_equality_symbol
     / "≠"
 
 constant_symbol
-    = $ (i:Identifier & {return Language.hasConstant(i)})
+    = $ (i:Identifier & {return Structure.language.hasConstant(i)})
 
 function_symbol
-    = i:Identifier & {return Language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
+    = i:Identifier & {return Structure.language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
 
 predicate_symbol
-    = i:Identifier & {return Language.hasPredicate(i)} spaces "("  ts:terms ")" {return checkPredicateArity(i, ts)}
-    / i:Identifier & {return Language.hasPredicate(i)} {return checkPredicateArity(i, [])}
+    = i:Identifier & {return Structure.language.hasPredicate(i)} spaces "("  ts:terms ")" {return checkPredicateArity(i, ts)}
+    / i:Identifier & {return Structure.language.hasPredicate(i)} {return checkPredicateArity(i, [])}
 
 variable_symbol
-    = $ (i:Identifier & {return (!Language.hasPredicate(i) && !Language.hasConstant(i) && !Language.hasFunction(i))})
+    = $ (i:Identifier & {return (!Structure.language.hasPredicate(i) && !Structure.language.hasConstant(i) && !Structure.language.hasFunction(i))})
 
 terms
     = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
@@ -140,16 +139,35 @@ language_predicate_arity
 language_function_arity
     = $ ([1-9]+)
 
+
+
 //  START
+// KONSTANTY
+// C
+
 language_constants_list
     = spaces c1:Identifier c_list:(spaces "," spaces c2:Identifier {return c2})* spaces {return [c1].concat(c_list)}
+
+
+
+
 // START
+// PREDIKATY
+// P/2
+
 language_predicates_list
     = spaces p1:language_predicate p_list:(spaces "," spaces p2:language_predicate {return p2})* spaces {return [p1].concat(p_list)}
 
 language_predicate
     = spaces i:Identifier "/" arity:language_predicate_arity spaces {return {name: i, arity: arity}}
+
+
+
+
 // START
+// FUNKCIE
+// F/2
+
 language_functions_list
     = spaces f1:language_function f_list:(spaces "," spaces f2:language_function {return f2})* spaces {return [f1].concat(f_list)}
 
@@ -164,17 +182,20 @@ language_function
 //
 
 
-domain_items_list
+structure_domain_items_list
     = spaces i1:Identifier ids:(spaces "," spaces i2:Identifier {return i2})* spaces {return [i1].concat(ids)}
 
-domain_item_symbol
-    = $ (i:Identifier & {return itemInDomain(i)})
+structure_domain_item_symbol
+    = $ (i:Identifier)
 
-predicate_tuples_list
-    = spaces t1:tuple tl:(spaces "," spaces t2:tuple {return t2})* spaces {return [t1].concat(tl)}
 
-tuple
-    = "(" spaces item1:domain_item_symbol items:(spaces "," spaces item2:domain_item_symbol {return item2})* spaces ")" {return [item1].concat(items)}
+// POTOM
+
+structure_predicate_tuples_list
+    = spaces t1:structure_tuple tl:(spaces "," spaces t2:structure_tuple {return t2})* spaces {return [t1].concat(tl)}
+
+structure_tuple
+    = "(" spaces item1:structure_domain_item_symbol items:(spaces "," spaces item2:structure_domain_item_symbol {return item2})* spaces ")" {return [item1].concat(items)}
 
 
 

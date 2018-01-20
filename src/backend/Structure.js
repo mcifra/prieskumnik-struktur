@@ -17,16 +17,52 @@ class Structure {
         this.iFunction = new Map();
     }
 
+    setLanguageConstants(constants) {
+        let cons = new Set();
+        for (let i = 0; i < constants.length; i++) {
+            if (this.language.hasItem(constants[i]) || cons.has(constants[i]) || this.domain.has(constants[i]))
+                throw "Struktura uz obsahuje prvok " + constants[i];
+            cons.add(constants[i]);
+        }
+        this.language.setConstants(cons);
+    }
+
+    setLanguagePredicates(predicates) {
+        let predic = new Map();
+        for (let i = 0; i < predicates.length; i++) {
+            if (this.language.hasItem(predicates[i].name) || this.domain.has(predicates[i].name))
+                throw "Struktura uz obsahuje prvok " + predicates[i].name;
+            predic.set(predicates[i].name, predicates[i].arity);
+        }
+        this.language.setPredicates(predic);
+    }
+
+    setLanguageFunctions(functions) {
+        let func = new Map();
+        for (let i = 0; i < functions.length; i++) {
+            if (this.language.hasItem(functions[i].name) || this.domain.has(functions[i].name))
+                throw "Struktura uz obsahuje prvok " + functions[i].name;
+            func.set(functions[i].name, functions[i].arity);
+        }
+        this.language.setFunctions(func);
+    }
+
     hasDomainItem(name) {
         return this.domain.has(name);
     }
 
     setDomain(domain) {
-        this.domain = new Set(domain);
+        let d = new Set();
+        for (let i = 0; i < domain.length; i++) {
+            if (this.language.hasItem(domain[i]) || d.has(domain[i]))
+                throw "Struktura uz obsahuje prvok " + domain[i];
+            d.add(domain[i]);
+        }
+        this.domain = d;
     }
 
     clearDomain() {
-        this.domain = new Set();
+        this.domain.clear();
     }
 
     addDomainItem(name) {

@@ -6,49 +6,32 @@ import Language from "../../backend/Language";
 import Structure from "../../backend/Structure";
 
 class App extends React.Component {
+
     constructor(props) {
         super(props);
-        let l = new Language();
-        let s = new Structure(l);
         this.state = {
-            language: l,
-            structure: s
+            structure: new Structure(new Language())
         };
-    }
-
-    setLanguage(language) {
-        this.setState({
-            language: language,
-            structure: this.state.structure
-        });
     }
 
     setStructure(structure) {
         this.setState({
-            language: this.state.language,
             structure: structure
         });
     }
 
     render() {
-        console.log('app rendered ...');
         console.log('STRUCTURE', this.state.structure);
-        console.log('LANGUAGE', this.state.language);
         return (
             <div className={"app"}>
                 <div className={"col-lg-6"}>
-                    <LanguageEditor
-                        language={this.state.language}
-                        onChange={(language) => this.setLanguage(language)}/>
+                    <LanguageEditor structure={this.state.structure} onChange={(structure) => this.setStructure(structure)}/>
                 </div>
                 <div className={"col-lg-6"}>
-                    <StructureEditor language={this.state.language}
-                                     structure={this.state.structure}
-                                     onChange={(structure) => this.setStructure(structure)}/>
+                    <StructureEditor structure={this.state.structure} onChange={(structure) => this.setStructure(structure)}/>
                 </div>
                 <div className={"col-lg-12"}>
-                    <FormulaStorage language={this.state.language}
-                                    structure={this.state.structure}/>
+                    <FormulaStorage structure={this.state.structure}/>
                 </div>
             </div>
         );

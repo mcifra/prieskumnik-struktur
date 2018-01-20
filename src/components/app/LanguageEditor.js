@@ -8,6 +8,7 @@ class LanguageEditor extends React.Component {
             predicates_error: null,
             functions_error: null
         };
+        this.lastConstantsValue = '';
     }
 
     render() {
@@ -17,12 +18,12 @@ class LanguageEditor extends React.Component {
                 <div className={'bs-example-form'}>
                     <div className={'row'}>
                         <div className={'col-lg-12'}>
-
                             <div className={'input-group'}>
                                 <span className={'input-group-addon'} htmlFor={"constants-list"}>Konštanty</span>
                                 <input className={'form-control'} type={"text"} id={"constants-list"}
                                        key={"constants-list"}
-                                       onChange={(e) => this.updateConstants(e)}/>
+                                       onChange={(e) => this.updateConstants(e)}
+                                       onFocus={(e) => this.updateConstants(e)}/>
                             </div>
                         </div>
                         <div className={'col-lg-12'}>
@@ -50,7 +51,8 @@ class LanguageEditor extends React.Component {
                                 <span className={'input-group-addon'} htmlFor={"predicates-list"}>Predikáty</span>
                                 <input className={'form-control'} type={"text"} id={"predicates-list"}
                                        key={"predicates-list"}
-                                       onChange={(e) => this.updatePredicates(e)}/>
+                                       onChange={(e) => this.updatePredicates(e)}
+                                       onFocus={(e) => this.updatePredicates(e)}/>
                             </div>
                         </div>
                         <div className={'col-lg-12'}>
@@ -78,7 +80,8 @@ class LanguageEditor extends React.Component {
                                 <span className={'input-group-addon'} htmlFor={"functions-list"}>Funkcie</span>
                                 <input className={'form-control'} type={"text"} id={"functions-list"}
                                        key={"functions-list"}
-                                       onChange={(e) => this.updateFunctions(e)}/>
+                                       onChange={(e) => this.updateFunctions(e)}
+                                       onFocus={(e) => this.updateFunctions(e)}/>
                             </div>
                         </div>
                         <div className={'col-lg-12'}>
@@ -106,92 +109,57 @@ class LanguageEditor extends React.Component {
         );
     }
 
+    // componentDidMount() {
+    //     this.props.structure.setLanguageConstants(this.lastConstantsValue);
+    //     this.props.onChange(this.props.structure);
+    // }
+
     updateConstants(e) {
-        // this.setState({
-        //     constants_error: null,
-        //     predicates_error: this.state.predicates_error,
-        //     functions_error: this.state.functions_error
-        // });
+        // this.lastConstantsValue = e.target.value;
         let parser = require('../../backend/parser/grammar');
         let inputValue = e.target.value;
-        let language = this.props.language;
         try {
             let parsedValue = [];
+            this.props.structure.language.clearConstants();
             if (inputValue.length > 0)
                 parsedValue = parser.parse(inputValue, {startRule: 'language_constants_list'});
-            language.setConstants(new Set(parsedValue));
-            this.props.onChange(language);
+            // this.lastConstantsValue=parsedValue;
+            console.log(parsedValue);
+            this.props.structure.setLanguageConstants(parsedValue);
+            this.props.onChange(this.props.structure);
         } catch (e) {
             console.error(e);
-            // this.setState({
-            //     language: this.state.language,
-            //     constants_error: e,
-            //     predicates_error: this.state.predicates_error,
-            //     functions_error: this.state.functions_error
-            // });
         }
     }
 
     updatePredicates(e) {
-        // this.setState({
-        //     constants_error: this.state.constants_error,
-        //     predicates_error: null,
-        //     functions_error: this.state.functions_error
-        // });
         let parser = require('../../backend/parser/grammar');
         let inputValue = e.target.value;
-        let language = this.props.language;
         try {
             let parsedValue = [];
+            this.props.structure.language.clearPredicates();
             if (inputValue.length > 0)
                 parsedValue = parser.parse(inputValue, {startRule: 'language_predicates_list'});
-            let newPredicates = new Map();
-            for (let i = 0; i < parsedValue.length; i++) {
-                newPredicates.set(parsedValue[i].name, parsedValue[i].arity);
-            }
-            language.setPredicates(newPredicates);
-            this.props.onChange(language);
+            console.log(parsedValue);
+            this.props.structure.setLanguagePredicates(parsedValue);
+            this.props.onChange(this.props.structure);
         } catch (e) {
             console.error(e);
-            // this.setState({
-            //     language: this.state.language,
-            //     constants_error: this.state.constants_error,
-            //     predicates_error: e,
-            //     functions_error: this.state.functions_error
-            // });
         }
     }
 
     updateFunctions(e) {
-        // this.setState({
-        //     constants_error: this.state.constants_error,
-        //     predicates_error: this.state.predicates_error,
-        //     functions_error: null
-        // });
         let parser = require('../../backend/parser/grammar');
         let inputValue = e.target.value;
-        let language = this.props.language;
         try {
             let parsedValue = [];
+            this.props.structure.language.clearFunctions();
             if (inputValue.length > 0)
-                parsedValue = parser.parse(inputValue, {
-                    startRule: 'language_functions_list',
-                    language: this.props.language
-                });
-            let newFunctions = new Map();
-            for (let i = 0; i < parsedValue.length; i++) {
-                newFunctions.set(parsedValue[i].name, parsedValue[i].arity);
-            }
-            language.setFunctions(newFunctions);
-            this.props.onChange(language);
+                parsedValue = parser.parse(inputValue, {startRule: 'language_functions_list'});
+            this.props.structure.setLanguageFunctions(parsedValue);
+            this.props.onChange(this.props.structure);
         } catch (e) {
             console.error(e);
-            // this.setState({
-            //     language: this.state.language,
-            //     constants_error: this.state.constants_error,
-            //     predicates_error: this.state.predicates_error,
-            //     functions_error: e
-            // });
         }
     }
 }

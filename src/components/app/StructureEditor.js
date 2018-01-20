@@ -13,18 +13,10 @@ class StructureEditor extends React.Component {
         };
     }
 
-    setParserOptions(starRule) {
-        return {
-            startRule: starRule,
-            language: this.props.language,
-            structure: this.props.structure
-        }
-    }
-
     render() {
-        let constants = [...this.props.language.constants];
-        let predicates = [...this.props.language.predicates];
-        let functions = [...this.props.language.functions];
+        let constants = [...this.props.structure.language.constants];
+        let predicates = [...this.props.structure.language.predicates];
+        let functions = [...this.props.structure.language.functions];
         return (
             <div>
                 <h2>Štruktúra</h2>
@@ -93,11 +85,14 @@ class StructureEditor extends React.Component {
 
     updateDomain(items) {
         let parser = require('../../backend/parser/grammar');
+        let s = this.props.structure;
         try {
-            let itemsParsed = parser.parse(items, this.setParserOptions('domain_items_list'));
-            let structure = this.props.structure;
-            structure.setDomain(itemsParsed);
-            this.props.onChange(structure);
+            s.clearDomain();
+            if (items.length > 0) {
+                let itemsParsed = parser.parse(items, {startRule: 'structure_domain_items_list', structure: s});
+                s.setDomain(itemsParsed);
+            }
+            this.props.onChange(s);
         } catch (e) {
             console.error(e);
         }
@@ -111,9 +106,16 @@ class StructureEditor extends React.Component {
 
     updatePredicateValue(predicateName, value) {
         let parser = require('../../backend/parser/grammar');
+        let structure = this.props.structure;
         try {
-            let valueParsed = parser.parse(value, this.setParserOptions('predicate_tuples_list'));
-            let structure = this.props.structure;
+            let valueParsed = parser.parse(value, {startRule: 'structure_predicate_tuples_list'});
+            for (let i = 0; i < valueParsed.length; i++) {
+                for (let j = 0; j < valueParsed[i].length; j++) {
+                    if (!structure.domain.has(valueParsed[i][j])) {
+                        throw 'Domena neobsahuje prvok ' + valueParsed[i][j];
+                    }
+                }
+            }
             structure.setPredicateValue(predicateName, valueParsed);
             this.props.onChange(structure);
         } catch (e) {
@@ -122,15 +124,15 @@ class StructureEditor extends React.Component {
     }
 
     updateFunctionValue(functionName, value) {
-        let parser = require('../../backend/parser/grammar');
-        try {
-            let valueParsed = parser.parse(value, this.setParserOptions('predicate_tuples_list'));
-            let structure = this.props.structure;
-            structure.setFunctionValue(functionName, valueParsed);
-            this.props.onChange(structure);
-        } catch (e) {
-            console.error(e);
-        }
+        // let parser = require('../../backend/parser/grammar');
+        // try {
+        //     let valueParsed = parser.parse(value, this.setParserOptions('structure_predicate_tuples_list'));
+        //     let structure = this.props.structure;
+        //     structure.setFunctionValue(functionName, valueParsed);
+        //     this.props.onChange(structure);
+        // } catch (e) {
+        //     console.error(e);
+        // }
     }
 }
 
