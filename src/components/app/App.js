@@ -8,86 +8,47 @@ import Structure from "../../backend/Structure";
 class App extends React.Component {
     constructor(props) {
         super(props);
-        var l = new Language();
-        var s = new Structure(l);
+        let l = new Language();
+        let s = new Structure(l);
         this.state = {
             language: l,
             structure: s
         };
-        this.updateLanguageState = this.updateLanguageState.bind(this);
-        this.updateLanguageConstants = this.updateLanguageConstants.bind(this);
-        this.updateLanguageFunctions = this.updateLanguageFunctions.bind(this);
-        this.updateLanguagePredicates = this.updateLanguagePredicates.bind(this);
-        this.updateDomain = this.updateDomain.bind(this);
     }
 
-    updateLanguageState(language) {
+    setLanguage(language) {
         this.setState({
-            language: language
-        });
-    }
-
-    updateLanguageConstants(constants) {
-
-        var l = this.state.language;
-        l.clearConstants();
-
-        for (let i = 0; i < constants.length; i++) {
-            l.addConstant(constants[i]);
-        }
-        this.setState({
-            language: l,
+            language: language,
             structure: this.state.structure
         });
     }
 
-    updateLanguageFunctions(functions) {
-        let l = this.state.language;
-        l.clearFunctions();
-        for (let i = 0; i < functions.length; i++) {
-            l.addFunction(functions[i].name, functions[i].arity);
-        }
-        this.setState({
-            language: l,
-            structure: this.state.structure
-        });
-    }
-
-    updateLanguagePredicates(predicates) {
-
-        this.state.language.clearPredicates();
-        for (let i = 0; i < predicates.length; i++) {
-            this.state.language.addPredicate(predicates[i].name, predicates[i].arity);
-        }
-    }
-
-    updateDomain(domain) {
-        this.state.structure.clearDomain();
-        var s = this.state.structure;
-        for (var i = 0; i < domain.length; i++) {
-            s.addDomainItem(domain[i]);
-        }
+    setStructure(structure) {
         this.setState({
             language: this.state.language,
-            structure: this.state.structure
+            structure: structure
         });
     }
 
     render() {
+        console.log('app rendered ...');
+        console.log('STRUCTURE', this.state.structure);
+        console.log('LANGUAGE', this.state.language);
         return (
             <div className={"app"}>
                 <div className={"col-lg-6"}>
                     <LanguageEditor
-                        onConstantsChange={this.updateLanguageConstants}
-                        onFunctionsChange={this.updateLanguageFunctions}
-                        onPredicatesChange={this.updateLanguagePredicates}/>
+                        language={this.state.language}
+                        onChange={(language) => this.setLanguage(language)}/>
                 </div>
                 <div className={"col-lg-6"}>
-                    <StructureEditor language={this.state.language} structure={this.state.structure}
-                                     onDomainChange={this.updateDomain}/>
+                    <StructureEditor language={this.state.language}
+                                     structure={this.state.structure}
+                                     onChange={(structure) => this.setStructure(structure)}/>
                 </div>
                 <div className={"col-lg-12"}>
-                    <FormulaStorage language={this.state.language} structure={this.state.structure}/>
+                    <FormulaStorage language={this.state.language}
+                                    structure={this.state.structure}/>
                 </div>
             </div>
         );

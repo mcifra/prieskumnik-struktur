@@ -23,10 +23,10 @@ class FormulaStorage extends React.Component {
     }
 
     render() {
-        console.log('JAZYK: ', this.props.language);
+        // console.log('JAZYK: ', this.props.language);
         return (
             <div className={"formula-storage"}>
-                <h2>Zoznam formúl</h2>
+                <h2>Formuly</h2>
                 {
                     this.state.formulas.map((current, index) =>
                         <div className={'row'}>
@@ -58,7 +58,7 @@ class FormulaStorage extends React.Component {
             validationMessage: '',
             formulaObj: null
         });
-        console.log(this.state);
+        // console.log(this.state);
         this.setState({
             formulas: formulas
         });
@@ -98,12 +98,13 @@ class FormulaStorage extends React.Component {
             if (givenFormula.length > 0) {
                 formula = parser.parse("(" + givenFormula + ")", options);
             }
-            console.log(formula);
+            console.log('formula:', formula);
+            console.log('formula JSON:', JSON.stringify(formula));
             formulas[index].validationMessage = '';
             formulas[index].valid = true;
             formulas[index].formulaObj = formula;
         } catch (e) {
-            console.error(e);
+            console.error('parser chyba:', e);
             formulas[index].validationMessage = e.message;
             formulas[index].valid = false;
             formulas[index].formulaObj = null;

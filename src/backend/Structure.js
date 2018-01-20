@@ -17,8 +17,16 @@ class Structure {
         this.iFunction = new Map();
     }
 
+    hasDomainItem(name) {
+        return this.domain.has(name);
+    }
+
+    setDomain(domain) {
+        this.domain = new Set(domain);
+    }
+
     clearDomain() {
-        this.domain=new Set();
+        this.domain = new Set();
     }
 
     addDomainItem(name) {
@@ -30,7 +38,6 @@ class Structure {
     }
 
     setConstantValue(constantName, value) {
-        this.addDomainItem(value);
         this.iConstant.set(constantName, value);
     }
 
@@ -44,17 +51,7 @@ class Structure {
      * @param {Array} predicateParams
      */
     setPredicateValue(predicateName, predicateParams) {
-        for (var i = 0; i < predicateParams.length; i++) {
-            if (predicateParams[i].length !== this.language.getPredicate(predicateName)) {
-                throw "Arita predikatu sa nerovna poctu parametrov";
-            }
-        }
         this.iPredicate.set(predicateName, predicateParams);
-        for (var i = 0; i < predicateParams.length; i++) {
-            for (var j = 0; j < predicateParams[i].length; j++) {
-                this.addDomainItem(predicateParams[i][j]);
-            }
-        }
     }
 
     /**
@@ -73,12 +70,6 @@ class Structure {
      * @param {string} value
      */
     setFunctionValue(functionName, functionParams, value) {
-        if (functionParams.length !== this.language.getFunction(functionName)) {
-            throw "Arita funkcie sa nerovna poctu parametrov";
-        }
-        if (!this.iFunction.has(functionName)) {
-            this.iFunction.set(functionName, new Map());
-        }
         this.iFunction.get(functionName).set(JSON.stringify(functionParams), value);
     }
 
@@ -89,10 +80,9 @@ class Structure {
      * @return {string|undefined}
      */
     getFunctionValue(functionName, functionParams) {
-        var functionValue = this.iFunction.get(functionName);
+        let functionValue = this.iFunction.get(functionName);
         return functionValue.get(JSON.stringify(functionParams));
     }
-
 
 }
 

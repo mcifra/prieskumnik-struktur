@@ -11,6 +11,7 @@
     const FunctionTerm = options.functionTerm;
     const Predicate = options.predicate;
     const EqualityAtom = options.equalityAtom;
+    const Structure = options.structure;
 
     function checkPredicateArity(id, terms) {
         if (Language.getPredicate(id) == terms.length) {
@@ -19,6 +20,16 @@
             error("Predicate " + id + " has arity " + Language.getPredicate(id))
         }
     }
+
+
+   function itemInDomain(item) {
+   console.log(item);
+        if (Structure.hasDomainItem(item)) {
+            return true;
+        } else {
+            error("Item " + item + " is not in structure!");
+        }
+   }
 
 }
 
@@ -116,6 +127,57 @@ term
     = f:function_symbol {return new FunctionTerm(f[0], f[1])}
     / c:constant_symbol {return new Constant(c)}
     / v:variable_symbol {return new Variable(v)}
+
+
+//
+//  Language parsing
+//
+
+
+language_predicate_arity
+    = $ ([0-9]+)
+
+language_function_arity
+    = $ ([1-9]+)
+
+//  START
+language_constants_list
+    = spaces c1:Identifier c_list:(spaces "," spaces c2:Identifier {return c2})* spaces {return [c1].concat(c_list)}
+// START
+language_predicates_list
+    = spaces p1:language_predicate p_list:(spaces "," spaces p2:language_predicate {return p2})* spaces {return [p1].concat(p_list)}
+
+language_predicate
+    = spaces i:Identifier "/" arity:language_predicate_arity spaces {return {name: i, arity: arity}}
+// START
+language_functions_list
+    = spaces f1:language_function f_list:(spaces "," spaces f2:language_function {return f2})* spaces {return [f1].concat(f_list)}
+
+language_function
+    = spaces i:Identifier "/" arity:language_function_arity spaces {return {name: i, arity: arity}}
+
+
+
+
+//
+//  Structure parsing
+//
+
+
+domain_items_list
+    = spaces i1:Identifier ids:(spaces "," spaces i2:Identifier {return i2})* spaces {return [i1].concat(ids)}
+
+domain_item_symbol
+    = $ (i:Identifier & {return itemInDomain(i)})
+
+predicate_tuples_list
+    = spaces t1:tuple tl:(spaces "," spaces t2:tuple {return t2})* spaces {return [t1].concat(tl)}
+
+tuple
+    = "(" spaces item1:domain_item_symbol items:(spaces "," spaces item2:domain_item_symbol {return item2})* spaces ")" {return [item1].concat(items)}
+
+
+
 
 
 
