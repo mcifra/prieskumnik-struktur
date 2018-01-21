@@ -12,7 +12,6 @@ import PredicateAtom from "../../backend/formula/Formula.PredicateAtom";
 import Negation from "../../backend/formula/Formula.Negation";
 import EqualityAtom from "../../backend/formula/Formula.EqualityAtom";
 
-
 class FormulaStorage extends React.Component {
 
     constructor(props) {
@@ -23,16 +22,16 @@ class FormulaStorage extends React.Component {
     }
 
     render() {
-        // console.log('JAZYK: ', this.props.language);
         return (
             <div className={"formula-storage"}>
                 <h2>Formuly</h2>
                 {
                     this.state.formulas.map((current, index) =>
-                        <div className={'row'}>
+                        <div className={'row'} key={index}>
                             <div className={'col-lg-6'}>
                                 <div className={'input-group'} key={index}>
-                                    <span class="input-group-addon" for="predicates-list">{current.ok}</span>
+                                    <span className={"input-group-addon"}
+                                          htmlFor={"predicates-list"}>{current.ok}</span>
                                     <input className={'form-control'} type={"text"} value={current.formula}
                                            onChange={(e) => this.checkFormula(e, index)}/>
                                     <span className={'input-group-btn'}>
@@ -52,7 +51,7 @@ class FormulaStorage extends React.Component {
     }
 
     addFormula() {
-        var formulas = this.state.formulas;
+        let formulas = this.state.formulas;
         formulas.push({
             formula: '',
             valid: false,
@@ -60,7 +59,6 @@ class FormulaStorage extends React.Component {
             formulaObj: null,
             ok: false
         });
-        // console.log(this.state);
         this.setState({
             formulas: formulas
         });
@@ -72,7 +70,7 @@ class FormulaStorage extends React.Component {
         });
     }
 
-    getOptions() {
+    setParserOptions() {
         return {
             structure: this.props.structure,
             conjunction: Conjunction,
@@ -91,7 +89,7 @@ class FormulaStorage extends React.Component {
 
     checkFormula(e, index) {
         let givenFormula = e.target.value;
-        let options = this.getOptions();
+        let options = this.setParserOptions();
         let formulas = this.state.formulas;
         formulas[index].formula = givenFormula;
         let parser = require('../../backend/parser/grammar.js');
@@ -101,29 +99,17 @@ class FormulaStorage extends React.Component {
                 formula = parser.parse("(" + givenFormula + ")", options);
             }
             console.log('formula:', formula);
-            //console.log('formula JSON:', JSON.stringify(formula));
-
             let ok = this.evaluateFormula(formula);
-
-            if (!ok){
-                ok='✘';
-            }else{
-                ok='✔';
-            }
-
             formulas[index].validationMessage = '';
             formulas[index].valid = true;
             formulas[index].formulaObj = formula;
-            formulas[index].ok=ok;
-
-            console.log(formulas[index]);
-
+            formulas[index].ok = ok ? '✔' : '✘';
         } catch (e) {
             console.error('parser chyba:', e);
             formulas[index].validationMessage = e.message;
             formulas[index].valid = false;
             formulas[index].formulaObj = null;
-            formulas[index].ok='✘';
+            formulas[index].ok = '✘';
         }
         this.setState({
             formulas: formulas
@@ -132,10 +118,9 @@ class FormulaStorage extends React.Component {
 
     evaluateFormula(formula) {
         let e = new Map();
-        e.set('x','a');
-        e.set('y','b');
-
-        let ok = formula.isSatisfied(this.props.structure,e);
+        e.set('x', 'a');
+        e.set('y', 'b');
+        let ok = formula.isSatisfied(this.props.structure, e);
         console.log(ok);
         return ok;
     }

@@ -51,13 +51,34 @@ formula_cases
     = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
     / "(" left:formula spaces disjunction_symbol spaces right:formula ")" {return new Disjunction(left, right)}
     / "(" left:formula spaces implication_symbol spaces right:formula ")" {return new Implication(left, right)}
-    / "(" t1:term spaces equality_symbol spaces t2:term ")" {return new EqualityAtom(t1, t2)}
-    / "(" t1:term spaces non_equality_symbol spaces t2:term ")" {return new Negation(new EqualityAtom(t1, t2))}
-    / exists_symbol spaces v:variable_symbol f:formula {return new ExistentialQuant(v, f)}
-    / uni_symbol spaces v:variable_symbol f:formula {return new UniversalQuant(v, f)}
+    / t1:term spaces equality_symbol spaces t2:term {return new EqualityAtom(t1, t2)}
+    / t1:term spaces non_equality_symbol spaces t2:term {return new Negation(new EqualityAtom(t1, t2))}
+    / exists_symbol spaces v:variable_symbol spaces f:formula {return new ExistentialQuant(v, f)}
+    / uni_symbol spaces v:variable_symbol spaces f:formula {return new UniversalQuant(v, f)}
     / negation_symbol f:formula {return new Negation(f)}
     / ps:predicate_symbol {return ps}
     / "(" f:formula ")" {return f}
+
+constant_symbol
+    = $ (i:Identifier & {return Structure.language.hasConstant(i)})
+
+function_symbol
+    = i:Identifier & {return Structure.language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
+
+predicate_symbol
+    = i:Identifier & {return Structure.language.hasPredicate(i)} spaces "("  ts:terms ")" {return checkPredicateArity(i, ts)}
+    / i:Identifier & {return Structure.language.hasPredicate(i)} {return checkPredicateArity(i, [])}
+
+variable_symbol
+    = $ (i:Identifier & {return (!Structure.language.hasPredicate(i) && !Structure.language.hasConstant(i) && !Structure.language.hasFunction(i))})
+
+terms
+    = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
+
+term
+    = f:function_symbol {return new FunctionTerm(f[0], f[1])}
+    / c:constant_symbol {return new Constant(c)}
+    / v:variable_symbol {return new Variable(v)}
 
 spaces "spaces"
     = [ \t\n\r]*
@@ -114,27 +135,6 @@ non_equality_symbol
     / "<>"
     / "/="
     / "≠"
-
-constant_symbol
-    = $ (i:Identifier & {return Structure.language.hasConstant(i)})
-
-function_symbol
-    = i:Identifier & {return Structure.language.hasFunction(i)} spaces "(" ts:terms ")" {return [i, ts]}
-
-predicate_symbol
-    = i:Identifier & {return Structure.language.hasPredicate(i)} spaces "("  ts:terms ")" {return checkPredicateArity(i, ts)}
-    / i:Identifier & {return Structure.language.hasPredicate(i)} {return checkPredicateArity(i, [])}
-
-variable_symbol
-    = $ (i:Identifier & {return (!Structure.language.hasPredicate(i) && !Structure.language.hasConstant(i) && !Structure.language.hasFunction(i))})
-
-terms
-    = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
-
-term
-    = f:function_symbol {return new FunctionTerm(f[0], f[1])}
-    / c:constant_symbol {return new Constant(c)}
-    / v:variable_symbol {return new Variable(v)}
 
 
 //

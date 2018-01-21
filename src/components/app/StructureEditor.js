@@ -20,7 +20,7 @@ class StructureEditor extends React.Component {
                 <div className={"row"}>
                     <div className={'col-lg-12'}>
                         <div className={"input-group"}>
-                            <span class="input-group-addon">Doména</span>
+                            <span className={"input-group-addon"}>Doména</span>
                             <input className={"form-control"} type={"text"}
                                    onChange={(items) => this.updateDomain(items)}
                                    onFocus={(items) => this.updateDomain(items)} key={"test"}/>
@@ -169,13 +169,15 @@ class StructureEditor extends React.Component {
         value = value.target.value;
         let parser = require('../../backend/parser/grammar');
         let structure = this.props.structure;
+        let arity = parseInt(structure.language.getFunction(functionName));
         try {
             let valueParsed = parser.parse(value, {
                 startRule: 'structure_tuples_list',
-                arity: parseInt(structure.language.getFunction(functionName)) + 1
+                arity: arity + 1
             });
+            structure.iFunction.clear();
             for (let i = 0; i < valueParsed.length; i++) {
-                structure.setFunctionValue(functionName, valueParsed[i].slice(0, 2), valueParsed[i][2]);
+                structure.setFunctionValue(functionName, valueParsed[i].slice(0, arity), valueParsed[i][arity]);
             }
             this.props.onChange(structure);
         } catch (e) {
