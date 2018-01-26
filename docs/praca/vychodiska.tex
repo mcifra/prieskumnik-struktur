@@ -1,0 +1,227 @@
+\chapter{Východiská práce}
+\label{kap:vychodiska} % id kapitoly pre prikaz ref
+
+V tejto kapitole sa čitateľ oboznámi zo základnými princípami logiky prvého rádu ktoré sú nevyhnutné na pochopenie práce, zistí aké prostriedky a technológie boli použité na vývoj aplikácie a ich krátky opis, a na záver je krátka analýza existujúcich prác alebo aplikácií, ktoré ma určitým spôsobom inšpirovali.
+
+\section{Logika prvého rádu}
+Logika prvého rádu je formálny systém používaný v matematike a informatike. Od jednoduchej výrokovej logiky sa odlišuje tým, že okrem logických spojok a  že pridáva predikáty a kvantifikátory.
+
+
+
+\subsection{Jazyk}
+Jazyk $\mathcal{L}$ v prvorádovej logike je formálny jazyk ktorý definuje množinu konkrétnych symbolov, ktoré definujú syntax a sémantiku logiky.
+\paragraph{}
+Jazyk stredoškolskej výrokovej logiky definuje symboly \emph{premenných} (napr. $x$, $y$), \emph{logických spojok} ($\wedge, \vee, \to, \neg$) a \emph{kvantifikátorov} ($\forall, \exists$). Tieto symboly nie sú najpohodlnejšie na zapisovanie vzťahov alebo vlastností objektov. 
+\paragraph{}
+Logika prvého rádu zavádza do jazyka \emph{symbol rovnosti} $\doteq$ a tzv. mimologické symboly. Medzi mimologické symboly patria \emph{symboly konštánt} $\mathcal{C}_\mathcal{L}$, \emph{funkčné symboly} $\mathcal{F}_\mathcal{L}$ a \emph{predikátové symboly} $\mathcal{P}_\mathcal{L}$. Všetkým predikátovým a funkčným symbolom je priradená \emph{arita}. Arita je kladné prirodzené číslo a predstavuje počet argumentov symbolu. Arita sa zapisuje ako horný pravý index pri názve symbolu. Napríklad \texttt{nenávidí}$^2$ je predikátový symbol s aritou 2.
+
+\paragraph{}
+Symbol konštanty z množiny $\mathcal{C}_\mathcal{L}$ jazyka $\mathcal{L}$ predstavuje konkrétny objekt ktorý sa nedá zameniť alebo konkrétnu hodnotu. Dá sa povedať, že sú podobné ako vlastné mená v prirodzenom jazyku alebo konštanty v programovacom jazyku. Napríklad symbol konštanty \texttt{Dom123} predstavuje konkrétny dom s číslom 123 v nejakej obci a nedá sa zameniť zo žiadnym iným. Príklad definovania množiny konštánt v jazyku je v \ref{eq:definovanie_cl}.
+\begin{equation} \label{eq:definovanie_cl}
+\mathcal{C}_\mathcal{L} = \{\texttt{Dom123}, \texttt{Frantisek}, \texttt{Velkost}\}
+\end{equation}
+
+\paragraph{}
+Funkčný symbol z množiny $\mathcal{F}_\mathcal{L}$ jazyka $\mathcal{L}$ predstavuje jednoznačne určený vzťah.Napríklad funkčný symbol \texttt{cena(Produkt123)} predstavuje cenu produktu 123 v nejakom obchode. Produkt bežne máva iba jednu cenu, takže \texttt{Produkt123} má nejakú \emph{jednoznačne} určenú cenu. Príklad definovania množiny funkčných symbolov v jazyku je v \ref{eq:definovanie_fl}.
+\begin{equation} \label{eq:definovanie_fl}
+\mathcal{F}_\mathcal{L} = \{\texttt{cena}^1, \texttt{-}^2\}
+\end{equation}
+
+\paragraph{}
+Predikátový symbol z množiny $\mathcal{P}_\mathcal{L}$ jazyka $\mathcal{L}$ predstavuje určitú vlastnosť alebo vzťahy. Príklad definovania množiny predikátových symbolov v jazyku je v \ref{eq:definovanie_pl}.
+\begin{equation} \label{eq:definovanie_pl}
+\mathcal{P}_\mathcal{L} = \{\texttt{nenávidí}^2, \texttt{chlapec}^1\}
+\end{equation}
+
+\paragraph{}
+V jazyku sú ďalej definové \emph{symboly indivíduových premenných} z nejakej nekonečnej spočítateľnej množiny $\mathcal{V}_\mathcal{L}$. Príklad definovania množiny symbolov premenných v jazyku je v \ref{eq:definovanie_vl}.
+\begin{equation} \label{eq:definovanie_vl}
+\mathcal{V}_\mathcal{L} = \{x, y, z\}
+\end{equation}
+
+\paragraph{}
+Množiny $\mathcal{V}_\mathcal{L}, \mathcal{P}_\mathcal{L}, \mathcal{F}_\mathcal{L}, \mathcal{C}_\mathcal{L}$ sú navzájom disjunktné.
+
+
+
+\subsection{Syntax}
+Keď už je jasné, čo je to jazyk logiky, teraz opíšem, aké sú pravidlá a obmedzenia syntaxe v logike prvého rádu. 
+
+\subsubsection{Termy a formuly}
+\paragraph{}
+\emph{Termy} jazyka $\mathcal{L}$ predstavujú konkrétne (pomenované symbolmi konštánt) alebo nekonkrétne (pomenované symbolmi premenných) objekty, alebo pomenované pomocou funkčných symbolov. Príklady termov:
+\begin{itemize}
+	\item nekonkrétne - $\texttt{x}, \texttt{y}, \texttt{z}$
+	\item konkrétne - $\texttt{Frantisek}, \texttt{Dom123}, \texttt{Velkost}$
+	\item vzťahy - $\texttt{cena(x)}, \texttt{cena(Dom123)}, \texttt{-(x,y)}$
+\end{itemize}
+\paragraph{}
+Do množiny termov $\mathcal{T}_\mathcal{L}$ je každý symbol premennej a konštanty jazyka $\mathcal{L}$. Funkčný symbol patrí medzi termy iba v prípade, ak všetky jeho argumenty sú tiež termami.
+\paragraph{}
+Množina \emph{formúl} jazyka $\mathcal{L}$ je rekurzívne definovaná nasledovne:
+\begin{itemize}
+    \item ak sú $\alpha$ a $\beta$ formuly, tak aj $(\alpha \wedge \beta)$, $(\alpha \vee \beta)$, $(\alpha \to \beta)$ sú formuly
+    \item ak je $\alpha$ formula, tak aj $\neg \alpha$ je formula
+    \item všetky atomické formuly
+    \item ak $x$ je indivíduová premenná a $\alpha$ je formula, tak aj $\forall x \alpha$ a $\exists x \alpha$ sú formulami
+\end{itemize}
+
+\subsection{Sémantika}
+\subsubsection{Štruktúra}
+\paragraph{}
+Hodnota formuly alebo termu jazyka $\mathcal{L}$ určuje \emph{štruktúra}. Štruktúrou pre jazyk $\mathcal{L}$ je dvojica $\mathcal{M} = (M, i)$, kde
+\begin{itemize}
+	\item $M$ je \emph{doména} štruktúry $\mathcal{M}$
+	\begin{itemize}
+		\item je to množina symbolov, ktoré sa nenachádzajú v jazyku
+	\end{itemize}
+	\item $i$ je \emph{interpretačná funkcia} štruktúry $\mathcal{M}$
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{itemize}
+\paragraph{}
+
+
+
+
+\section{Analýza použitých technológií}
+\paragraph{}
+V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pri tvorbe aplikácie. 
+\subsection{Javascript}
+\paragraph{}
+Javascript je objektovo orientovaný, interpretovaný programovací jazyk využívaný hlavne vo webových aplikáciách. Väčšinou sa vykonáva na strane klienta (webový prehliadač) a reaguje na rôzne udalosti od užívateľa (napr. kliknutie myšou na nejaký element, zmenšenie okna a podobne). Vďaka tomuto je možné vytvárať dynamické, interaktívne webové aplikácie.
+\paragraph{}
+Javascript patrí medzi jazyky ktoré sú prototype-based. Je to spôsob, akým prebieha dedenie objektov. Každý objekt obsahuje atribút ktorý referuje na objekt ktorý ho vytvoril, resp. objekt od ktorého je zdedený. Takýmto spôsobom objekty vytvárajú reťaz kde na začiatku je objekt ktorý nemá žiadneho predka.
+
+\subsection{HTML}
+\paragraph{}
+HTML je značkovací jazyk využívaný na tvorbu webových stránok a webových aplikácií. Definuje tagy, pomocou ktorých sa formátuje text, pridávajú obrázky alebo vytvárajú hypertextové linky na iné stránky. Webový server posiela HTML súbory ako odpoveď na požiadavku do webového prehliadača, ktorý dokáže tieto značky správne vyrenderovať.
+\paragraph{}
+V čase vývoja tejto aplikácie bol štandard HTML5, takže všetky HTML súbory aplikácie sú validné s touto verziou.
+
+\subsection{CSS}
+\paragraph{}
+CSS je štýlovací jazyk na štýlovanie HTML elementov.
+
+\subsection{Bootstrap}
+\paragraph{}
+Bootstrap je CSS a Javascript framework na štýlovanie webovej stránky. Má (okrem iného) predvytvorené mechanizmy ako rozložiť elementy na stránke pre rôzne rozlíšenia prehliadača - tzv. grid.
+
+\subsection{React}
+\paragraph{}
+React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013. 
+\paragraph{}
+Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. React je navrhnutý tak, aby ľubovoľná zmena v nejakom komponente zabezpečila, aby sa efektívne aktualizovali len tie komponenty, ktorých sa táto zmena týka.
+\paragraph{}
+V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu a ich mazanie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
+\subsubsection{Elementy a komponenty}
+\paragraph{}
+Na úvod je potrebné vysvetliť čo je to element a komponent a aké sú medzi nimi rozdiely. 
+\paragraph{}
+Element je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia DOM objektu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing 1.
+\begin{lstlisting}[caption=Vytvorenie jednoduchého elementu]
+const element = React.createElement (
+    'button',
+    {
+        id: 'add-btn',
+    }
+    'Add'
+);
+\end{lstlisting}
+\paragraph{}
+Prvý argument funkcie je typ elementu. Môže to byť string alebo objekt druhého elementu. Druhý argument je objekt argumentov elementu. Tretí argument je zoznam potomkov elementu. Konštanta element bude vyzerať nasledovne
+\begin{lstlisting}
+const element = {
+    type: 'button',
+    props: {
+        id: 'add-btn',
+        children: 'Add'
+    }
+}
+\end{lstlisting}
+\paragraph{}
+Typ elementu je veľmi dôležitý argument. Ak je to textový reťazec, musí to byť jeden z DOM elementov (napr. button, p, div). Ak je to nejaký objekt, funkcia vráti objekt, ktorý vrátil tento typ elementu s atribútmi, ktoré sú v druhom argumente.
+
+\paragraph{}
+Základným rozdielom medzi elementom a komponentom je, že komponent príjima atribúty, a na základe nich vracia elementy.
+
+\paragraph{}
+Druhým a jednoduchším spôsobom vytvárania elementov je pomocou JSX, čo je syntaxové rozšírenie pre Javascript. Pomocou JSX sa dajú elementy definovať ako klasické HTML tagy a vytvárať tak prehľadnejší a ľahšie pochopiteľnejší kód. Element ktorý sme vytvárali v Listing 1 sa dá prepísať do JSX syntaxe nasledovným spôsobom:
+
+
+\paragraph{}
+Komponenty si môžeme predstaviť ako skupinu elementov. Komponent 
+
+\subsubsection{Stav komponentu}
+\paragraph{}
+Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent aktualizovať a vykresliť alebo nie. Do tohto objektu je možné ukladať dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú, alebo od nich závisí, ako sa komponent vykreslí. 
+\paragraph{}
+Objekt stavu sa definuje v konštruktore komponentu.
+\begin{lstlisting}[caption=Definovanie stavu v konštruktore komponentu]
+class List extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			items: []
+		};
+	}
+	...
+}
+\end{lstlisting}
+\paragraph{}
+Listing 2 demonštruje prvotné definovanie stavu. Aktuálne je v stave iba prázdne pole, do ktorého sa budú ukladať textové reťazce ktoré zadá užívateľ. Akonáhle sa do tohto poľa pridá prvok, odstráni prvok alebo sa aktualizuje, komponent List sa automaticky prekreslí zavolaním funkcie render().
+\paragraph{}
+Priame priradenie objektu k premennej this.state je možné iba v konštruktore. Mimo konštruktora sa stav definuje pomocou funkcie this.setState(). Táto funkcia dostáva ako argument zmenený objekt stavu. Listing 3 ukazuje, ako sa dá napríklad pridať prvok do poľa items a tak aktualizovať stav komponentu.
+\begin{lstlisting}[caption=Aktualizovanie stavu komponentu]
+/*
+*	@param String item
+*/
+addItem(item) {
+	newItems = this.state.items.push(item);
+	this.setState({
+		items: newItems
+	});
+}
+\end{lstlisting}
+\paragraph{}
+Zmeniť stav sa samozrejme dá aj priamym priradením, ale nenastane prekreslenie komponentu. Funkcia this.setState() zabezpečí, aby sa komponent prekreslil, teda aby sa vykonala funkcia render().
+
+\subsubsection{Životný cyklus komponentu}
+\paragraph{}
+Komponent môže byť v jednej z troch fáz - vo fáze vytvárania, aktualizovania alebo vymazávania.
+\paragraph{}
+Komponent sa vytvára funkciou ReactDOM.render(). Táto funkcia dostane referenciu na objekt komponentu a DOM element, do ktorého sa má komponent vyrenderovať. Táto funkcia zaradí komponent do fázy vytvárania. Fáza vytvárania prebieha v nasledovných krokoch:
+\begin{itemize}
+	\item getDefaultProps() - vráti predvolené vlastnosti komponentu. Môžu to byť vlastnosti ktoré potrebujeme mať vyplnené v prípade, ak neboli dodané z vonka
+	\item getInitialState() - definuje prvotný stav komponentu
+	\item componentWillMount() - v tomto kroku sa môžu vykonať akcie, ktoré chceme mať vykonané pred vykreslením komponentu
+	\item reder() - vykreslenie komponentu
+	\item componentDidMount() - nastane tesne po vykreslení komponentu
+\end{itemize}
+\paragraph{}
+Výsledkom fázy vytvárania je, že komponent je vykreslený v DOM a dá sa s ním manipulovať.
+\paragraph{}
+Ak je už komponent vytvorený, do fázy aktualizácie môže prejsť zavolaním setProps() alebo setState() alebo forceUpdate(). Fáza aktualizácie prebieha v týchto krokoch:
+\begin{itemize}
+	\item componentWillReceiveProps(nextProps) - komponent dostane nové vlastnosti volaním funkcie setProps()
+	\item shouldComponentUpdate(nextProps, nextState) - v tomto kroku sa rozhoduje, či je potrebná aktualizácia. Porovnávajú sa aktuálne vlastnosti a stav s tými novými. Ak sa detekuje zmena, vráti true a pokračuje do ďalšiho kroku, inak false a fáza skončí.
+	\item render() - prekreslenie komponentu
+	\item componentDidUpdate() - nastane tesne po prekreslení komponentu
+\end{itemize}
+\paragraph{}
+Vytvorený objekt môže tiež prejsť do fázy vymazávania. Táto fáza nastane zavolaním funkcie ReactDOM.unmountComponentAtNode(). Táto fáza má iba jeden krok componentWillUnmount() a v nej sa odporúča uvoľniť všetky zdroje (napr. časovač, súbory) ktoré komponent používal. Po skončení tejto fázy je komponent vymazaný a dá sa znova vytvoriť funkciou ReactDOM.render().
+%\paragraph{}
+%Celý tento proces je znázornený na Figure 1. 
+%\paragraph{}
+%\begin{figure}[h]
+%\includegraphics[width=\textwidth]{component-lifecycle}
+%	\caption{Životný cyklus komponentu}
+%\end{figure}
+
+
+
+\subsubsection{Udalosti}
+Najdôležitejšou súčasťou React-u je reagovanie na rôzne udalosti od užívateľa. Každý element môže mať definované, akú funkciu vykonať pri vyvolaní nejakej udalosti. 
+\paragraph{}
+Komponentu je možné definovať aj vlastné udalosti. Napríklad ak chceme, aby sa vykonala nejaká funkcia pri zmene stavu nejakého komponentu, predáme mu ju cez props.

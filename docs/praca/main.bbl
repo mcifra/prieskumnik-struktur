@@ -1,0 +1,42 @@
+\newcommand{\noopsort}[1]{} \newcommand{\printfirst}[2]{#1}
+  \newcommand{\singleletter}[1]{#1} \newcommand{\switchargs}[2]{#2#1}
+\begin{thebibliography}{1}
+
+\bibitem{kniha}
+X.~Autor1 and Y.~Autor2.
+\newblock {\em Názov knihy}.
+\newblock Vydavateľstvo, 1900.
+
+\bibitem{clanok_na_konferencii}
+X.~Autor1 and Y.~Autor2.
+\newblock Názov článku (väčšinou z konferencie).
+\newblock In {\em Názov zborníka (väčšinou názov konferencie spolu s
+  ročníkom)}, pages 1--100, 1900.
+
+\bibitem{clanok}
+X.~Autor1 and Y.~Autor2.
+\newblock Názov článku z časopisu.
+\newblock {\em Názov časopisu, ktorý článok uverejnil}, 4(3):1--100, 1900.
+
+\bibitem{technical_report}
+X.~Autor1 and Y.~Autor2.
+\newblock Názov technickej správy.
+\newblock Technical Report TR123/1999, Inštitút vydávajúci správu, June
+  1999.
+
+\bibitem{Oetiker2000}
+Tobias Oetiker, Hubert Partl, Irene Hyna, and Elisabeth Schlegl.
+\newblock {\em Nie príliš stručný úvod do systému LaTeX2e}.
+\newblock 2002.
+\newblock Preklad Ján Buša ml. a st.
+
+\bibitem{smernica}
+{Univerzita Komenského v Bratislave}.
+\newblock Vnútorný predpis č. 12/2013, smernica rektora {U}niverzity
+  {K}omenského v {B}ratislave o základných náležitostiach záverečných
+  prác, rigoróznych prác a habilitačných prác, kontrole ich originality,
+  uchovávaní a sprístupňovaní na {U}niverzite {K}omenského v
+  {B}ratislave, 2013.
+\newblock \url{https://uniba.sk/fileadmin/ruk/legislativa/2013/Vp_2013_12.pdf}.
+
+\end{thebibliography}

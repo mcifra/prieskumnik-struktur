@@ -29,6 +29,13 @@ class FormulaStorage extends React.Component {
                     this.state.formulas.map((current, index) =>
                         <div className={'row'} key={index}>
                             <div className={'col-lg-6'}>
+                                {
+                                    current.validationMessage != '' ? (
+                                        <div className={'alert alert-danger'}>
+                                            {current.validationMessage}
+                                        </div>
+                                    ) : ''
+                                }
                                 <div className={'input-group'} key={index}>
                                     <span className={"input-group-addon"}
                                           htmlFor={"predicates-list"}>{current.ok}</span>
@@ -37,7 +44,6 @@ class FormulaStorage extends React.Component {
                                     <span className={'input-group-btn'}>
                                         <button className={'btn btn-danger'}
                                                 onClick={() => this.deleteFormula(index)}>Odstrániť</button>
-                                        {/*{current.validationMessage}*/}
                                     </span>
                                 </div>
                             </div>

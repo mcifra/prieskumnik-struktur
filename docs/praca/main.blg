@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: literatura.bib
+Warning--empty publisher in Oetiker2000
+You've used 6 entries,
+            2118 wiz_defined-function locations,
+            526 strings with 5059 characters,
+and the built_in function-call counts, 1728 in all, are:
+= -- 158
+> -- 82
+< -- 2
++ -- 32
+- -- 26
+* -- 100
+:= -- 298
+add.period$ -- 19
+call.type$ -- 6
+change.case$ -- 29
+chr.to.int$ -- 0
+cite$ -- 7
+duplicate$ -- 70
+empty$ -- 144
+format.name$ -- 26
+if$ -- 364
+int.to.chr$ -- 0
+int.to.str$ -- 6
+missing$ -- 6
+newline$ -- 35
+num.names$ -- 12
+pop$ -- 44
+preamble$ -- 2
+purify$ -- 25
+quote$ -- 0
+skip$ -- 48
+stack$ -- 0
+substring$ -- 63
+swap$ -- 12
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 20
+warning$ -- 1
+while$ -- 15
+width$ -- 7
+write$ -- 67
+(There was 1 warning)
