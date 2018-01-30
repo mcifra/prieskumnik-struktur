@@ -1,48 +1,48 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: literatura.bib
-Warning--empty publisher in Oetiker2000
-You've used 6 entries,
+Warning--empty publisher in prednasky
+You've used 4 entries,
             2118 wiz_defined-function locations,
-            526 strings with 5059 characters,
-and the built_in function-call counts, 1728 in all, are:
-= -- 158
-> -- 82
-< -- 2
-+ -- 32
-- -- 26
-* -- 100
-:= -- 298
-add.period$ -- 19
-call.type$ -- 6
-change.case$ -- 29
+            519 strings with 4748 characters,
+and the built_in function-call counts, 1054 in all, are:
+= -- 95
+> -- 55
+< -- 0
++ -- 22
+- -- 18
+* -- 57
+:= -- 191
+add.period$ -- 15
+call.type$ -- 4
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 70
-empty$ -- 144
-format.name$ -- 26
-if$ -- 364
+cite$ -- 5
+duplicate$ -- 40
+empty$ -- 85
+format.name$ -- 18
+if$ -- 214
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 6
-newline$ -- 35
-num.names$ -- 12
-pop$ -- 44
+int.to.str$ -- 4
+missing$ -- 4
+newline$ -- 27
+num.names$ -- 8
+pop$ -- 34
 preamble$ -- 2
-purify$ -- 25
+purify$ -- 17
 quote$ -- 0
-skip$ -- 48
+skip$ -- 22
 stack$ -- 0
-substring$ -- 63
-swap$ -- 12
-text.length$ -- 2
+substring$ -- 20
+swap$ -- 5
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 20
+type$ -- 12
 warning$ -- 1
-while$ -- 15
-width$ -- 7
-write$ -- 67
+while$ -- 8
+width$ -- 5
+write$ -- 48
 (There was 1 warning)

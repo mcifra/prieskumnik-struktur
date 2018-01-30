@@ -1,19 +1,26 @@
 \chapter{Východiská práce}
 \label{kap:vychodiska} % id kapitoly pre prikaz ref
 
-V tejto kapitole sa čitateľ oboznámi zo základnými princípami logiky prvého rádu ktoré sú nevyhnutné na pochopenie práce, zistí aké prostriedky a technológie boli použité na vývoj aplikácie a ich krátky opis, a na záver je krátka analýza existujúcich prác alebo aplikácií, ktoré ma určitým spôsobom inšpirovali.
+V tejto kapitole sa čitateľ oboznámi zo základnými princípami logiky prvého rádu ktoré sú nevyhnutné na pochopenie práce. Zistí, aké prostriedky a technológie boli použité na vývoj aplikácie. Na záver je krátka analýza existujúcich prác a aplikácií, ktoré ma určitým spôsobom inšpirovali pri tvorbe.
 
 \section{Logika prvého rádu}
-Logika prvého rádu je formálny systém používaný v matematike a informatike. Od jednoduchej výrokovej logiky sa odlišuje tým, že okrem logických spojok a  že pridáva predikáty a kvantifikátory.
-
+Logika prvého rádu je formálny systém používaný v matematike a informatike. Od jednoduchej výrokovej logiky sa odlišuje tým, že pridáva predikáty a kvantifikátory. Nasledujúce definície v tejto kapitole vychádzajú z prednášok \cite{prednasky} a Švejdarovej učebnice \cite{svejdar}.
 
 
 \subsection{Jazyk}
-Jazyk $\mathcal{L}$ v prvorádovej logike je formálny jazyk ktorý definuje množinu konkrétnych symbolov, ktoré definujú syntax a sémantiku logiky.
+Jazyk $\mathcal{L}$ v prvorádovej logike je formálny jazyk ktorý definuje množinu konkrétnych symbolov, ktoré definujú syntax a sémantiku logiky. Jazyk obsahuje logické symboly, symboly indivíduových premenných, mimologické symboly a pomocné symboly.
+
 \paragraph{}
-Jazyk stredoškolskej výrokovej logiky definuje symboly \emph{premenných} (napr. $x$, $y$), \emph{logických spojok} ($\wedge, \vee, \to, \neg$) a \emph{kvantifikátorov} ($\forall, \exists$). Tieto symboly nie sú najpohodlnejšie na zapisovanie vzťahov alebo vlastností objektov. 
+Medzi \emph{logické symboly} patria logické spojky ($\vee, \wedge, \to, \neg$), symbol rovnosti ($\doteq$) a kvantifikátory ($\forall, \exists$).
+
 \paragraph{}
-Logika prvého rádu zavádza do jazyka \emph{symbol rovnosti} $\doteq$ a tzv. mimologické symboly. Medzi mimologické symboly patria \emph{symboly konštánt} $\mathcal{C}_\mathcal{L}$, \emph{funkčné symboly} $\mathcal{F}_\mathcal{L}$ a \emph{predikátové symboly} $\mathcal{P}_\mathcal{L}$. Všetkým predikátovým a funkčným symbolom je priradená \emph{arita}. Arita je kladné prirodzené číslo a predstavuje počet argumentov symbolu. Arita sa zapisuje ako horný pravý index pri názve symbolu. Napríklad \texttt{nenávidí}$^2$ je predikátový symbol s aritou 2.
+\emph{Symboly indivíduových premenných} sú symboly z nejakej nekonečnej spočítateľnej množiny $\mathcal{V}_\mathcal{L}$ a predstavujú niečo nekonkrétne. Príklad definovania množiny symbolov premenných v jazyku je v \ref{eq:definovanie_vl}.
+\begin{equation} \label{eq:definovanie_vl}
+\mathcal{V}_\mathcal{L} = \{x, y, z, ...\}
+\end{equation}
+
+\paragraph{}
+Medzi \emph{mimologické symboly} patria \emph{symboly konštánt} $\mathcal{C}_\mathcal{L}$, \emph{funkčné symboly} $\mathcal{F}_\mathcal{L}$ a \emph{predikátové symboly} $\mathcal{P}_\mathcal{L}$. Všetkým predikátovým a funkčným symbolom je priradená \emph{arita}. Arita je kladné prirodzené číslo a predstavuje počet argumentov symbolu. Arita sa zapisuje ako horný pravý index pri názve symbolu. Napríklad \texttt{nenávidí}$^2$ je predikátový symbol s aritou 2.
 
 \paragraph{}
 Symbol konštanty z množiny $\mathcal{C}_\mathcal{L}$ jazyka $\mathcal{L}$ predstavuje konkrétny objekt ktorý sa nedá zameniť alebo konkrétnu hodnotu. Dá sa povedať, že sú podobné ako vlastné mená v prirodzenom jazyku alebo konštanty v programovacom jazyku. Napríklad symbol konštanty \texttt{Dom123} predstavuje konkrétny dom s číslom 123 v nejakej obci a nedá sa zameniť zo žiadnym iným. Príklad definovania množiny konštánt v jazyku je v \ref{eq:definovanie_cl}.
@@ -34,53 +41,70 @@ Predikátový symbol z množiny $\mathcal{P}_\mathcal{L}$ jazyka $\mathcal{L}$ p
 \end{equation}
 
 \paragraph{}
-V jazyku sú ďalej definové \emph{symboly indivíduových premenných} z nejakej nekonečnej spočítateľnej množiny $\mathcal{V}_\mathcal{L}$. Príklad definovania množiny symbolov premenných v jazyku je v \ref{eq:definovanie_vl}.
-\begin{equation} \label{eq:definovanie_vl}
-\mathcal{V}_\mathcal{L} = \{x, y, z\}
-\end{equation}
-
-\paragraph{}
-Množiny $\mathcal{V}_\mathcal{L}, \mathcal{P}_\mathcal{L}, \mathcal{F}_\mathcal{L}, \mathcal{C}_\mathcal{L}$ sú navzájom disjunktné.
+Množiny $\mathcal{V}_\mathcal{L}, \mathcal{P}_\mathcal{L}, \mathcal{F}_\mathcal{L}, \mathcal{C}_\mathcal{L}$ sú navzájom disjunktné. Medzi \emph{pomocné symboly} patria \texttt{'(', ')' a ','}
 
 
 
 \subsection{Syntax}
-Keď už je jasné, čo je to jazyk logiky, teraz opíšem, aké sú pravidlá a obmedzenia syntaxe v logike prvého rádu. 
 
-\subsubsection{Termy a formuly}
 \paragraph{}
-\emph{Termy} jazyka $\mathcal{L}$ predstavujú konkrétne (pomenované symbolmi konštánt) alebo nekonkrétne (pomenované symbolmi premenných) objekty, alebo pomenované pomocou funkčných symbolov. Príklady termov:
+\emph{Termy} jazyka $\mathcal{L}$ predstavujú konkrétne (pomenované symbolmi konštánt) alebo nekonkrétne (pomenované symbolmi premenných) objekty. Ak $t_1$ až $t_n$ sú termy, a $f$ je funkčný symbol s aritou $n$, tak aj $f(t_1, .., t_n)$ je term. Pre jazyk $\mathcal{L}$ sú preto tieto termy:
 \begin{itemize}
 	\item nekonkrétne - $\texttt{x}, \texttt{y}, \texttt{z}$
 	\item konkrétne - $\texttt{Frantisek}, \texttt{Dom123}, \texttt{Velkost}$
-	\item vzťahy - $\texttt{cena(x)}, \texttt{cena(Dom123)}, \texttt{-(x,y)}$
+	\item vzťahy - $\texttt{cena(x)}, \texttt{cena(Dom123)}, \texttt{-(x,y)}, ...$
 \end{itemize}
+
 \paragraph{}
-Do množiny termov $\mathcal{T}_\mathcal{L}$ je každý symbol premennej a konštanty jazyka $\mathcal{L}$. Funkčný symbol patrí medzi termy iba v prípade, ak všetky jeho argumenty sú tiež termami.
+\emph{Atomické formuly} jazyka $\mathcal{L}$ je množina $\mathcal{A}_\mathcal{L}$. Medzi atomické formuly patrí \emph{rovnostný atóm} a \emph{predikátový atóm}. Ak $t_1$ až $t_n$ sú termy, tak postupnosť symbolov $t_1 \doteq t_2$ sa nazýva rovnostný atóm jazyka $\mathcal{L}$. Rovnostné atómy vyjadrujú, že dva termy ukazujú na ten istý objekt. Ak $t_1$ až $t_n$ sú termy a $P$ je predikátový symbol s aritou $n$, tak postupnosť symbolov $P(t_1, ..,  t_n)$ sa nazýva predikátový atóm jazyka $\mathcal{L}$. 
+
 \paragraph{}
-Množina \emph{formúl} jazyka $\mathcal{L}$ je rekurzívne definovaná nasledovne:
+Množina \emph{formúl} jazyka $\mathcal{L}$ je induktívne definovaná nasledovne:
 \begin{itemize}
-    \item ak sú $\alpha$ a $\beta$ formuly, tak aj $(\alpha \wedge \beta)$, $(\alpha \vee \beta)$, $(\alpha \to \beta)$ sú formuly
-    \item ak je $\alpha$ formula, tak aj $\neg \alpha$ je formula
-    \item všetky atomické formuly
+    \item všetky atomické formuly sú formulami
+    \item ak sú $\alpha$ a $\beta$ formuly, tak aj $(\alpha \wedge \beta)$, $(\alpha \vee \beta)$, $(\alpha \to \beta)$, $\neg \alpha$ sú formulami
     \item ak $x$ je indivíduová premenná a $\alpha$ je formula, tak aj $\forall x \alpha$ a $\exists x \alpha$ sú formulami
 \end{itemize}
 
+
 \subsection{Sémantika}
-\subsubsection{Štruktúra}
 \paragraph{}
-Hodnota formuly alebo termu jazyka $\mathcal{L}$ určuje \emph{štruktúra}. Štruktúrou pre jazyk $\mathcal{L}$ je dvojica $\mathcal{M} = (M, i)$, kde
+Hodnota formuly alebo termu jazyka $\mathcal{L}$ určuje \emph{štruktúra}. Štruktúrou pre jazyk $\mathcal{L}$ je dvojica $\mathcal{M} = (M, i)$, kde $M$ je doména štruktúry a $i$ je interpretačná funkcia štruktúry.
+
+\paragraph{}
+\emph{Doména} štruktúry je množina symbolov objektov na ktoré ukazujú termy.
+
+\paragraph{}
+\emph{Interpretačná funkcia} je zobrazenie, ktoré každému symbolu konštanty $c$ jazyka $\mathcal{L}$ priraďuje prvok $i(c) \in M$, každému funkčnému symbolu $f$ jazyka $\mathcal{L}$ s aritou $n$ priraďuje funkciu $i(f): M^n \to M$ a každému predikátovému symbolu $P$ jazyka $\mathcal{L}$ s aritou $n$ priraďuje množinu $i(P) \subseteq M^n$.
+
+\paragraph{}
+\emph{Ohodnotenie (indivíduových) premenných} jazyka $\mathcal{L}$ je ľubovoľná funkcia $e: \mathcal{V}_\mathcal{L} \to M$ ktorá každej premennej priraďuje prvok z domény.
+
+\paragraph{}
+\emph{Hodnotou termu t} v štruktúre $\mathcal{M}$ pri ohodnotení premenných \emph{e} je prvok $t^\mathcal{M}[e]$ z \emph{M} určený nasledovne:
 \begin{itemize}
-	\item $M$ je \emph{doména} štruktúry $\mathcal{M}$
-	\begin{itemize}
-		\item je to množina symbolov, ktoré sa nenachádzajú v jazyku
-	\end{itemize}
-	\item $i$ je \emph{interpretačná funkcia} štruktúry $\mathcal{M}$
-	\begin{itemize}
-		\item 
-	\end{itemize}
+	\item $x^\mathcal{M}[e] = e(x)$, ak $x$ je premenná,
+	\item $a^\mathcal{M}[e] = i(a)$, ak $a$ je konštanta,
+	\item $(f(t_1, .., t_n))^\mathcal{M}[e] = i(f)(t_1^\mathcal{M}[e], .., t_n^\mathcal{M}[e])$, ak $t_1, .., t_n$ sú termy.
 \end{itemize}
+
 \paragraph{}
+Relácia \emph{štruktúra $\mathcal{M}$ spĺňa formulu A pri ohodnotení e} (skrátene $\mathcal{M} \models A[e]$) má nasledovnú induktívnu definúciu:
+\begin{itemize}
+	\item $\mathcal{M} \models t_1 \doteq t_2[e]$ vtt $t_1^\mathcal{M}[e] = t_2^\mathcal{M}[e]$,
+	\item $\mathcal{M} \models P(t_1, .., t_n)[e]$ vtt $(t_1^\mathcal{M}[e], .., t_n^\mathcal{M}[e]) \in i(P)$,
+	\item $\mathcal{M} \models \neg A[e]$ vtt $\mathcal{M} \not\models A[e]$,
+	\item $\mathcal{M} \models (A \wedge B)[e]$ vtt $\mathcal{M} \models A[e]$ a zároveň $\mathcal{M} \models B[e]$,
+	\item $\mathcal{M} \models (A \vee B)[e]$ vtt $\mathcal{M} \models A[e]$ alebo $\mathcal{M} \models B[e]$,
+	\item $\mathcal{M} \models (A \to B)[e]$ vtt $\mathcal{M} \not\models A[e]$ alebo $\mathcal{M} \models B[e]$,
+	\item $\mathcal{M} \models \exists xA[e]$ vtt pre \emph{nejaký} prvok $m \in M$ máme $\mathcal{M} \models A[e(x/m)]$,
+	\item $\mathcal{M} \models \forall xA[e]$ vtt pre \emph{každý} prvok $m \in M$ máme $\mathcal{M} \models A[e(x/m)]$,
+\end{itemize}
+pre všetky arity $n > 0$, všetky predikátové symboly $P$ s aritou $n$, všetky termy $t_1, t_2, .., t_n$, všeky premenné $x$ a všetky formuly $A, B$.
+
+\paragraph{}
+Formula \emph{A} je \emph{splniteľná} vtt aspoň jedna štruktúra $\mathcal{M}$ pre jazyk $\mathcal{L}$ spĺňa \emph{A} pri aspoň jednom ohodnotení \emph{e}.
+
 
 
 
@@ -88,25 +112,22 @@ Hodnota formuly alebo termu jazyka $\mathcal{L}$ určuje \emph{štruktúra}. Št
 \section{Analýza použitých technológií}
 \paragraph{}
 V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pri tvorbe aplikácie. 
-\subsection{Javascript}
-\paragraph{}
-Javascript je objektovo orientovaný, interpretovaný programovací jazyk využívaný hlavne vo webových aplikáciách. Väčšinou sa vykonáva na strane klienta (webový prehliadač) a reaguje na rôzne udalosti od užívateľa (napr. kliknutie myšou na nejaký element, zmenšenie okna a podobne). Vďaka tomuto je možné vytvárať dynamické, interaktívne webové aplikácie.
-\paragraph{}
-Javascript patrí medzi jazyky ktoré sú prototype-based. Je to spôsob, akým prebieha dedenie objektov. Každý objekt obsahuje atribút ktorý referuje na objekt ktorý ho vytvoril, resp. objekt od ktorého je zdedený. Takýmto spôsobom objekty vytvárajú reťaz kde na začiatku je objekt ktorý nemá žiadneho predka.
 
-\subsection{HTML}
-\paragraph{}
-HTML je značkovací jazyk využívaný na tvorbu webových stránok a webových aplikácií. Definuje tagy, pomocou ktorých sa formátuje text, pridávajú obrázky alebo vytvárajú hypertextové linky na iné stránky. Webový server posiela HTML súbory ako odpoveď na požiadavku do webového prehliadača, ktorý dokáže tieto značky správne vyrenderovať.
-\paragraph{}
-V čase vývoja tejto aplikácie bol štandard HTML5, takže všetky HTML súbory aplikácie sú validné s touto verziou.
 
-\subsection{CSS}
+\subsection{Javascript, HTML, CSS, Bootstrap}
 \paragraph{}
-CSS je štýlovací jazyk na štýlovanie HTML elementov.
+\emph{Javascript} je objektovo orientovaný, interpretovaný programovací jazyk využívaný hlavne vo webových aplikáciách. Väčšinou sa vykonáva na strane klienta (webový prehliadač) a reaguje na rôzne udalosti od užívateľa (napr. kliknutie myšou na nejaký element, zmenšenie okna a podobne). Vďaka tomuto je možné vytvárať dynamické a interaktívne webové aplikácie.
 
-\subsection{Bootstrap}
 \paragraph{}
-Bootstrap je CSS a Javascript framework na štýlovanie webovej stránky. Má (okrem iného) predvytvorené mechanizmy ako rozložiť elementy na stránke pre rôzne rozlíšenia prehliadača - tzv. grid.
+\emph{HTML} je značkovací jazyk využívaný na tvorbu webových stránok a webových aplikácií. Definuje tagy, pomocou ktorých sa formátuje text, pridávajú obrázky alebo vytvárajú hypertextové linky na iné stránky. Webový server posiela HTML súbory ako odpoveď na požiadavku do webového prehliadača, ktorý dokáže tieto značky správne vyrenderovať. V čase vývoja tejto aplikácie bol štandard HTML5.2 a všetky definície vychádzajú z \cite{html}
+
+\paragraph{}
+\emph{CSS} je štýlovací jazyk na štýlovanie HTML elementov. Tento jazyk využijem na vizuálne rozloženie a štýlovanie elementov v aplikácii (tlačidlá, text, ...).
+
+\paragraph{}
+\emph{Bootstrap} je moderný, veľmi využívaný CSS a Javascript framework na štýlovanie webovej stránky. Má (okrem iného) predvytvorené mechanizmy ako rozložiť elementy na stránke pre rôzne rozlíšenia prehliadača - tzv. grid. Tento framework využijem na rozloženie stránky. 
+
+
 
 \subsection{React}
 \paragraph{}
@@ -115,6 +136,8 @@ React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a ko
 Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. React je navrhnutý tak, aby ľubovoľná zmena v nejakom komponente zabezpečila, aby sa efektívne aktualizovali len tie komponenty, ktorých sa táto zmena týka.
 \paragraph{}
 V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu a ich mazanie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
+
+
 \subsubsection{Elementy a komponenty}
 \paragraph{}
 Na úvod je potrebné vysvetliť čo je to element a komponent a aké sú medzi nimi rozdiely. 
@@ -153,12 +176,18 @@ Druhým a jednoduchším spôsobom vytvárania elementov je pomocou JSX, čo je 
 \paragraph{}
 Komponenty si môžeme predstaviť ako skupinu elementov. Komponent 
 
-\subsubsection{Stav komponentu}
+\subsubsection{Stav a  životný cyklus komponentu}
+
 \paragraph{}
-Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent aktualizovať a vykresliť alebo nie. Do tohto objektu je možné ukladať dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú, alebo od nich závisí, ako sa komponent vykreslí. 
+Ako som spomínal v predchádzjúcej sekcii, každý komponent obsahuje funkciu \texttt{render()} ktorá nejakým spôsobom vykresľuje komponent užívateľovi. Aby React vedel, kedy má túto funkciu zavolať, každý komponent obsahuje stav.  Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent prekresliť alebo nie. Tento objekt má zaužívané meno \texttt{state} ale môže mať ľubovolné meno. Do tohto objektu sa ukladajú dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú komponent, alebo od nich závisí, ako sa komponent vykreslí. 
+
 \paragraph{}
-Objekt stavu sa definuje v konštruktore komponentu.
-\begin{lstlisting}[caption=Definovanie stavu v konštruktore komponentu]
+Príkladový komponent \texttt{List} sa má prekresliť vtedy, keď užívateľ pridá prvok do zoznamu. To znamená, že keď klikne na element \texttt{<button>}, zoberie sa hodnota z elementu \texttt{<input type="text">} a táto hodnota sa pripojí k elementu \texttt{<ul>}. Pre naše potreby je preto potrebné, aby v stave tohto komponentu bolo pole \texttt{items}, ktoré bude obsahovať tieto užívateľom pridané hodnoty.
+
+\paragraph{}
+Počiatočný objekt stavu sa definuje v konštruktore komponentu, ako je v Listing \ref{lst:init_state}. Komponent \texttt{List} bude mať v stave prázdne pole do ktorého sa budú pridávať neskôr textové reťazce ktoré zadá užívateľ.
+
+\begin{lstlisting}[caption={Definovanie stavu v konštruktore komponentu},label={lst:init_state}]
 class List extends React.Component {
 	constructor(props) {
 		super(props);
@@ -169,11 +198,11 @@ class List extends React.Component {
 	...
 }
 \end{lstlisting}
+
 \paragraph{}
-Listing 2 demonštruje prvotné definovanie stavu. Aktuálne je v stave iba prázdne pole, do ktorého sa budú ukladať textové reťazce ktoré zadá užívateľ. Akonáhle sa do tohto poľa pridá prvok, odstráni prvok alebo sa aktualizuje, komponent List sa automaticky prekreslí zavolaním funkcie render().
-\paragraph{}
-Priame priradenie objektu k premennej this.state je možné iba v konštruktore. Mimo konštruktora sa stav definuje pomocou funkcie this.setState(). Táto funkcia dostáva ako argument zmenený objekt stavu. Listing 3 ukazuje, ako sa dá napríklad pridať prvok do poľa items a tak aktualizovať stav komponentu.
-\begin{lstlisting}[caption=Aktualizovanie stavu komponentu]
+Priame priradenie objektu k premennej \texttt{this.state} sa odporúča iba v konštruktore. Mimo konštruktora by sa mal stav definovať pomocou funkcie \texttt{this.setState(newState)}, ktorá zabezpečí, aby sa objekt prekreslil. Táto funkcia dostáva ako argument zmenený objekt stavu. Listing \ref{lst:update_state} ukazuje, ako prebieha zistenie hodnoty elementu \texttt{<input>} a jej následné pridanie do stavu. Je dôležié si uvedomiť, že po vykonaní tejto funkcie bude element prekreslený a v elemente \texttt{<ul>} pribudne \texttt{<li>\{hodnota\}</li>}.
+
+\begin{lstlisting}[caption={Zmena stavu komponentu pomocou funkcie \texttt{this.setState()}},label={lst:update_state}]
 /*
 *	@param String item
 */
@@ -184,40 +213,33 @@ addItem(item) {
 	});
 }
 \end{lstlisting}
-\paragraph{}
-Zmeniť stav sa samozrejme dá aj priamym priradením, ale nenastane prekreslenie komponentu. Funkcia this.setState() zabezpečí, aby sa komponent prekreslil, teda aby sa vykonala funkcia render().
 
-\subsubsection{Životný cyklus komponentu}
 \paragraph{}
-Komponent môže byť v jednej z troch fáz - vo fáze vytvárania, aktualizovania alebo vymazávania.
-\paragraph{}
-Komponent sa vytvára funkciou ReactDOM.render(). Táto funkcia dostane referenciu na objekt komponentu a DOM element, do ktorého sa má komponent vyrenderovať. Táto funkcia zaradí komponent do fázy vytvárania. Fáza vytvárania prebieha v nasledovných krokoch:
-\begin{itemize}
-	\item getDefaultProps() - vráti predvolené vlastnosti komponentu. Môžu to byť vlastnosti ktoré potrebujeme mať vyplnené v prípade, ak neboli dodané z vonka
-	\item getInitialState() - definuje prvotný stav komponentu
-	\item componentWillMount() - v tomto kroku sa môžu vykonať akcie, ktoré chceme mať vykonané pred vykreslením komponentu
-	\item reder() - vykreslenie komponentu
-	\item componentDidMount() - nastane tesne po vykreslení komponentu
-\end{itemize}
-\paragraph{}
-Výsledkom fázy vytvárania je, že komponent je vykreslený v DOM a dá sa s ním manipulovať.
-\paragraph{}
-Ak je už komponent vytvorený, do fázy aktualizácie môže prejsť zavolaním setProps() alebo setState() alebo forceUpdate(). Fáza aktualizácie prebieha v týchto krokoch:
-\begin{itemize}
-	\item componentWillReceiveProps(nextProps) - komponent dostane nové vlastnosti volaním funkcie setProps()
-	\item shouldComponentUpdate(nextProps, nextState) - v tomto kroku sa rozhoduje, či je potrebná aktualizácia. Porovnávajú sa aktuálne vlastnosti a stav s tými novými. Ak sa detekuje zmena, vráti true a pokračuje do ďalšiho kroku, inak false a fáza skončí.
-	\item render() - prekreslenie komponentu
-	\item componentDidUpdate() - nastane tesne po prekreslení komponentu
-\end{itemize}
-\paragraph{}
-Vytvorený objekt môže tiež prejsť do fázy vymazávania. Táto fáza nastane zavolaním funkcie ReactDOM.unmountComponentAtNode(). Táto fáza má iba jeden krok componentWillUnmount() a v nej sa odporúča uvoľniť všetky zdroje (napr. časovač, súbory) ktoré komponent používal. Po skončení tejto fázy je komponent vymazaný a dá sa znova vytvoriť funkciou ReactDOM.render().
-%\paragraph{}
-%Celý tento proces je znázornený na Figure 1. 
-%\paragraph{}
-%\begin{figure}[h]
-%\includegraphics[width=\textwidth]{component-lifecycle}
-%	\caption{Životný cyklus komponentu}
-%\end{figure}
+Nakoniec je potrebné definovať, ako sa bude komponent vykresľovať ako je znázornené v Listing \ref{lst:list_render}. Funkcia \texttt{render()} vracia objekt elementu ktorý je napísaný v JSX syntaxi. Najdôležitejšia časť je na riadkoch 8-10. Takýmto spôsobom sa dá vypísať každý prvok poľa \texttt{items} do HTML elementu \texttt{<li>}.
+
+\begin{lstlisting}[caption={Vykresľovanie komponentu \texttt{List}},label={lst:list_render}]
+class List extends React.Component {
+	...
+	render() {
+		return (
+			<div class="list">
+				<ul>
+					{
+						this.state.items.map((value, index) => 
+							<li key={value}>{value}</li>					
+						)				
+					}
+				</ul>
+				<input type="text">
+				<button onClick={this.addItem()}>Pridaj</button>
+			</div>	
+		)
+	}
+	...
+} 
+\end{lstlisting}
+
+
 
 
 
@@ -225,3 +247,11 @@ Vytvorený objekt môže tiež prejsť do fázy vymazávania. Táto fáza nastan
 Najdôležitejšou súčasťou React-u je reagovanie na rôzne udalosti od užívateľa. Každý element môže mať definované, akú funkciu vykonať pri vyvolaní nejakej udalosti. 
 \paragraph{}
 Komponentu je možné definovať aj vlastné udalosti. Napríklad ak chceme, aby sa vykonala nejaká funkcia pri zmene stavu nejakého komponentu, predáme mu ju cez props.
+
+
+
+\section{Analýza existujúcich podobných prác}
+V tejto sekcii uvádzam tri práce, ktoré sú nejakým spôsobom podobné tejto, a zobral som si z nich inšpiráciu pri tvorbe.
+
+\subsection{Introduction to Logic}
+Webový nástroj \cite{intro_to_logic} 

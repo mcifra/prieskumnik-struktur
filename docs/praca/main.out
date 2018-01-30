@@ -2,16 +2,12 @@
 \BOOKMARK [1][-]{section.1.1}{Logika prv\351ho r\341du}{chapter.1}% 2
 \BOOKMARK [2][-]{subsection.1.1.1}{Jazyk}{section.1.1}% 3
 \BOOKMARK [2][-]{subsection.1.1.2}{Syntax}{section.1.1}% 4
-\BOOKMARK [3][-]{subsubsection.1.1.2.1}{Termy a formuly}{subsection.1.1.2}% 5
-\BOOKMARK [2][-]{subsection.1.1.3}{S\351mantika}{section.1.1}% 6
-\BOOKMARK [3][-]{subsubsection.1.1.3.1}{\227trukt\372ra}{subsection.1.1.3}% 7
-\BOOKMARK [1][-]{section.1.2}{Anal\375za pou\236it\375ch technol\363gi\355}{chapter.1}% 8
-\BOOKMARK [2][-]{subsection.1.2.1}{Javascript}{section.1.2}% 9
-\BOOKMARK [2][-]{subsection.1.2.2}{HTML}{section.1.2}% 10
-\BOOKMARK [2][-]{subsection.1.2.3}{CSS}{section.1.2}% 11
-\BOOKMARK [2][-]{subsection.1.2.4}{Bootstrap}{section.1.2}% 12
-\BOOKMARK [2][-]{subsection.1.2.5}{React}{section.1.2}% 13
-\BOOKMARK [3][-]{subsubsection.1.2.5.1}{Elementy a komponenty}{subsection.1.2.5}% 14
-\BOOKMARK [3][-]{subsubsection.1.2.5.2}{Stav komponentu}{subsection.1.2.5}% 15
-\BOOKMARK [3][-]{subsubsection.1.2.5.3}{\231ivotn\375 cyklus komponentu}{subsection.1.2.5}% 16
-\BOOKMARK [3][-]{subsubsection.1.2.5.4}{Udalosti}{subsection.1.2.5}% 17
+\BOOKMARK [2][-]{subsection.1.1.3}{S\351mantika}{section.1.1}% 5
+\BOOKMARK [1][-]{section.1.2}{Anal\375za pou\236it\375ch technol\363gi\355}{chapter.1}% 6
+\BOOKMARK [2][-]{subsection.1.2.1}{Javascript, HTML, CSS, Bootstrap}{section.1.2}% 7
+\BOOKMARK [2][-]{subsection.1.2.2}{React}{section.1.2}% 8
+\BOOKMARK [3][-]{subsubsection.1.2.2.1}{Elementy a komponenty}{subsection.1.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.1.2.2.2}{Stav a \236ivotn\375 cyklus komponentu}{subsection.1.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.1.2.2.3}{Udalosti}{subsection.1.2.2}% 11
+\BOOKMARK [1][-]{section.1.3}{Anal\375za existuj\372cich podobn\375ch pr\341c}{chapter.1}% 12
+\BOOKMARK [2][-]{subsection.1.3.1}{Introduction to Logic}{section.1.3}% 13
