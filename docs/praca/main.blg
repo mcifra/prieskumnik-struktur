@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: literatura.bib
 Warning--empty publisher in prednasky
-You've used 4 entries,
+You've used 6 entries,
             2118 wiz_defined-function locations,
-            519 strings with 4748 characters,
-and the built_in function-call counts, 1054 in all, are:
-= -- 95
-> -- 55
+            528 strings with 4967 characters,
+and the built_in function-call counts, 1444 in all, are:
+= -- 137
+> -- 69
 < -- 0
-+ -- 22
-- -- 18
-* -- 57
-:= -- 191
-add.period$ -- 15
-call.type$ -- 4
-change.case$ -- 18
++ -- 28
+- -- 22
+* -- 71
+:= -- 271
+add.period$ -- 21
+call.type$ -- 6
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 40
-empty$ -- 85
-format.name$ -- 18
-if$ -- 214
+cite$ -- 7
+duplicate$ -- 56
+empty$ -- 113
+format.name$ -- 22
+if$ -- 290
 int.to.chr$ -- 0
-int.to.str$ -- 4
+int.to.str$ -- 6
 missing$ -- 4
-newline$ -- 27
-num.names$ -- 8
-pop$ -- 34
+newline$ -- 37
+num.names$ -- 12
+pop$ -- 42
 preamble$ -- 2
-purify$ -- 17
+purify$ -- 23
 quote$ -- 0
-skip$ -- 22
+skip$ -- 32
 stack$ -- 0
-substring$ -- 20
+substring$ -- 30
 swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 20
 warning$ -- 1
-while$ -- 8
-width$ -- 5
-write$ -- 48
+while$ -- 12
+width$ -- 7
+write$ -- 70
 (There was 1 warning)
