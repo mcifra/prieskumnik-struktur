@@ -1,4 +1,5 @@
 import React from 'react';
+import {Row, Col, InputGroup, FormControl} from 'react-bootstrap';
 
 class StructureEditor extends React.Component {
 
@@ -17,16 +18,16 @@ class StructureEditor extends React.Component {
         return (
             <div>
                 <h2>Štruktúra</h2>
-                <div className={"row"}>
-                    <div className={'col-lg-12'}>
-                        <div className={"input-group"}>
-                            <span className={"input-group-addon"}>Doména</span>
-                            <input className={"form-control"} type={"text"}
-                                   onChange={(items) => this.updateDomain(items)}
-                                   onFocus={(items) => this.updateDomain(items)} key={"test"}/>
-                        </div>
-                    </div>
-                </div>
+                <Row>
+                    <Col lg={12}>
+                        <InputGroup>
+                            <InputGroup.Addon>Doména</InputGroup.Addon>
+                            <FormControl type="text"
+                                         onChange={(items) => this.updateDomain(items)}
+                                         onFocus={(items) => this.updateDomain(items)} key={"test"}/>
+                        </InputGroup>
+                    </Col>
+                </Row>
                 {
                     constants.map((curr, i) =>
                         <div className={"row"}>
