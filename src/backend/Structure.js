@@ -20,7 +20,7 @@ class Structure {
     setLanguageConstants(constants) {
         let cons = new Set();
         for (let i = 0; i < constants.length; i++) {
-            if (this.language.hasPredicate(constants[i]) || this.language.hasFunction(constants[i]) || cons.has(constants[i]) || this.domain.has(constants[i]))
+            if (this.language.hasPredicate(constants[i]) || this.language.hasFunction(constants[i]) || cons.has(constants[i]))
                 throw "Struktura uz obsahuje prvok " + constants[i];
             cons.add(constants[i]);
         }
@@ -30,7 +30,7 @@ class Structure {
     setLanguagePredicates(predicates) {
         let predic = new Map();
         for (let i = 0; i < predicates.length; i++) {
-            if (this.language.hasFunction(predicates[i].name) || this.language.hasConstant(predicates[i].name) || this.domain.has(predicates[i].name))
+            if (this.language.hasFunction(predicates[i].name) || this.language.hasConstant(predicates[i].name))
                 throw "Struktura uz obsahuje prvok " + predicates[i].name;
             predic.set(predicates[i].name, predicates[i].arity);
         }
@@ -40,7 +40,7 @@ class Structure {
     setLanguageFunctions(functions) {
         let func = new Map();
         for (let i = 0; i < functions.length; i++) {
-            if (this.language.hasPredicate(functions[i].name) || this.language.hasConstant(functions[i].name) || this.domain.has(functions[i].name))
+            if (this.language.hasPredicate(functions[i].name) || this.language.hasConstant(functions[i].name))
                 throw "Struktura uz obsahuje prvok " + functions[i].name;
             func.set(functions[i].name, functions[i].arity);
         }
@@ -54,7 +54,7 @@ class Structure {
     setDomain(domain) {
         let d = new Set();
         for (let i = 0; i < domain.length; i++) {
-            if (this.language.hasItem(domain[i]) || d.has(domain[i]))
+            if (d.has(domain[i]))
                 throw "Struktura uz obsahuje prvok " + domain[i];
             d.add(domain[i]);
         }
