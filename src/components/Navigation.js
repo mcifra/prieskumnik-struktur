@@ -25,7 +25,7 @@ class Navigation extends React.Component {
                                 <NavItem eventKey={3}>Zdroje</NavItem>
                             </LinkContainer>
                             <LinkContainer to='/app'>
-                                <NavItem eventKey={4}>Aplikácia</NavItem>
+                                <NavItem eventKey={4}>Prototyp</NavItem>
                             </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
