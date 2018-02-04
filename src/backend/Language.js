@@ -42,15 +42,54 @@ class Language {
     }
 
     setConstants(constants) {
-        this.constants = constants;
+        let newConstants = new Set();
+        for (let i = 0; i < constants.length; i++) {
+            if (this.predicates.has(constants[i])) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje predikát ' + constants[i]);
+            }
+            if (this.functions.has(constants[i])) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje funkciu ' + constants[i]);
+            }
+            if (newConstants.has(constants[i])) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje konštantu ' + constants[i]);
+            }
+            newConstants.add(constants[i]);
+        }
+        this.constants = newConstants;
     }
 
     setPredicates(predicates) {
-        this.predicates = predicates;
+        let newPredicates = new Map();
+        for (let i = 0; i < predicates.length; i++) {
+            if (this.constants.has(predicates[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje konštantu ' + predicates[i].name);
+            }
+            if (this.functions.has(predicates[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje funkciu ' + predicates[i].name);
+            }
+            if (newPredicates.has(predicates[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje predikát ' + predicates[i].name);
+            }
+            newPredicates.set(predicates[i].name, predicates[i].arity);
+        }
+        this.predicates = newPredicates;
     }
 
     setFunctions(functions) {
-        this.functions = functions;
+        let newFunctions = new Map();
+        for (let i = 0; i < functions.length; i++) {
+            if (this.constants.has(functions[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje konštantu ' + functions[i].name);
+            }
+            if (this.predicates.has(functions[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje predikát ' + functions[i].name);
+            }
+            if (newFunctions.has(functions[i].name)) {
+                throw new InvalidLanguageException('Jazyk štruktúry už obsahuje funkciu ' + functions[i].name);
+            }
+            newFunctions.set(functions[i].name, functions[i].arity);
+        }
+        this.functions = newFunctions;
     }
 
     /**

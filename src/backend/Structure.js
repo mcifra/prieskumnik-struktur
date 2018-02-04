@@ -3,6 +3,8 @@
  * @author Milan Cifra
  * @class
  */
+import InvalidLanguageException from "../exceptions/InvalidLanguageException";
+
 class Structure {
 
     /**
@@ -18,33 +20,15 @@ class Structure {
     }
 
     setLanguageConstants(constants) {
-        let cons = new Set();
-        for (let i = 0; i < constants.length; i++) {
-            if (this.language.hasPredicate(constants[i]) || this.language.hasFunction(constants[i]) || cons.has(constants[i]))
-                throw "Struktura uz obsahuje prvok " + constants[i];
-            cons.add(constants[i]);
-        }
-        this.language.setConstants(cons);
+        this.language.setConstants(constants);
     }
 
     setLanguagePredicates(predicates) {
-        let predic = new Map();
-        for (let i = 0; i < predicates.length; i++) {
-            if (this.language.hasFunction(predicates[i].name) || this.language.hasConstant(predicates[i].name))
-                throw "Struktura uz obsahuje prvok " + predicates[i].name;
-            predic.set(predicates[i].name, predicates[i].arity);
-        }
-        this.language.setPredicates(predic);
+        this.language.setPredicates(predicates);
     }
 
     setLanguageFunctions(functions) {
-        let func = new Map();
-        for (let i = 0; i < functions.length; i++) {
-            if (this.language.hasPredicate(functions[i].name) || this.language.hasConstant(functions[i].name))
-                throw "Struktura uz obsahuje prvok " + functions[i].name;
-            func.set(functions[i].name, functions[i].arity);
-        }
-        this.language.setFunctions(func);
+        this.language.setFunctions(functions);
     }
 
     hasDomainItem(name) {
