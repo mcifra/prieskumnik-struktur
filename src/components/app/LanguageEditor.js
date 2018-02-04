@@ -1,4 +1,6 @@
 import React from 'react';
+import {Row, Col, FormGroup, ControlLabel, InputGroup, FormControl, HelpBlock} from 'react-bootstrap';
+import Panel from 'react-bootstrap/lib/Panel';
 
 class LanguageEditor extends React.Component {
     constructor(props) {
@@ -13,98 +15,137 @@ class LanguageEditor extends React.Component {
 
     render() {
         return (
-            <div className={'language-editor'}>
-                <h2>Jazyk</h2>
-                <div className={'bs-example-form'}>
-                    <div className={'row'}>
-                        <div className={'col-lg-12'}>
-                            <div className={'input-group'}>
-                                <span className={'input-group-addon'} htmlFor={"constants-list"}>Konštanty</span>
-                                <input className={'form-control'} type={"text"} id={"constants-list"}
-                                       key={"constants-list"}
-                                       onChange={(e) => this.updateConstants(e)}
-                                       onFocus={(e) => this.updateConstants(e)}/>
-                            </div>
-                        </div>
-                        <div className={'col-lg-12'}>
-                            {
-                                this.state.constants_error !== null ? (
-                                    <div className={'alert alert-danger'}>
-                                        {
-                                            this.state.constants_error.location !== undefined ? (
-                                                this.state.constants_error.message + " on position " + (this.state.constants_error.location.start.offset + 1)
-                                            ) : (
-                                                this.state.constants_error.message
-                                            )
-                                        }
-                                    </div>
-                                ) : (
-                                    ''
-                                )
-                            }
-                        </div>
-                    </div>
-                    <div className={'row'}>
-                        <div className={'col-lg-12'}>
+            <div className='language-editor'>
+                <Panel bsStyle='info'>
+                    <Panel.Heading>
+                        <Panel.Title componentClass='h2'>Jazyk</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body>
+                        <div className={'bs-example-form'}>
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup>
+                                        <ControlLabel htmlFor='language-constants'>Konštanty</ControlLabel>
+                                        <InputGroup>
+                                            <InputGroup.Addon>{'𝓒'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                            <FormControl id='language-constants' type='text' onChange={(e) => this.updateConstants(e)}
+                                                         onFocus={(e) => this.updateConstants(e)}/>
+                                            <InputGroup.Addon>{"}"}</InputGroup.Addon>
+                                        </InputGroup>
+                                        <HelpBlock>Help text with validation state.</HelpBlock>
+                                    </FormGroup>
+                                </Col>
+                                {/*<div className={'col-lg-12'}>*/}
+                                    {/*{*/}
+                                        {/*this.state.constants_error !== null ? (*/}
+                                            {/*<div className={'alert alert-danger'}>*/}
+                                                {/*{*/}
+                                                    {/*this.state.constants_error.location !== undefined ? (*/}
+                                                        {/*this.state.constants_error.message + " on position " + (this.state.constants_error.location.start.offset + 1)*/}
+                                                    {/*) : (*/}
+                                                        {/*this.state.constants_error.message*/}
+                                                    {/*)*/}
+                                                {/*}*/}
+                                            {/*</div>*/}
+                                        {/*) : (*/}
+                                            {/*''*/}
+                                        {/*)*/}
+                                    {/*}*/}
+                                {/*</div>*/}
+                            </Row>
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup>
+                                        <ControlLabel htmlFor='language-predicates'>Predikáty</ControlLabel>
+                                        <InputGroup>
+                                            <InputGroup.Addon>{'𝓟'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                            <FormControl id='language-predicates' type='text' onChange={(e) => this.updatePredicates(e)}
+                                                onFocus={(e) => this.updatePredicates(e)}/>
+                                            <InputGroup.Addon>{"}"}</InputGroup.Addon>
+                                        </InputGroup>
+                                        <HelpBlock>Help text with validation state.</HelpBlock>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            {/*<div className={'row'}>*/}
+                                {/*<div className={'col-lg-12'}>*/}
 
-                            <div className={'input-group'}>
-                                <span className={'input-group-addon'} htmlFor={"predicates-list"}>Predikáty</span>
-                                <input className={'form-control'} type={"text"} id={"predicates-list"}
-                                       key={"predicates-list"}
-                                       onChange={(e) => this.updatePredicates(e)}
-                                       onFocus={(e) => this.updatePredicates(e)}/>
-                            </div>
-                        </div>
-                        <div className={'col-lg-12'}>
-                            {
-                                this.state.predicates_error !== null ? (
-                                    <div className={'alert alert-danger'}>
-                                        {
-                                            this.state.predicates_error.location !== undefined ? (
-                                                this.state.predicates_error.message + " on position " + (this.state.predicates_error.location.start.offset + 1)
-                                            ) : (
-                                                this.state.predicates_error.message
-                                            )
-                                        }
-                                    </div>
-                                ) : (
-                                    ''
-                                )
-                            }
-                        </div>
-                    </div>
-                    <div className={'row'}>
-                        <div className={'col-lg-12'}>
+                                    {/*<div className={'input-group'}>*/}
+                                        {/*<span className={'input-group-addon'}*/}
+                                              {/*htmlFor={"predicates-list"}>Predikáty</span>*/}
+                                        {/*<input className={'form-control'} type={"text"} id={"predicates-list"}*/}
+                                               {/*key={"predicates-list"}*/}
+                                               {/*onChange={(e) => this.updatePredicates(e)}*/}
+                                               {/*onFocus={(e) => this.updatePredicates(e)}/>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                                {/*<div className={'col-lg-12'}>*/}
+                                    {/*{*/}
+                                        {/*this.state.predicates_error !== null ? (*/}
+                                            {/*<div className={'alert alert-danger'}>*/}
+                                                {/*{*/}
+                                                    {/*this.state.predicates_error.location !== undefined ? (*/}
+                                                        {/*this.state.predicates_error.message + " on position " + (this.state.predicates_error.location.start.offset + 1)*/}
+                                                    {/*) : (*/}
+                                                        {/*this.state.predicates_error.message*/}
+                                                    {/*)*/}
+                                                {/*}*/}
+                                            {/*</div>*/}
+                                        {/*) : (*/}
+                                            {/*''*/}
+                                        {/*)*/}
+                                    {/*}*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
 
-                            <div className={'input-group'}>
-                                <span className={'input-group-addon'} htmlFor={"functions-list"}>Funkcie</span>
-                                <input className={'form-control'} type={"text"} id={"functions-list"}
-                                       key={"functions-list"}
-                                       onChange={(e) => this.updateFunctions(e)}
-                                       onFocus={(e) => this.updateFunctions(e)}/>
-                            </div>
-                        </div>
-                        <div className={'col-lg-12'}>
-                            {
-                                this.state.functions_error !== null ? (
-                                    <div className={'alert alert-danger'}>
-                                        {
-                                            this.state.functions_error.location !== undefined ? (
-                                                this.state.functions_error.message + " on position " + (this.state.functions_error.location.start.offset + 1)
-                                            ) : (
-                                                this.state.functions_error.message
-                                            )
-                                        }
-                                    </div>
-                                ) : (
-                                    ''
-                                )
-                            }
-                        </div>
-                    </div>
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup validationState='error'>
+                                        <ControlLabel htmlFor='language-functions'>Funkcie</ControlLabel>
+                                        <InputGroup>
+                                            <InputGroup.Addon>{'𝓕'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                                <FormControl id='language-functions' type='text' onChange={(e) => this.updateFunctions(e)}
+                                                onFocus={(e) => this.updateFunctions(e)}/>
+                                                <InputGroup.Addon>{"}"}</InputGroup.Addon>
+                                        </InputGroup>
+                                        <HelpBlock>Help text with validation state.</HelpBlock>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
 
-                </div>
+                            {/*<div className={'row'}>*/}
+                                {/*<div className={'col-lg-12'}>*/}
 
+                                    {/*<div className={'input-group'}>*/}
+                                        {/*<span className={'input-group-addon'} htmlFor={"functions-list"}>Funkcie</span>*/}
+                                        {/*<input className={'form-control'} type={"text"} id={"functions-list"}*/}
+                                               {/*key={"functions-list"}*/}
+                                               {/*onChange={(e) => this.updateFunctions(e)}*/}
+                                               {/*onFocus={(e) => this.updateFunctions(e)}/>*/}
+                                    {/*</div>*/}
+                                {/*</div>*/}
+                                {/*<div className={'col-lg-12'}>*/}
+                                    {/*{*/}
+                                        {/*this.state.functions_error !== null ? (*/}
+                                            {/*<div className={'alert alert-danger'}>*/}
+                                                {/*{*/}
+                                                    {/*this.state.functions_error.location !== undefined ? (*/}
+                                                        {/*this.state.functions_error.message + " on position " + (this.state.functions_error.location.start.offset + 1)*/}
+                                                    {/*) : (*/}
+                                                        {/*this.state.functions_error.message*/}
+                                                    {/*)*/}
+                                                {/*}*/}
+                                            {/*</div>*/}
+                                        {/*) : (*/}
+                                            {/*''*/}
+                                        {/*)*/}
+                                    {/*}*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+
+                        </div>
+                    </Panel.Body>
+                </Panel>
             </div>
         );
     }
@@ -151,7 +192,7 @@ class LanguageEditor extends React.Component {
     updateFunctions(e) {
         let parser = require('../../backend/parser/grammar');
         let inputValue = e.target.value;
-        console.log('e: ',e.target.value);
+        console.log('e: ', e.target.value);
         try {
             let parsedValue = [];
             // this.props.structure.language.clearFunctions();
