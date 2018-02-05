@@ -16,7 +16,7 @@ class LanguageEditor extends React.Component {
     render() {
         return (
             <div className='language-editor'>
-                <Panel bsStyle='info'>
+                <Panel>
                     <Panel.Heading>
                         <Panel.Title componentClass='h2'>Jazyk</Panel.Title>
                     </Panel.Heading>

@@ -9,7 +9,7 @@ class Navigation extends React.Component {
     render() {
         return (
             <header>
-                <Navbar inverse>
+                <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link to="/">Prieskumník štruktúr</Link>
@@ -24,9 +24,9 @@ class Navigation extends React.Component {
                             <LinkContainer to='/references'>
                                 <NavItem eventKey={3}>Zdroje</NavItem>
                             </LinkContainer>
-                            <LinkContainer to='/app'>
-                                <NavItem eventKey={4}>Prototyp</NavItem>
-                            </LinkContainer>
+                            {/*<LinkContainer to='/app'>*/}
+                                {/*<NavItem eventKey={4}>Prototyp</NavItem>*/}
+                            {/*</LinkContainer>*/}
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

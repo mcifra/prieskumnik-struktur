@@ -18,7 +18,7 @@ class StructureEditor extends React.Component {
         let domain = [...this.props.structure.domain];
         return (
             <div className="structure-editor">
-                <Panel bsStyle="info">
+                <Panel>
                     <Panel.Heading>
                         <Panel.Title componentClass='h2'>Štruktúra</Panel.Title>
                     </Panel.Heading>
