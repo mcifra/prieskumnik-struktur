@@ -1,4 +1,6 @@
 import React from 'react';
+import {Row, Col} from 'react-bootstrap';
+
 import FormulaStorage from "./FormulaStorage";
 import LanguageEditor from './LanguageEditor';
 import StructureEditor from './StructureEditor';
@@ -24,18 +26,21 @@ class App extends React.Component {
         console.log('STRUCTURE', this.state.structure);
         return (
             <div className={"app"}>
-                <div className={"col-lg-6"}>
-                    <LanguageEditor structure={this.state.structure}
-                                    onChange={(structure) => this.setStructure(structure)}/>
-                </div>
-                <div className={"col-lg-6"}>
-                    <StructureEditor structure={this.state.structure}
-                                     onChange={(structure) => this.setStructure(structure)}/>
-                </div>
-                <div className={"col-lg-12"}>
-                    <FormulaStorage structure={this.state.structure}/>
-                </div>
-
+                <Row>
+                    <Col md={6}>
+                        <LanguageEditor structure={this.state.structure}
+                                        onChange={(structure) => this.setStructure(structure)}/>
+                    </Col>
+                    <Col md={6}>
+                        <StructureEditor structure={this.state.structure}
+                                         onChange={(structure) => this.setStructure(structure)}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={12}>
+                        <FormulaStorage structure={this.state.structure}/>
+                    </Col>
+                </Row>
             </div>
         );
     }
