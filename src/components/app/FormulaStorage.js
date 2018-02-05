@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Panel, Button, FormGroup, InputGroup, FormControl} from 'react-bootstrap';
+import {Row, Col, Panel, Button, FormGroup, InputGroup, FormControl, HelpBlock} from 'react-bootstrap';
 
 import Language from "../../backend/Language";
 import Conjunction from "../../backend/formula/Formula.Conjunction";
@@ -19,7 +19,7 @@ class FormulaStorage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            formulas: [],
+            formulas: []
         };
     }
 
@@ -35,38 +35,19 @@ class FormulaStorage extends React.Component {
                             this.state.formulas.map((current, index) =>
                                 <Row key={index}>
                                     <Col lg={12}>
-                                        <FormGroup>
+                                        <FormGroup validationState={current.satisfied ? 'success' : 'error'}>
                                             <InputGroup>
-                                                <FormControl type='text' value={current.formula}
-                                                             onChange={(e) => this.checkFormula(e, index)}/>
                                                 <InputGroup.Button>
                                                     <Button onClick={() => this.deleteFormula(index)}>✖</Button>
                                                 </InputGroup.Button>
+                                                <FormControl type='text' value={current.formula}
+                                                             onChange={(e) => this.checkFormula(e, index)}/>
                                             </InputGroup>
+                                            <FormControl.Feedback  />
+                                            <HelpBlock>{current.validationMessage}</HelpBlock>
                                         </FormGroup>
                                     </Col>
                                 </Row>
-                                // <div className={'row'} key={index}>
-                                //     <div className={'col-lg-6'}>
-                                //         {
-                                //             current.validationMessage != '' ? (
-                                //                 <div className={'alert alert-danger'}>
-                                //                     {current.validationMessage}
-                                //                 </div>
-                                //             ) : ''
-                                //         }
-                                //         <div className={'input-group'} key={index}>
-                                //     <span className={"input-group-addon"}
-                                //           htmlFor={"predicates-list"}>{current.ok}</span>
-                                //             <input className={'form-control'} type={"text"} value={current.formula}
-                                //                    onChange={(e) => this.checkFormula(e, index)}/>
-                                //             <span className={'input-group-btn'}>
-                                //         <button className={'btn btn-danger'}
-                                //                 onClick={() => this.deleteFormula(index)}>Odstrániť</button>
-                                //     </span>
-                                //         </div>
-                                //     </div>
-                                // </div>
                             )
                         }
                         <Button bsStyle='success' onClick={() => this.addFormula()}>➕ Pridaj formulu</Button>
@@ -80,10 +61,10 @@ class FormulaStorage extends React.Component {
         let formulas = this.state.formulas;
         formulas.push({
             formula: '',
-            valid: false,
+            valid: true,
             validationMessage: '',
             formulaObj: null,
-            ok: false
+            satisfied: false
         });
         this.setState({
             formulas: formulas
@@ -125,17 +106,18 @@ class FormulaStorage extends React.Component {
                 formula = parser.parse("(" + givenFormula + ")", options);
             }
             console.log('formula:', formula);
-            let ok = this.evaluateFormula(formula);
+            let sat = this.evaluateFormula(formula);
             formulas[index].validationMessage = '';
             formulas[index].valid = true;
             formulas[index].formulaObj = formula;
-            formulas[index].ok = ok ? '✔' : '✘';
+            formulas[index].satisfied = sat;
+            console.log('vysledna formula:', formulas[index]);
         } catch (e) {
-            console.error('parser chyba:', e);
+            console.error(e);
             formulas[index].validationMessage = e.message;
             formulas[index].valid = false;
             formulas[index].formulaObj = null;
-            formulas[index].ok = '✘';
+            formulas[index].satisfied = false;
         }
         this.setState({
             formulas: formulas
@@ -146,9 +128,8 @@ class FormulaStorage extends React.Component {
         let e = new Map();
         e.set('x', 'a');
         e.set('y', 'b');
-        let ok = formula.isSatisfied(this.props.structure, e);
-        console.log(ok);
-        return ok;
+        let sat = formula.isSatisfied(this.props.structure, e);
+        return sat;
     }
 
 }
