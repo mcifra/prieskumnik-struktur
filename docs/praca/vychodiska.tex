@@ -132,50 +132,43 @@ V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pr
 \subsection{React}
 React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013. 
 \paragraph{}
-Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu a ich mazanie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
+Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
 
 \subsubsection{Elementy a komponenty}
-\paragraph{}
-\emph{Element} je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia HTML elementu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing \ref{lst:element_creation}. Tu sa vytvára element \texttt{button}, ktorý po prevedení do HTML bude vyzerať tak ako je v Listing \ref{lst:element_created}.
+\emph{Element} je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia HTML elementu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing \ref{lst:element_creation}.
 \begin{lstlisting}[caption={Vytvorenie jednoduchého elementu}, label={lst:element_creation}]
 const element = React.createElement (
     'button',
     {
         id: 'add-btn',
     }
-    'Add'
+    'Pridaj'
 );
 \end{lstlisting}
-\begin{lstlisting}[caption={Element vypísaný ako HTML}, label={lst:element_created}]
-<button id=add-btn">Add</button>
-\end{lstlisting}
-\paragraph{}
 Prvý argument funkcie je typ elementu. Môže to byť string alebo objekt druhého elementu. Druhý argument je objekt argumentov elementu. Tretí argument je zoznam potomkov elementu. Konštanta element bude vyzerať nasledovne
 \begin{lstlisting}
 const element = {
     type: 'button',
     props: {
         id: 'add-btn',
-        children: 'Add'
+        children: 'Pridaj'
     }
 }
 \end{lstlisting}
 \paragraph{}
 Typ elementu je veľmi dôležitý argument. Ak je to textový reťazec, musí to byť jeden z DOM elementov (napr. button, p, div). Ak je to nejaký objekt, funkcia vráti objekt, ktorý vrátil tento typ elementu s atribútmi, ktoré sú v druhom argumente.
-
 \paragraph{}
-Základným rozdielom medzi elementom a komponentom je, že komponent príjima atribúty, a na základe nich vracia elementy.
-
+\emph{Komponent} je o niečo zložitejší element. Komponent je väčšinou definovaný ako trieda, ktorá má konštruktor a funkciu \texttt{render()}. Okrem toho môže mať ľubovoľný počet rôznych funkcií. Konštruktor príjima jeden parameter \texttt{props}. Je to štandardný objekt, ktorý obsahuje atribúty ktoré sa zadajú pri vytváraní komponentu. Základným rozdielom medzi elementom a komponentom je, že komponent príjima atribúty, a na základe nich vracia elementy. V našom príklade budú dva komponenty - \texttt{App} a \texttt{InputValue}.
 \paragraph{}
-Druhým a jednoduchším spôsobom vytvárania elementov je pomocou JSX, čo je syntaxové rozšírenie pre Javascript. Pomocou JSX sa dajú elementy definovať ako klasické HTML tagy a vytvárať tak prehľadnejší a ľahšie pochopiteľnejší kód. Element ktorý sme vytvárali v Listing 1 sa dá prepísať do JSX syntaxe nasledovným spôsobom:
+Druhým a jednoduchším spôsobom vytvárania elementov a komponentov je pomocou JSX, čo je syntaxové rozšírenie pre Javascript. Pomocou JSX sa dajú elementy definovať ako klasické HTML tagy a vytvárať tak prehľadnejší a ľahšie pochopiteľnejší kód. Element \texttt{button} ktorý sme vytvárali v Listing \ref{lst:element_creation} sa dá prepísať do JSX syntaxe spôsobom znázorneným v Listing \ref{lst:jsx_element_creation}
+\begin{lstlisting}[caption={Vytvorenie elementu pomocou JSX}, label={lst:jsx_element_creation}]
+<button id='add-btn'>Pridaj</button>
+\end{lstlisting}
 
 
-\paragraph{}
-Komponenty si môžeme predstaviť ako skupinu elementov. Komponent 
+
 
 \subsubsection{Stav a  životný cyklus komponentu}
-
-\paragraph{}
 Ako som spomínal v predchádzjúcej sekcii, každý komponent obsahuje funkciu \texttt{render()} ktorá nejakým spôsobom vykresľuje komponent užívateľovi. Aby React vedel, kedy má túto funkciu zavolať, každý komponent obsahuje stav.  Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent prekresliť alebo nie. Tento objekt má zaužívané meno \texttt{state} ale môže mať ľubovolné meno. Do tohto objektu sa ukladajú dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú komponent, alebo od nich závisí, ako sa komponent vykreslí. 
 
 \paragraph{}
@@ -210,10 +203,8 @@ addItem(item) {
 	});
 }
 \end{lstlisting}
-
 \paragraph{}
 Nakoniec je potrebné definovať, ako sa bude komponent vykresľovať ako je znázornené v Listing \ref{lst:list_render}. Funkcia \texttt{render()} vracia objekt elementu ktorý je napísaný v JSX syntaxi. Najdôležitejšia časť je na riadkoch 8-10. Takýmto spôsobom sa dá vypísať každý prvok poľa \texttt{items} do HTML elementu \texttt{<li>}.
-
 \begin{lstlisting}[caption={Vykresľovanie komponentu \texttt{List}},label={lst:list_render}]
 class List extends React.Component {
 	...
@@ -236,15 +227,20 @@ class List extends React.Component {
 } 
 \end{lstlisting}
 
-
-
-
-
 \subsubsection{Udalosti}
-Najdôležitejšou súčasťou React-u je reagovanie na rôzne udalosti od užívateľa. Každý element môže mať definované, akú funkciu vykonať pri vyvolaní nejakej udalosti. 
+Najdôležitejšou súčasťou React-u je reagovanie na rôzne udalosti od užívateľa. Každý element alebo komponent môže mať definované, akú funkciu vykonať pri vyvolaní nejakej udalosti. Okrem štandardných udalostí ktoré má React definované (napr. \texttt{onChange()}), je možné vytvárať aj vlastné udalosti. Napríklad ak chceme, aby sa vykonala nejaká funkcia pri zmene stavu nejakého komponentu, túto funkciu mu dáme medzi atribúty.
 \paragraph{}
-Komponentu je možné definovať aj vlastné udalosti. Napríklad ak chceme, aby sa vykonala nejaká funkcia pri zmene stavu nejakého komponentu, predáme mu ju cez props.
-
+V našom príklade máme komponent \texttt{TextInput}, ktorý má stav aktuálnej hodnoty elementu \texttt{<input>}. Chceme, aby sa pri zmene tejto hodnoty, teda zmene stavu tohoto komponentu, dozvedel túto hodnotu jeho rodič, teda komponent \texttt{App}. Dá sa to dosiahnuť práve pomocou jednoduchej udalosti. Upravíme vytvorenie komponentu v komponente \texttt{App} tak, že mu túto udalosť pridáme medzi atribúty (Listing \ref{lst:text_input_render_2}). Funkcia \texttt{updateNewValue()} iba aktualizuje stav komponentu \texttt{App} zmenením tejto hodnoty.
+\begin{lstlisting}[caption={Vykresľovanie komponentu \texttt{TextInput} - pridaná udalosť} \texttt{onValueChange},label={lst:text_input_render_2}]
+	<InputText onValueChange={this.updateNewValue()} />
+\end{lstlisting}
+Takýmto elegantným spôsobom sa dajú v React-e informovať rodičovské komponenty a poslať im tak dáta ktoré potrebujú. Dá sa takýmto spôsobom oznámiť vnoreným komponentom čo a kedy majú spraviť alebo vrátiť.
+\paragraph{}
+Ako som spomínal, štandardým HTML elementom sa dajú priradiť adekvátne štandardné udalosti. Jednou z nich ktoré využijeme v našom príklade je udalosť \texttt{onClick} na elemente \texttt{<button>} (Listing \ref{lst:button_onClick}). 
+\begin{lstlisting}[caption={Vykresľovanie elementu \texttt{button} - pridaná udalosť} \texttt{onClick},label={lst:button_onClick}]
+<button onClick={this.addItem()}>Pridaj</button>
+\end{lstlisting}
+Funkcia \texttt{addItem()} pridá tento prvok medzi prvky v stave, a tak sa prekreslí komponent \texttt{App} čím sa tento prvok zobrazí v prehliadači medzi ostatnými prvkami.
 
 
 \section{Analýza existujúcich podobných prác}
