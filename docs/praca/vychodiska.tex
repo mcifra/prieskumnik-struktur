@@ -130,20 +130,14 @@ V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pr
 
 
 \subsection{React}
-\paragraph{}
 React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013. 
 \paragraph{}
-Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. React je navrhnutý tak, aby ľubovoľná zmena v nejakom komponente zabezpečila, aby sa efektívne aktualizovali len tie komponenty, ktorých sa táto zmena týka.
-\paragraph{}
-V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu a ich mazanie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
-
+Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu a ich mazanie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
 
 \subsubsection{Elementy a komponenty}
 \paragraph{}
-Na úvod je potrebné vysvetliť čo je to element a komponent a aké sú medzi nimi rozdiely. 
-\paragraph{}
-Element je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia DOM objektu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing 1.
-\begin{lstlisting}[caption=Vytvorenie jednoduchého elementu]
+\emph{Element} je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia HTML elementu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing \ref{lst:element_creation}. Tu sa vytvára element \texttt{button}, ktorý po prevedení do HTML bude vyzerať tak ako je v Listing \ref{lst:element_created}.
+\begin{lstlisting}[caption={Vytvorenie jednoduchého elementu}, label={lst:element_creation}]
 const element = React.createElement (
     'button',
     {
@@ -151,6 +145,9 @@ const element = React.createElement (
     }
     'Add'
 );
+\end{lstlisting}
+\begin{lstlisting}[caption={Element vypísaný ako HTML}, label={lst:element_created}]
+<button id=add-btn">Add</button>
 \end{lstlisting}
 \paragraph{}
 Prvý argument funkcie je typ elementu. Môže to byť string alebo objekt druhého elementu. Druhý argument je objekt argumentov elementu. Tretí argument je zoznam potomkov elementu. Konštanta element bude vyzerať nasledovne
@@ -251,18 +248,49 @@ Komponentu je možné definovať aj vlastné udalosti. Napríklad ak chceme, aby
 
 
 \section{Analýza existujúcich podobných prác}
-V tejto sekcii uvádzam tri práce, ktoré sú nejakým spôsobom podobné tejto, a zobral som si z nich inšpiráciu pri tvorbe.
+V tejto sekcii uvádzam tri práce, ktoré sú inšpiratívnym zdrojom, alebo sa tiež týkajú matematickej logiky.
 
 \subsection{Introduction to Logic}
-Webový nástroj od univerzity Stanford \cite{intro_to_logic} je podobná existujúca práca. Obsahuje mnoho cvičení a krátkych prednášok o týkajúcich sa logiky. Pre účely tejto práce sú zaujímavé cvičenia týkajúce sa kontrolovania syntaxe formúl, spĺňanie formúl pri danej štruktúre alebo vytvorenie štruktúry tak, aby boli ju dané formuly spĺňali.
+Webový nástroj od univerzity Stanford \cite{intro_to_logic} je práca, ktorá je našou hlavnou inšpiráciou. Je to nástroj na online výučbu a precvičovanie matematickej logiky. Obsah je rozdelený do 12 kapitol, začínajúc základnou výrokovou logikou a končiac pokročilými dôkazmi alebo rezolvenciou. Každá kapitola začína krátkou prednáškou, po ktorej pokračujú rôzne interaktívne cvičenia. Naším cieľom je prevziať z tohto nástroja spôsoby, akým sú vedené tieto cvičenia, zamerať sa iba na logiku prvého rádu a rozšíriť funkcionalitu. Pre účely tejto práce sú zaujímavé cvičenia týkajúce sa kontrolovania syntaxe formúl alebo hľadanie pravdivostnej hodnoty predikátu, aby formula skladajúca sa z tohto predikátu bola pravdivá.
 
 \paragraph{}
-Obsahuje napríklad typ cvičenia, kde si študent môže precvičiť syntax formúl. V tomto cvičení je určitý zoznam formúl, a pri každej je možnosť vybrať, či je formula zapísaná správne alebo nie. Po vybratí možnosti sa vedľa zobrazí, či je odpoveď správna. Tento nástroj obsahuje takéto cvičenia ako pre výrokovú logiku, tak aj pre logiku prvého rádu. Naším cieľom je zamerať sa iba na prvorádovú logiku. 
+Jedným z cvičení ktoré je pre nás zaujímavé, je precvičovanie syntaxe formúl, ako je zobrazené na obr. \ref{fig:syntax}. V tomto cvičení je zoznam formúl, a pri každej je možnosť vybrať, či je formula zapísaná správne alebo nie. Po vybratí možnosti sa vedľa zobrazí, či je odpoveď správna. Tento nástroj neobsahuje cvičenie, kde by sa kombinovali všetky termy a formuly dokopy. Na obr. \ref{fig:syntax} sú formuly ktoré obsahujú iba predikáty, konštanty a premenné. Cieľom je typ tohoto cvičenia rozšíriť na takú úroveň, aby si učiteľ vedel v administratívnej časti vytvoriť ľubovolný počet formúl a dať ich študentovi cvičiť. 
 
 \paragraph{}
-Ďalším typom cvičení, ktoré sú inšpiráciou pre prácu, je vyhodnocovanie predikátov. Je zadaná relačná tabuľka, kedy je predikát splnený a študent musí podľa toho rozhodnúť, či je predikát pravdivý alebo nie.
+Ďalším typom cvičení je vyhodnocovanie predikátov, čo znázorňuje obr. \ref{fig:hodnota-predikatu-2}. Je zadaná fixná relačná tabuľka ktorá označuje, kedy je predikát splnený a študent musí podľa toho rozhodnúť, či je formula, ktorá tento predikát obsahuje, pravdivá alebo nie. Podobne ako pri cvičení syntaxe, aj tu sú na výber dve možnosti a zobrazenie výsledku. Nástroj obsahuje aj presne opačné cvičenie k tomuto, ktoré je na obr. \ref{fig:fixne-formuly}. Tu sú fixne dané vety, a je potrebné ``vyklikať'' tabuľku tak, aby všetky vety boli pravdivé.
 
-Nie je nám známe, či sa dajú v tomto nástroji upravovať formuly alebo štruktúry. Cieľom je tiež rošíriť tento nástroj, aby sa v "backende" aplikácie dali upravovať štruktúry a formuly a vytvárať tak ľubovolný počet cvičení takéhoto charakteru.
+\paragraph{}
+Tento nástroj neobsahuje nasledovné funkcie:
+\begin{itemize}
+	\item precvičovanie vyplývania formuly zo štruktúry,
+	\item vytvorenie takej štruktúry, aby daná fixná formula z nej vyplývala,
+	\item precvičovanie zisťovanie pravdivostnej hodnoty formuly pri zadanej štruktúre a ohodnotení indivíduových premenných,
+	\item administratívnu časť pre učiteľa na vytváranie cvičení.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{relacna-tabulka-hodnota-formuly}
+	\caption{Hľadanie kombinácie kedy sú všetky vety pravdivé.}
+	\label{fig:fixne-formuly}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{syntax}
+	\caption{Cvičenie zamerané na precvičovanie syntaxe.}
+	\label{fig:syntax}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{hodnota-predikatu-2}
+	\caption{Hľadanie pravdivostnej hodnoty formuly pri danej fixnej tabuľke pravdivostných hodnôt predikátu \texttt{likes}.}
+	\label{fig:hodnota-predikatu-2}
+\end{figure}
+
+
+
 
 \subsection{Logický pracovný stôl}
 Bakalárska práca s názvom \emph{Logický pracovný stôl} \cite{lps} sa zaoberá výrokovou logikou. Výsledkom tejto práce je aplikácia, ktorá ponúka užívateľovi interaktívne pracovať s formulami výrokovej logiky, vie zistiť, či je formula splniteľná, nesplniteľná, alebo či je to tautológia. Podobne ako pri mojej práci, obsahuje vstup, kde sa dá zapísať ľubovoľná formula. Tento vstup sa následne sparsuje a napríklad zistiť, či je to tautológia alebo nie.

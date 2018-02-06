@@ -2,6 +2,12 @@
   \newcommand{\singleletter}[1]{#1} \newcommand{\switchargs}[2]{#2#1}
 \begin{thebibliography}{1}
 
+\bibitem{wiki-react}
+Wikipedia contributors.
+\newblock React (javascript library) --- wikipedia, the free encyclopedia,
+  2018.
+\newblock [Online; cit. 6-Februar-2018].
+
 \bibitem{html}
 Steve Faulkner, Arron Eicholz, Travis Leithead, Alex Danilo, and Sangwhan Moon.
 \newblock {\em HTML 5.2}.
