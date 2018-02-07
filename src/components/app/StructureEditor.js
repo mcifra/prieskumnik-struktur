@@ -29,63 +29,74 @@ class StructureEditor extends React.Component {
                                     <ControlLabel>Doména</ControlLabel>
                                     <InputGroup>
                                         <InputGroup.Addon>{'𝓜 = {'}</InputGroup.Addon>
-                                            <FormControl type="text"
+                                        <FormControl type="text"
                                             onChange={(items) => this.updateDomain(items)}
                                             onFocus={(items) => this.updateDomain(items)} key={"test"}/>
-                                            <InputGroup.Addon>{"}"}</InputGroup.Addon>
+                                        <InputGroup.Addon>{"}"}</InputGroup.Addon>
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
                         </Row>
-                        {
-                            constants.map((curr, i) =>
-                                <div className={"row"}>
-                                    <div className={'col-lg-12'}>
-                                        <div className={"input-group"}>
-                                            <span className={'input-group-addon'}
-                                                  htmlFor={"constants-list"}>{curr}</span>
-                                            <select className={'form-control'} id={'domain-items-constant'}
-                                                    onChange={(e) => this.updateConstantValue(curr, e)}>
-                                                {
-                                                    domain.map((current, index) =>
-                                                        <option key={index} value={current}>{current}</option>
-                                                    )
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        }
-                        {
-                            predicates.map((curr, i) =>
-                                <div className={"row"}>
-                                    <div className={'col-lg-12'}>
-                                        <div className={"input-group"}>
-                                            <span className={'input-group-addon'}
-                                                  htmlFor={"constants-list"}>{'P ' + curr[i][0]}</span>
-                                            {/*<label>{this.props.predicateName}</label>*/}
-                                            <input className={"form-control"} type={"text"}
-                                                   onChange={(e) => this.updatePredicateValue(curr[i][0], e)}/>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        }
-                        {
-                            functions.map((curr, i) =>
-                                <div className={"row"}>
-                                    <div className={'col-lg-12'}>
-                                        <div className={"input-group"}>
-                                            <span className={'input-group-addon'}
-                                                  htmlFor={"constants-list"}>{'F ' + curr[i][0]}</span>
-                                            <input className={"form-control"} type={"text"}
-                                                   onChange={(e) => this.updateFunctionValue(curr[i][0], e)}/>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        }
+                        {constants.length > 0 ? (
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup>
+                                        <ControlLabel>Konštanty</ControlLabel>
+                                        {
+                                            constants.map((curr, i) =>
+                                                <InputGroup>
+                                                    <InputGroup.Addon>{'𝘪 ('}{curr}{') = '}</InputGroup.Addon>
+                                                    <FormControl componentClass='select' onChange={(e) => this.updateConstantValue(curr, e)}>
+                                                        <option value='' selected></option>
+                                                        {
+                                                            domain.map((current, index) =>
+                                                                <option key={index} value={current}>{current}</option>
+                                                            )
+                                                        }
+                                                    </FormControl>
+                                                </InputGroup>
+                                            )
+                                        }
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        ) : ''}
+                        {predicates.length > 0 ? (
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup>
+                                        <ControlLabel>Predikáty</ControlLabel>
+                                        {
+                                            predicates.map((curr, i) =>
+                                                <InputGroup>
+                                                    <InputGroup.Addon>{'𝘪 ('}{curr[0]}{') = {'}</InputGroup.Addon>
+                                                        <FormControl type='text' onChange={(e) => this.updatePredicateValue(curr[i][0], e)}/>
+                                                        <InputGroup.Addon>{'}'}</InputGroup.Addon>
+                                                </InputGroup>
+                                            )
+                                        }
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        ) : ''}
+                        {functions.length > 0 ? (
+                            <Row>
+                                <Col lg={12}>
+                                    <FormGroup>
+                                        <ControlLabel>Funkcie</ControlLabel>
+                                        {
+                                            functions.map((curr, i) =>
+                                                <InputGroup>
+                                                    <InputGroup.Addon>{'𝘪 ('}{curr[0]}{') = {'}</InputGroup.Addon>
+                                                        <FormControl type='text' onChange={(e) => this.updateFunctionValue(curr[i][0], e)}/>
+                                                        <InputGroup.Addon>{'}'}</InputGroup.Addon>
+                                                </InputGroup>
+                                            )
+                                        }
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        ) : ''}
                     </Panel.Body>
                 </Panel>
             </div>
