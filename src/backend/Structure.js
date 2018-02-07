@@ -36,13 +36,7 @@ class Structure {
     }
 
     setDomain(domain) {
-        let d = new Set();
-        for (let i = 0; i < domain.length; i++) {
-            if (d.has(domain[i]))
-                throw "Struktura uz obsahuje prvok " + domain[i];
-            d.add(domain[i]);
-        }
-        this.domain = d;
+        this.domain = domain;
     }
 
     clearDomain() {
@@ -58,6 +52,12 @@ class Structure {
     }
 
     setConstantValue(constantName, value) {
+        if (!this.language.hasConstant(constantName)) {
+            throw new InvalidLanguageException('Jazyk neobsahuje konštantu ' + constantName);
+        }
+        if (value === '' || value == null || value === undefined) {
+            throw new InvalidLanguageException('Hodnota konštanty nesmie byť prázdna');
+        }
         this.iConstant.set(constantName, value);
     }
 

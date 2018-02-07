@@ -37,13 +37,12 @@ class FormulaStorage extends React.Component {
                                     <Col lg={12}>
                                         <FormGroup validationState={current.satisfied ? 'success' : 'error'}>
                                             <InputGroup>
+                                                <FormControl type='text' value={current.formula}
+                                                             onChange={(e) => this.checkFormula(e, index)}/>
                                                 <InputGroup.Button>
                                                     <Button onClick={() => this.deleteFormula(index)}>✖</Button>
                                                 </InputGroup.Button>
-                                                <FormControl type='text' value={current.formula}
-                                                             onChange={(e) => this.checkFormula(e, index)}/>
                                             </InputGroup>
-                                            <FormControl.Feedback  />
                                             <HelpBlock>{current.validationMessage}</HelpBlock>
                                         </FormGroup>
                                     </Col>
@@ -128,8 +127,7 @@ class FormulaStorage extends React.Component {
         let e = new Map();
         e.set('x', 'a');
         e.set('y', 'b');
-        let sat = formula.isSatisfied(this.props.structure, e);
-        return sat;
+        return formula.isSatisfied(this.props.structure, e);
     }
 
 }
