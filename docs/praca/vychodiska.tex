@@ -132,22 +132,23 @@ V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pr
 \subsection{React}
 React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013. 
 \paragraph{}
-Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
+Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu. Budem opisovať iba veci, ktoré využijem pri tvorbe aplikácie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
 
 \subsubsection{Elementy a komponenty}
-\emph{Element} je prvok, ktorý chceme vidieť na stránke. Je to objektová reprezentácia HTML elementu. Každý element má definovaný typ, rôzne atribúty a zoznam potomkov. Potomkovia elementu sú tiež elementy, ktoré sú v ňom vnorené. Jednoduchý element sa v Reacte vytvára pomocou funkcie React.createElement ako je vidieť v Listing \ref{lst:element_creation}.
+React je vo všetkých smeroch Javascriptová knižnica. Nekombinujú sa v nej HTML a Javascript súbory ako je to pri klasických MVC frameworkoch. V aplikáciách tvorené cez React sa stránky nevytvárajú pomocou klasických HTML súborov kde sa píšu HTML elementy, ale namiesto toho sa vytvárajú Javascript \emph{objekty} HTML elementov. Objekt elementu obsahuje typ, atribúty a potomkov, ktoré by mal štandardný HTML element. Napríklad element \texttt{<button>} môže obsahovať atribúty \texttt{id}, \texttt{class}, \texttt{style} a iné. Elementy môžu mať tiež ľubovoľný počet potomkov.
+\paragraph{}
+\emph{Element} v React-e je objektová reprezentácia HTML elementu. Každý element má definovaný typ, atribúty a zoznam potomkov, ktoré sú tiež elementy. Element sa v Reacte vytvára pomocou funkcie \texttt{createElement} (Listing \ref{lst:element_creation}).
 \begin{lstlisting}[caption={Vytvorenie jednoduchého elementu}, label={lst:element_creation}]
-const element = React.createElement (
+const button = React.createElement (
     'button',
-    {
-        id: 'add-btn',
-    }
+    {id: 'add-btn'},
     'Pridaj'
 );
 \end{lstlisting}
-Prvý argument funkcie je typ elementu. Môže to byť string alebo objekt druhého elementu. Druhý argument je objekt argumentov elementu. Tretí argument je zoznam potomkov elementu. Konštanta element bude vyzerať nasledovne
-\begin{lstlisting}
-const element = {
+\paragraph{}
+Prvý argument funkcie je typ elementu. Môže to byť string alebo objekt druhého elementu. Druhý argument je objekt atribútov elementu. Tretí argument je zoznam potomkov elementu. V tomto príklade je len jeden potomok - textový reťazec. Funkcia \texttt{createElement} vráti objektovú reprezentáciu elementu (\ref{lst:element_object}).
+\begin{lstlisting}[caption={Objektová reprezentácia elementu}, label={lst:element_object}]
+{
     type: 'button',
     props: {
         id: 'add-btn',
@@ -156,13 +157,27 @@ const element = {
 }
 \end{lstlisting}
 \paragraph{}
-Typ elementu je veľmi dôležitý argument. Ak je to textový reťazec, musí to byť jeden z DOM elementov (napr. button, p, div). Ak je to nejaký objekt, funkcia vráti objekt, ktorý vrátil tento typ elementu s atribútmi, ktoré sú v druhom argumente.
+Takto sa v React-e vytvára strom elementov, ktoré sa nakoniec vykreslia ako klasické HTML elementy. Vykreslenie tohto stromu zabezpečuje funkcia \texttt{ReactDOM.render} (Listing \ref{lst:render_element_tree}). Stačí jej povedať aký element vykresliť a kde - HTML element v HTML súbore. Štandardne každá React aplikácia obsahuje iba jeden HTML súbor - \texttt{index.html}. Obsahuje nevyhnutné HTML elementy ako je \texttt{<html>, <head>} a \texttt{<body>}. Element \texttt{<body>} štandardne obsahuje iba jeden element \texttt{<div id='root'>}, do ktorého React vykreslí spomínaný strom elementov aplikácie.
+
+\begin{lstlisting}[caption={Vykreslenie elementu do DOM}, label={lst:render_element_tree}]
+ReactDOM.render(button, document.getElementById('root'));
+\end{lstlisting}
+
 \paragraph{}
-\emph{Komponent} je o niečo zložitejší element. Komponent je väčšinou definovaný ako trieda, ktorá má konštruktor a funkciu \texttt{render()}. Okrem toho môže mať ľubovoľný počet rôznych funkcií. Konštruktor príjima jeden parameter \texttt{props}. Je to štandardný objekt, ktorý obsahuje atribúty ktoré sa zadajú pri vytváraní komponentu. Základným rozdielom medzi elementom a komponentom je, že komponent príjima atribúty, a na základe nich vracia elementy. V našom príklade budú dva komponenty - \texttt{App} a \texttt{InputValue}.
+\emph{Komponent} je o niečo zložitejší element. Komponent je väčšinou definovaný ako trieda, ktorá má konštruktor a funkciu \texttt{render()}. Okrem toho môže mať ľubovoľný počet rôznych funkcií. Konštruktor príjima jeden parameter \texttt{props}. Je to štandardný objekt, ktorý obsahuje atribúty ktoré sa zadajú pri vytváraní komponentu. Základným rozdielom medzi elementom a komponentom je, že komponent príjima atribúty, a na základe nich vracia elementy. V našom príklade budú dva komponenty - \texttt{App} a \texttt{InputValue}. Komponent \texttt{App} bude obsahovať element \texttt{ul} (v tomto zozname budú užívateľom pridané textové reťazce), komponent \texttt{InputValue} a element \texttt{button} na pridávanie do zoznamu.
 \paragraph{}
-Druhým a jednoduchším spôsobom vytvárania elementov a komponentov je pomocou JSX, čo je syntaxové rozšírenie pre Javascript. Pomocou JSX sa dajú elementy definovať ako klasické HTML tagy a vytvárať tak prehľadnejší a ľahšie pochopiteľnejší kód. Element \texttt{button} ktorý sme vytvárali v Listing \ref{lst:element_creation} sa dá prepísať do JSX syntaxe spôsobom znázorneným v Listing \ref{lst:jsx_element_creation}
+Vytváranie elementov pomocou funkcie \texttt{createElement} je príliš zložité, preto druhým a jednoduchším spôsobom vytvárania elementov a komponentov je pomocou JSX, čo je syntaxové rozšírenie pre Javascript. Pomocou JSX sa dajú elementy definovať ako klasické HTML tagy a vytvárať tak prehľadnejší a ľahšie pochopiteľnejší kód. Element \texttt{button} ktorý sme vytvárali v Listing \ref{lst:element_creation} sa dá prepísať do JSX syntaxe spôsobom znázorneným v Listing \ref{lst:jsx_element_creation}. Takýmto spôsobom sa dajú vytvárať aj komponenty (Listing \ref{lst:jsx_component_creation}).
+
 \begin{lstlisting}[caption={Vytvorenie elementu pomocou JSX}, label={lst:jsx_element_creation}]
 <button id='add-btn'>Pridaj</button>
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Vytvorenie komponentu pomocou JSX}, label={lst:jsx_component_creation}]
+<App>
+	<ul> </ul>
+	<InputValue>
+	<button id='add-btn'>Pridaj</button>
+</App>
 \end{lstlisting}
 
 

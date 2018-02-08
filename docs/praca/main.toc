@@ -31,21 +31,23 @@
 \contentsline {subsection}{\numberline {1.2.2}React}{5}{subsection.1.2.2}
 \contentsline {paragraph}{}{5}{section*.24}
 \contentsline {subsubsection}{\numberline {1.2.2.1}Elementy a komponenty}{5}{subsubsection.1.2.2.1}
-\contentsline {paragraph}{}{6}{section*.25}
-\contentsline {paragraph}{}{6}{section*.26}
+\contentsline {paragraph}{}{5}{section*.25}
+\contentsline {paragraph}{}{5}{section*.26}
 \contentsline {paragraph}{}{6}{section*.27}
-\contentsline {subsubsection}{\numberline {1.2.2.2}Stav a \IeC {\v z}ivotn\IeC {\'y} cyklus komponentu}{6}{subsubsection.1.2.2.2}
 \contentsline {paragraph}{}{6}{section*.28}
 \contentsline {paragraph}{}{6}{section*.29}
+\contentsline {subsubsection}{\numberline {1.2.2.2}Stav a \IeC {\v z}ivotn\IeC {\'y} cyklus komponentu}{7}{subsubsection.1.2.2.2}
 \contentsline {paragraph}{}{7}{section*.30}
 \contentsline {paragraph}{}{7}{section*.31}
-\contentsline {subsubsection}{\numberline {1.2.2.3}Udalosti}{8}{subsubsection.1.2.2.3}
 \contentsline {paragraph}{}{8}{section*.32}
 \contentsline {paragraph}{}{8}{section*.33}
-\contentsline {section}{\numberline {1.3}Anal\IeC {\'y}za existuj\IeC {\'u}cich podobn\IeC {\'y}ch pr\IeC {\'a}c}{9}{section.1.3}
-\contentsline {subsection}{\numberline {1.3.1}Introduction to Logic}{9}{subsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.2.2.3}Udalosti}{9}{subsubsection.1.2.2.3}
 \contentsline {paragraph}{}{9}{section*.34}
 \contentsline {paragraph}{}{9}{section*.35}
-\contentsline {paragraph}{}{9}{section*.36}
+\contentsline {section}{\numberline {1.3}Anal\IeC {\'y}za existuj\IeC {\'u}cich podobn\IeC {\'y}ch pr\IeC {\'a}c}{9}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Introduction to Logic}{9}{subsection.1.3.1}
+\contentsline {paragraph}{}{10}{section*.36}
+\contentsline {paragraph}{}{10}{section*.37}
+\contentsline {paragraph}{}{10}{section*.38}
 \contentsline {subsection}{\numberline {1.3.2}Logick\IeC {\'y} pracovn\IeC {\'y} st\IeC {\^o}l}{10}{subsection.1.3.2}
-\contentsline {subsection}{\numberline {1.3.3}V\IeC {\'y}ukov\IeC {\'y} program demon\IeC {\v s}truj\IeC {\'u}ci matematick\IeC {\'y} princ\IeC {\'\i }p}{10}{subsection.1.3.3}
+\contentsline {subsection}{\numberline {1.3.3}V\IeC {\'y}ukov\IeC {\'y} program demon\IeC {\v s}truj\IeC {\'u}ci matematick\IeC {\'y} princ\IeC {\'\i }p}{11}{subsection.1.3.3}
