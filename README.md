@@ -1,6 +1,6 @@
-Prieskumík štruktúr v prvorádovej logike
+Prieskumník sémantiky logiky prvého rádu
 =
-Tento repozitár obsahuje zdrojové kódy k mojej bakalárskej práci "Prieskumník štruktúr". 
+Tento repozitár obsahuje zdrojové kódy k mojej bakalárskej práci "Prieskumník sémantiky logiky prvého rádu". 
 Aplikácia je naprogramovaná cez JS framework [React](https://reactjs.org/).
 
 ### Inštalácia
