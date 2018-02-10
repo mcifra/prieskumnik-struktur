@@ -24,34 +24,17 @@ h1 {
 .navbar {
   border-radius: 0; }
 
-.line-break {
-  width: 40%;
-  height: 1px;
-  background: #eaeaea;
-  margin: 3rem auto; }
-
 .input-group {
   margin-bottom: 1rem; }
 
-.alert {
-  padding: 6px 12px; }
-
-.about h1, .about h2, .about h3, .about p {
-  text-align: center; }
-
-.about .people {
-  margin: 3rem 0; }
-
-.about .left p, .about .right p {
-  text-align: justify;
-  line-height: 30px;
-  margin-bottom: 2rem; }
-
-.about .left h2, .about .right h2 {
-  border-bottom: 1px solid #bfbfbf; }
-
-.about .left h2 {
-  text-align: left; }
-
-.about .right h2 {
-  text-align: right; }
+.app .panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+  .app .panel-heading span {
+    background: #f2f2f2;
+    padding: 1px 7px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-weight: bold;
+    cursor: pointer; }

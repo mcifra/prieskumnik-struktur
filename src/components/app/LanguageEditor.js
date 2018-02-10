@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, FormGroup, ControlLabel, InputGroup, FormControl, HelpBlock} from 'react-bootstrap';
+import {Row, Col, FormGroup, ControlLabel, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
 import Panel from 'react-bootstrap/lib/Panel';
 
 class LanguageEditor extends React.Component {
@@ -14,11 +14,22 @@ class LanguageEditor extends React.Component {
     }
 
     render() {
+        const popoverHelp = (
+            <Popover id='popover-trigger-click' title='Editor jazyka'>
+                Pomocou editoru jazyka sa definuje jazyk. <strong>Konštanty</strong> sa píšu oddelene
+                čiarkou. <strong>Predikáty</strong> sa píšu oddelené čiarkami, vo
+                formáte <code>predikat/arita</code>. <strong>Funkcie</strong> sa píšu oddelené čiarkami, vo
+                formáte <code>funkcia/arita</code>.
+            </Popover>
+        );
         return (
             <div className='language-editor'>
                 <Panel>
                     <Panel.Heading>
                         <Panel.Title componentClass='h2'>Jazyk</Panel.Title>
+                        <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
+                            <span>?</span>
+                        </OverlayTrigger>
                     </Panel.Heading>
                     <Panel.Body>
                         <div className={'bs-example-form'}>
@@ -27,10 +38,9 @@ class LanguageEditor extends React.Component {
                                     <FormGroup validationState={this.state.constants_error != '' ? 'error' : null}>
                                         <ControlLabel htmlFor='language-constants'>Konštanty</ControlLabel>
                                         <InputGroup>
-                                            <InputGroup.Addon>{'𝓒'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                            <InputGroup.Addon>{'𝓒'}<sub>{'𝓛'}</sub></InputGroup.Addon>
                                             <FormControl id='language-constants' type='text' onChange={(e) => this.updateConstants(e)}
                                                          onFocus={(e) => this.updateConstants(e)}/>
-                                            <InputGroup.Addon>{"}"}</InputGroup.Addon>
                                         </InputGroup>
                                         <HelpBlock>{this.state.constants_error}</HelpBlock>
                                     </FormGroup>
@@ -41,10 +51,9 @@ class LanguageEditor extends React.Component {
                                     <FormGroup validationState={this.state.predicates_error != '' ? 'error' : null}>
                                         <ControlLabel htmlFor='language-predicates'>Predikáty</ControlLabel>
                                         <InputGroup>
-                                            <InputGroup.Addon>{'𝓟'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                            <InputGroup.Addon>{'𝓟'}<sub>{'𝓛'}</sub></InputGroup.Addon>
                                             <FormControl id='language-predicates' type='text' onChange={(e) => this.updatePredicates(e)}
                                                 onFocus={(e) => this.updatePredicates(e)}/>
-                                            <InputGroup.Addon>{"}"}</InputGroup.Addon>
                                         </InputGroup>
                                         <HelpBlock>{this.state.predicates_error}</HelpBlock>
                                     </FormGroup>
@@ -55,10 +64,9 @@ class LanguageEditor extends React.Component {
                                     <FormGroup validationState={this.state.functions_error != '' ? 'error' : null}>
                                         <ControlLabel htmlFor='language-functions'>Funkcie</ControlLabel>
                                         <InputGroup>
-                                            <InputGroup.Addon>{'𝓕'}<sub>{'𝓛'}</sub>{' = {'}</InputGroup.Addon>
+                                            <InputGroup.Addon>{'𝓕'}<sub>{'𝓛'}</sub></InputGroup.Addon>
                                                 <FormControl id='language-functions' type='text' onChange={(e) => this.updateFunctions(e)}
                                                 onFocus={(e) => this.updateFunctions(e)}/>
-                                                <InputGroup.Addon>{"}"}</InputGroup.Addon>
                                         </InputGroup>
                                         <HelpBlock>{this.state.functions_error}</HelpBlock>
                                     </FormGroup>

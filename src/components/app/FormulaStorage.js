@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Panel, Button, FormGroup, InputGroup, FormControl, HelpBlock} from 'react-bootstrap';
+import {Row, Col, Panel, Button, FormGroup, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
 
 import Language from "../../backend/Language";
 import Conjunction from "../../backend/formula/Formula.Conjunction";
@@ -24,11 +24,21 @@ class FormulaStorage extends React.Component {
     }
 
     render() {
+        const popoverHelp = (
+            <Popover id='popover-trigger-click' title='Editor štruktúry'>
+                Tu sa pridávajú formuly a kontroluje sa či spĺňajú vyššie definovanú štruktúru. Všetky termy a predikáty
+                musia byť definované v jazyku. Ak formula spľňa štruktúru, textový vstup bude zelený, inak červený.
+                Formula sa zmaže tlačidlom X vpravo.
+            </Popover>
+        );
         return (
             <div className='formula-storage'>
                 <Panel>
                     <Panel.Heading>
                         <Panel.Title>Formuly</Panel.Title>
+                        <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
+                            <span>?</span>
+                        </OverlayTrigger>
                     </Panel.Heading>
                     <Panel.Body>
                         {

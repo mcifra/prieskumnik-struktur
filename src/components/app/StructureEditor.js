@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, InputGroup, FormControl, FormGroup, ControlLabel, Panel, HelpBlock} from 'react-bootstrap';
+import {Row, Col, InputGroup, FormControl, FormGroup, ControlLabel, Panel, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
 
 import InvalidLanguageException from "../../exceptions/InvalidLanguageException";
 
@@ -38,6 +38,7 @@ class StructureEditor extends React.Component {
     getConstantsValueInputElement() {
         let constants = [...this.props.structure.language.constants];
         let domain = [...this.props.structure.domain];
+        let s = this.props.structure;
         if (constants.length === 0) {
             return null;
         }
@@ -46,14 +47,16 @@ class StructureEditor extends React.Component {
                 <Col lg={12}>
                     <FormGroup>
                         <ControlLabel>Konštanty</ControlLabel>
-                        {constants.map((curr, i) =>
+                        {constants.map((constant, i) =>
                             <InputGroup>
-                                <InputGroup.Addon>{'𝘪 ('}{curr}{') = '}</InputGroup.Addon>
-                                <FormControl componentClass='select' onChange={(e) => this.updateConstantValue(curr, e)}>
-                                    {domain.map((current, index) =>
-                                        <option key={index} value={current}>{current}</option>
+                                <InputGroup.Addon>{'𝘪 ('}{constant}{')'}</InputGroup.Addon>
+                                <select value={s.getConstantValue(constant)} className='form-control'
+                                        onChange={(e) => this.updateConstantValue(constant, e)}>
+                                    <option value=''/>
+                                    {domain.map((item, index) =>
+                                        <option value={item}>{item}</option>
                                     )}
-                                </FormControl>
+                                </select>
                             </InputGroup>
                         )}
                     </FormGroup>
@@ -67,22 +70,19 @@ class StructureEditor extends React.Component {
         if (predicates.length === 0) {
             return null;
         }
-        console.log('predicates:', predicates);
         return (
             <Row>
                 <Col lg={12}>
-                    {/**/}
-                        <ControlLabel>Predikáty</ControlLabel>
-                        {predicates.map((curr, i) =>
-                            <FormGroup validationState={this.state.iPredicate_error.get(curr[0]) != null ? 'error' : null}>
-                                <InputGroup >
-                                    <InputGroup.Addon>{'𝘪 ('}{curr[0]}{")"}</InputGroup.Addon>
-                                    <FormControl type='text' onChange={(e) => this.updatePredicateValue(curr[0], e)}/>
-                                </InputGroup>
-                                <HelpBlock>{this.state.iPredicate_error.get(curr[0])}</HelpBlock>
-                            </FormGroup>
-                        )}
-                    {/*</FormGroup>*/}
+                    <ControlLabel>Predikáty</ControlLabel>
+                    {predicates.map((curr, i) =>
+                        <FormGroup validationState={this.state.iPredicate_error.get(curr[0]) != null ? 'error' : null}>
+                            <InputGroup>
+                                <InputGroup.Addon>{'𝘪 ('}{curr[0]}{")"}</InputGroup.Addon>
+                                <FormControl type='text' onChange={(e) => this.updatePredicateValue(curr[0], e)}/>
+                            </InputGroup>
+                            <HelpBlock>{this.state.iPredicate_error.get(curr[0])}</HelpBlock>
+                        </FormGroup>
+                    )}
                 </Col>
             </Row>
         );
@@ -111,11 +111,25 @@ class StructureEditor extends React.Component {
     }
 
     render() {
+        const popoverHelp = (
+            <Popover id='popover-trigger-click' title='Editor štruktúry'>
+                Pomocou editoru štruktúry sa definuje štruktúra. Prvky <strong>domény</strong> sa oddeľujú čiarkami.
+                Pridaním nového elementu do jazyka sa automaticky pridá vstup na zadanie interpretácie.
+                Interpretácia <strong>konštanty</strong> sa vyberá zo selectu, ktorý automaticky obsahuje prvky z
+                domény. Interpretácia <strong>predikátu</strong> sa zapisuje vo formáte <code>(prvok1, ..,
+                prvokARITA)</code> oddelené čiarkami, kde prvky musia patriť do domény.
+                Interpretácia <strong>funkcie</strong> sa zapisuje vo formáte <code>(prvok1, .., prvokARITA,
+                prvokHODNOTA)</code> oddelené čiarkami, kde prvky musia patriť do domény.
+            </Popover>
+        );
         return (
             <div className="structure-editor">
                 <Panel>
                     <Panel.Heading>
                         <Panel.Title componentClass='h2'>Štruktúra</Panel.Title>
+                        <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
+                            <span>?</span>
+                        </OverlayTrigger>
                     </Panel.Heading>
                     <Panel.Body>
                         {this.getDomainValueInputElement()}
@@ -138,7 +152,10 @@ class StructureEditor extends React.Component {
         try {
             let newDomain = new Set();
             if (items.length > 0) {
-                let itemsParsed = this.parser.parse(items, {startRule: 'structure_domain_items_list', structure: this.props.structure});
+                let itemsParsed = this.parser.parse(items, {
+                    startRule: 'structure_domain_items_list',
+                    structure: this.props.structure
+                });
                 for (let i = 0; i < itemsParsed.length; i++) {
                     if (newDomain.has(itemsParsed[i]))
                         throw new InvalidLanguageException('Štruktúra už obsahuje prvok ' + itemsParsed[i]);
