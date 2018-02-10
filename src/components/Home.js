@@ -68,6 +68,9 @@ class Home extends React.Component {
                                         </Col>
                                         <Col sm={5}>
                                             <Link to='/app' className='btn btn-primary my-btn'>Spustiť</Link>
+                                            <a href='https://github.com/mcifra/prieskumnik-struktur' target='_blank'>
+                                                <img className='github-logo' src='github.png'/>
+                                            </a>
                                         </Col>
                                         </Row>
                                     </div>

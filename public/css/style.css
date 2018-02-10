@@ -27,6 +27,10 @@ h1 {
 .input-group {
   margin-bottom: 1rem; }
 
+.github-logo {
+  width: 25px;
+  margin-left: .5rem; }
+
 .app .panel-heading {
   display: flex;
   justify-content: space-between;
