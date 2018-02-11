@@ -80,7 +80,7 @@ class Home extends React.Component {
                                             <h4>Východisková kapitola</h4>
                                         </Col>
                                         <Col sm={5}>
-                                            <a href="#" class="btn btn-primary disabled my-btn">Stiahnuť</a>
+                                            <a href="docs/vychodiska.pdf" class="btn btn-primary my-btn">Stiahnuť</a>
                                         </Col>
                                         </Row>
                                     </div>
