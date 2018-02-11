@@ -130,9 +130,9 @@ V tejto sekcii sa čitateľ oboznámi s technológiami ktoré budú použité pr
 
 
 \subsection{React}
-React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013. 
+React je Javascript knižnica vytvorená spoločnosťou Facebook, Instagram a komunitou vývojárov. Originálnym autorom je vývojár v spoločnosti Facebook, Jordan Walke. Prvá verzia React-u vyšla v marci v roku 2013 \cite{wiki:react}. 
 \paragraph{}
-Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu. Budem opisovať iba veci, ktoré využijem pri tvorbe aplikácie. Ukážky kódov sú zjednosušené, aby boli ľahšie čitateľné.
+Hlavným cieľom tejto knižnice je efektívna tvorba používateľských rozhraní. V tejto kapitole sa budem snažiť v krátkosti opísať architektúru React-u na príklade, kde budem vytvárať rozhranie na pridávanie textových reťazcov do zoznamu. Nechcem zachádzať do detailov, budem v krátkosti opisovať iba tie veci, ktoré využijem pri tvorbe aplikácie. Ukážky kódov sú zjednodušené, aby boli ľahšie čitateľné. Zdrojom k tejto sekcii je hlavná, online dokumentácia React-u \cite{man:react}.
 
 \subsubsection{Elementy a komponenty}
 React je vo všetkých smeroch Javascriptová knižnica. Nekombinujú sa v nej HTML a Javascript súbory ako je to pri klasických MVC frameworkoch. V aplikáciách tvorené cez React sa stránky nevytvárajú pomocou klasických HTML súborov kde sa píšu HTML elementy, ale namiesto toho sa vytvárajú Javascript \emph{objekty} HTML elementov. Objekt elementu obsahuje typ, atribúty a potomkov, ktoré by mal štandardný HTML element. Napríklad element \texttt{<button>} môže obsahovať atribúty \texttt{id}, \texttt{class}, \texttt{style} a iné. Elementy môžu mať tiež ľubovoľný počet potomkov.
@@ -184,16 +184,13 @@ Vytváranie elementov pomocou funkcie \texttt{createElement} je príliš zložit
 
 
 \subsubsection{Stav a  životný cyklus komponentu}
-Ako som spomínal v predchádzjúcej sekcii, každý komponent obsahuje funkciu \texttt{render()} ktorá nejakým spôsobom vykresľuje komponent užívateľovi. Aby React vedel, kedy má túto funkciu zavolať, každý komponent obsahuje stav.  Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent prekresliť alebo nie. Tento objekt má zaužívané meno \texttt{state} ale môže mať ľubovolné meno. Do tohto objektu sa ukladajú dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú komponent, alebo od nich závisí, ako sa komponent vykreslí. 
-
+Ako som spomínal v predchádzjúcej sekcii, každý komponent obsahuje funkciu \texttt{render()} ktorá nejakým spôsobom vykresľuje komponent užívateľovi. Aby React vedel, kedy má túto funkciu zavolať, každý komponent obsahuje stav. Stav komponentu je jednoduchý objekt, podľa ktorého React vie, či je potrebné komponent prekresliť alebo nie. Tento objekt má zaužívané meno \texttt{state} ale môže mať ľubovolné meno. Do tohto objektu sa ukladajú dáta, ktorých zmena má vyvolať prekreslenie komponentu. V stave komponentu by mali byť iba tie údaje, ktoré sa nejakým spôsobom vykresľujú komponent, alebo od nich závisí, ako sa komponent vykreslí.
 \paragraph{}
-Príkladový komponent \texttt{List} sa má prekresliť vtedy, keď užívateľ pridá prvok do zoznamu. To znamená, že keď klikne na element \texttt{<button>}, zoberie sa hodnota z elementu \texttt{<input type="text">} a táto hodnota sa pripojí k elementu \texttt{<ul>}. Pre naše potreby je preto potrebné, aby v stave tohto komponentu bolo pole \texttt{items}, ktoré bude obsahovať tieto užívateľom pridané hodnoty.
-
+Príkladový komponent \texttt{App} sa má prekresliť vtedy, keď užívateľ pridá prvok do zoznamu. To znamená, že keď klikne na element \texttt{<button>}, zoberie sa hodnota z komponentu \texttt{TextValue} a táto hodnota sa pripojí k elementu \texttt{<ul>}. Pre naše potreby je preto potrebné, aby v stave tohto komponentu bolo pole \texttt{items}, ktoré bude obsahovať tieto užívateľom pridané hodnoty.
 \paragraph{}
-Počiatočný objekt stavu sa definuje v konštruktore komponentu, ako je v Listing \ref{lst:init_state}. Komponent \texttt{List} bude mať v stave prázdne pole do ktorého sa budú pridávať neskôr textové reťazce ktoré zadá užívateľ.
-
+Počiatočný objekt stavu sa definuje v konštruktore komponentu (Listing \ref{lst:init_state}). Komponent \texttt{App} bude mať v stave prázdne pole do ktorého sa budú pridávať neskôr textové reťazce ktoré zadá užívateľ.
 \begin{lstlisting}[caption={Definovanie stavu v konštruktore komponentu},label={lst:init_state}]
-class List extends React.Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -203,14 +200,9 @@ class List extends React.Component {
 	...
 }
 \end{lstlisting}
-
 \paragraph{}
-Priame priradenie objektu k premennej \texttt{this.state} sa odporúča iba v konštruktore. Mimo konštruktora by sa mal stav definovať pomocou funkcie \texttt{this.setState(newState)}, ktorá zabezpečí, aby sa objekt prekreslil. Táto funkcia dostáva ako argument zmenený objekt stavu. Listing \ref{lst:update_state} ukazuje, ako prebieha zistenie hodnoty elementu \texttt{<input>} a jej následné pridanie do stavu. Je dôležié si uvedomiť, že po vykonaní tejto funkcie bude element prekreslený a v elemente \texttt{<ul>} pribudne \texttt{<li>\{hodnota\}</li>}.
-
-\begin{lstlisting}[caption={Zmena stavu komponentu pomocou funkcie \texttt{this.setState()}},label={lst:update_state}]
-/*
-*	@param String item
-*/
+Priame priradenie objektu k premennej \texttt{this.state} sa odporúča iba v konštruktore. Mimo konštruktora by sa mal stav definovať pomocou funkcie \texttt{setState(newState)}, ktorá zabezpečí, aby sa objekt prekreslil. Táto funkcia dostáva ako argument zmenený objekt stavu. Listing \ref{lst:update_state} ukazuje, pridanie prvku do stavu. Je dôležié si uvedomiť, že po vykonaní tejto funkcie bude element prekreslený a v elemente \texttt{<ul>} pribudne \texttt{<li>item</li>}.
+\begin{lstlisting}[caption={Zmena stavu komponentu pomocou funkcie \texttt{setState()}}, label={lst:update_state}]
 addItem(item) {
 	newItems = this.state.items.push(item);
 	this.setState({
@@ -220,8 +212,8 @@ addItem(item) {
 \end{lstlisting}
 \paragraph{}
 Nakoniec je potrebné definovať, ako sa bude komponent vykresľovať ako je znázornené v Listing \ref{lst:list_render}. Funkcia \texttt{render()} vracia objekt elementu ktorý je napísaný v JSX syntaxi. Najdôležitejšia časť je na riadkoch 8-10. Takýmto spôsobom sa dá vypísať každý prvok poľa \texttt{items} do HTML elementu \texttt{<li>}.
-\begin{lstlisting}[caption={Vykresľovanie komponentu \texttt{List}},label={lst:list_render}]
-class List extends React.Component {
+\begin{lstlisting}[caption={Vykresľovanie komponentu \texttt{App}},label={lst:list_render}]
+class App extends React.Component {
 	...
 	render() {
 		return (
@@ -233,14 +225,18 @@ class List extends React.Component {
 						)				
 					}
 				</ul>
-				<input type="text">
-				<button onClick={this.addItem()}>Pridaj</button>
+				<TextInput />
+				<button id='add-btn'>Pridaj</button>
 			</div>	
 		)
 	}
 	...
 } 
 \end{lstlisting}
+
+
+
+
 
 \subsubsection{Udalosti}
 Najdôležitejšou súčasťou React-u je reagovanie na rôzne udalosti od užívateľa. Každý element alebo komponent môže mať definované, akú funkciu vykonať pri vyvolaní nejakej udalosti. Okrem štandardných udalostí ktoré má React definované (napr. \texttt{onChange()}), je možné vytvárať aj vlastné udalosti. Napríklad ak chceme, aby sa vykonala nejaká funkcia pri zmene stavu nejakého komponentu, túto funkciu mu dáme medzi atribúty.
@@ -256,6 +252,10 @@ Ako som spomínal, štandardým HTML elementom sa dajú priradiť adekvátne št
 <button onClick={this.addItem()}>Pridaj</button>
 \end{lstlisting}
 Funkcia \texttt{addItem()} pridá tento prvok medzi prvky v stave, a tak sa prekreslí komponent \texttt{App} čím sa tento prvok zobrazí v prehliadači medzi ostatnými prvkami.
+
+
+
+
 
 
 \section{Analýza existujúcich podobných prác}

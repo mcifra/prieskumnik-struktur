@@ -2,11 +2,16 @@
   \newcommand{\singleletter}[1]{#1} \newcommand{\switchargs}[2]{#2#1}
 \begin{thebibliography}{1}
 
-\bibitem{wiki-react}
+\bibitem{wiki:react}
 Wikipedia contributors.
-\newblock React (javascript library) --- wikipedia, the free encyclopedia,
-  2018.
-\newblock [Online; cit. 6-Februar-2018].
+\newblock React --- {W}ikipedia, the free encyclopedia.
+\newblock \url{https://en.wikipedia.org/wiki/React_(JavaScript_library)}, 2018.
+\newblock [Online; cit. 6.2.2018].
+
+\bibitem{man:react}
+Facebook Inc., \url{https://reactjs.org/docs/hello-world.html}.
+\newblock {\em Hello world}.
+\newblock [Online, cit. 11.2.2018].
 
 \bibitem{html}
 Steve Faulkner, Arron Eicholz, Travis Leithead, Alex Danilo, and Sangwhan Moon.
