@@ -44,10 +44,11 @@
 \contentsline {subsubsection}{\numberline {1.2.2.3}Udalosti}{9}{subsubsection.1.2.2.3}
 \contentsline {paragraph}{}{9}{section*.34}
 \contentsline {paragraph}{}{9}{section*.35}
-\contentsline {section}{\numberline {1.3}Anal\IeC {\'y}za existuj\IeC {\'u}cich podobn\IeC {\'y}ch pr\IeC {\'a}c}{9}{section.1.3}
-\contentsline {subsection}{\numberline {1.3.1}Introduction to Logic}{9}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.2.3}PEG.js}{9}{subsection.1.2.3}
+\contentsline {section}{\numberline {1.3}Anal\IeC {\'y}za existuj\IeC {\'u}cich podobn\IeC {\'y}ch pr\IeC {\'a}c}{10}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Introduction to Logic}{10}{subsection.1.3.1}
 \contentsline {paragraph}{}{10}{section*.36}
 \contentsline {paragraph}{}{10}{section*.37}
 \contentsline {paragraph}{}{10}{section*.38}
-\contentsline {subsection}{\numberline {1.3.2}Logick\IeC {\'y} pracovn\IeC {\'y} st\IeC {\^o}l}{10}{subsection.1.3.2}
+\contentsline {subsection}{\numberline {1.3.2}Logick\IeC {\'y} pracovn\IeC {\'y} st\IeC {\^o}l}{11}{subsection.1.3.2}
 \contentsline {subsection}{\numberline {1.3.3}V\IeC {\'y}ukov\IeC {\'y} program demon\IeC {\v s}truj\IeC {\'u}ci matematick\IeC {\'y} princ\IeC {\'\i }p}{11}{subsection.1.3.3}
