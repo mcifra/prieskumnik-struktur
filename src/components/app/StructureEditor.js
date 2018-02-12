@@ -96,15 +96,16 @@ class StructureEditor extends React.Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <FormGroup>
-                        <ControlLabel>Funkcie</ControlLabel>
-                        {functions.map((curr, i) =>
+                    <ControlLabel>Funkcie</ControlLabel>
+                    {functions.map((curr, i) =>
+                        <FormGroup validationState={this.state.iFunction_error.get(curr[0]) != null ? 'error' : null}>
                             <InputGroup>
                                 <InputGroup.Addon>{'𝘪 ('}{curr[0]}{')'}</InputGroup.Addon>
                                 <FormControl type='text' onChange={(e) => this.updateFunctionValue(curr[0], e)}/>
                             </InputGroup>
-                        )}
-                    </FormGroup>
+                            <HelpBlock>{this.state.iFunction_error.get(curr[0])}</HelpBlock>
+                        </FormGroup>
+                    )}
                 </Col>
             </Row>
         );
@@ -217,8 +218,14 @@ class StructureEditor extends React.Component {
     }
 
     updateFunctionValue(functionName, e) {
-        // console.log('functionName:', functionName);
         let value = e.target.value;
+        let iFunction_error = this.state.iFunction_error;
+        if (iFunction_error.get(functionName) != null) {
+            iFunction_error.delete(functionName);
+            this.setState({
+                iFunction_error: iFunction_error
+            });
+        }
         let arity = parseInt(this.props.structure.language.getFunction(functionName));
         try {
             let valueParsed = [];
@@ -244,6 +251,10 @@ class StructureEditor extends React.Component {
             this.props.onChange(this.props.structure);
         } catch (e) {
             console.error(e);
+            iFunction_error.set(functionName, e.message);
+            this.setState({
+                iFunction_error: iFunction_error
+            })
         }
     }
 }
