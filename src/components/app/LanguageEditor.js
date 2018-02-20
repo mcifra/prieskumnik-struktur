@@ -26,7 +26,7 @@ class LanguageEditor extends React.Component {
             <div className='language-editor'>
                 <Panel>
                     <Panel.Heading>
-                        <Panel.Title componentClass='h2'>Jazyk</Panel.Title>
+                        <Panel.Title componentClass='h2'>Jazyk 𝓛</Panel.Title>
                         <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
                             <span>?</span>
                         </OverlayTrigger>
@@ -35,41 +35,47 @@ class LanguageEditor extends React.Component {
                         <div className={'bs-example-form'}>
                             <Row>
                                 <Col lg={12}>
-                                    <FormGroup validationState={this.state.constants_error != '' ? 'error' : null}>
-                                        <ControlLabel htmlFor='language-constants'>Konštanty</ControlLabel>
-                                        <InputGroup>
-                                            <InputGroup.Addon>{'𝓒'}<sub>{'𝓛'}</sub></InputGroup.Addon>
-                                            <FormControl id='language-constants' type='text' onChange={(e) => this.updateConstants(e)}
-                                                         onFocus={(e) => this.updateConstants(e)}/>
-                                        </InputGroup>
-                                        <HelpBlock>{this.state.constants_error}</HelpBlock>
-                                    </FormGroup>
+                                    <fieldset>
+                                        <legend>Symboly konštánt</legend>
+                                        <FormGroup validationState={this.state.constants_error != '' ? 'error' : null}>
+                                            <InputGroup>
+                                                <label className='input-group-addon' htmlFor='language-constants'>{'𝓒'}<sub>{'𝓛'}</sub></label>
+                                                <FormControl id='language-constants' type='text' onChange={(e) => this.updateConstants(e)}
+                                                             onFocus={(e) => this.updateConstants(e)}/>
+                                            </InputGroup>
+                                            <HelpBlock>{this.state.constants_error}</HelpBlock>
+                                        </FormGroup>
+                                    </fieldset>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={12}>
-                                    <FormGroup validationState={this.state.predicates_error != '' ? 'error' : null}>
-                                        <ControlLabel htmlFor='language-predicates'>Predikáty</ControlLabel>
-                                        <InputGroup>
-                                            <InputGroup.Addon>{'𝓟'}<sub>{'𝓛'}</sub></InputGroup.Addon>
-                                            <FormControl id='language-predicates' type='text' onChange={(e) => this.updatePredicates(e)}
-                                                onFocus={(e) => this.updatePredicates(e)}/>
-                                        </InputGroup>
-                                        <HelpBlock>{this.state.predicates_error}</HelpBlock>
-                                    </FormGroup>
+                                    <fieldset>
+                                        <legend>Predikátové symboly</legend>
+                                        <FormGroup validationState={this.state.predicates_error != '' ? 'error' : null}>
+                                            <InputGroup>
+                                                <label className='input-group-addon' htmlFor='language-predicates'>{'𝓟'}<sub>{'𝓛'}</sub></label>
+                                                <FormControl id='language-predicates' type='text' onChange={(e) => this.updatePredicates(e)}
+                                                             onFocus={(e) => this.updatePredicates(e)}/>
+                                            </InputGroup>
+                                            <HelpBlock>{this.state.predicates_error}</HelpBlock>
+                                        </FormGroup>
+                                    </fieldset>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col lg={12}>
-                                    <FormGroup validationState={this.state.functions_error != '' ? 'error' : null}>
-                                        <ControlLabel htmlFor='language-functions'>Funkcie</ControlLabel>
-                                        <InputGroup>
-                                            <InputGroup.Addon>{'𝓕'}<sub>{'𝓛'}</sub></InputGroup.Addon>
+                                    <fieldset>
+                                        <legend>Funkčné symboly</legend>
+                                        <FormGroup com validationState={this.state.functions_error != '' ? 'error' : null}>
+                                            <InputGroup>
+                                                <label className='input-group-addon' htmlFor='language-functions'>{'𝓕'}<sub>{'𝓛'}</sub></label>
                                                 <FormControl id='language-functions' type='text' onChange={(e) => this.updateFunctions(e)}
-                                                onFocus={(e) => this.updateFunctions(e)}/>
-                                        </InputGroup>
-                                        <HelpBlock>{this.state.functions_error}</HelpBlock>
-                                    </FormGroup>
+                                                             onFocus={(e) => this.updateFunctions(e)}/>
+                                            </InputGroup>
+                                            <HelpBlock>{this.state.functions_error}</HelpBlock>
+                                        </FormGroup>
+                                    </fieldset>
                                 </Col>
                             </Row>
                         </div>
