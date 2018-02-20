@@ -87,6 +87,16 @@ class Home extends React.Component {
                                 </Panel.Body>
                             </Panel>
                         </Col>
+                        <Col md={12}>
+                            <Panel bsStyle='warning'>
+                                <Panel.Heading>
+                                    <Panel.Title componentClass='h3'>Denník</Panel.Title>
+                                </Panel.Heading>
+                                <Panel.Body>
+                                    Čoskoro ...
+                                </Panel.Body>
+                            </Panel>
+                        </Col>
                     </Row>
                 </Col>
                 <Col md={6}>
