@@ -42,3 +42,8 @@ h1 {
     border-radius: 2px;
     font-weight: bold;
     cursor: pointer; }
+
+.app legend {
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+  border: 0; }

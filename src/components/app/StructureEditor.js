@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, InputGroup, FormControl, FormGroup, ControlLabel, Panel, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
+import {Row, Col, InputGroup, FormControl, FormGroup, ControlLabel, Panel, HelpBlock, Popover, OverlayTrigger, Form} from 'react-bootstrap';
 
 import InvalidLanguageException from "../../exceptions/InvalidLanguageException";
 
@@ -20,16 +20,19 @@ class StructureEditor extends React.Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <FormGroup validationState={this.state.domain_error !== '' ? 'error' : null}>
-                        <ControlLabel>Doména</ControlLabel>
-                        <InputGroup>
-                            <InputGroup.Addon>{'𝓜'}</InputGroup.Addon>
-                            <FormControl type="text"
-                                         onChange={(items) => this.updateDomain(items)}
-                                         onFocus={(items) => this.updateDomain(items)} key={"test"}/>
-                        </InputGroup>
-                        <HelpBlock>{this.state.domain_error}</HelpBlock>
-                    </FormGroup>
+                    <fieldset>
+                        <legend>Doména</legend>
+                        <FormGroup validationState={this.state.domain_error !== '' ? 'error' : null}>
+                            <InputGroup>
+                                <label className='input-group-addon' htmlFor='domain-value'><i>M</i></label>
+                                <FormControl type="text"
+                                             id='domain-value'
+                                             onChange={(items) => this.updateDomain(items)}
+                                             onFocus={(items) => this.updateDomain(items)} key={"test"}/>
+                            </InputGroup>
+                            <HelpBlock>{this.state.domain_error}</HelpBlock>
+                        </FormGroup>
+                    </fieldset>
                 </Col>
             </Row>
         );
@@ -45,21 +48,23 @@ class StructureEditor extends React.Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <FormGroup>
-                        <ControlLabel>Konštanty</ControlLabel>
-                        {constants.map((constant, i) =>
-                            <InputGroup>
-                                <InputGroup.Addon>{'𝘪 ('}{constant}{')'}</InputGroup.Addon>
-                                <select value={s.getConstantValue(constant)} className='form-control'
-                                        onChange={(e) => this.updateConstantValue(constant, e)}>
-                                    <option value=''/>
-                                    {domain.map((item, index) =>
-                                        <option value={item}>{item}</option>
-                                    )}
-                                </select>
-                            </InputGroup>
-                        )}
-                    </FormGroup>
+                    <fieldset>
+                        <legend>Interpretácia symbolov konštánt</legend>
+                        <FormGroup>
+                            {constants.map((constant, i) =>
+                                <InputGroup>
+                                    <label className='input-group-addon' htmlFor={'constant-' + constant}>{'𝘪 ('}{constant}{')'}</label>
+                                    <select value={s.getConstantValue(constant)} id={'constant-' + constant} className='form-control'
+                                            onChange={(e) => this.updateConstantValue(constant, e)}>
+                                        <option value=''/>
+                                        {domain.map((item, index) =>
+                                            <option value={item}>{item}</option>
+                                        )}
+                                    </select>
+                                </InputGroup>
+                            )}
+                        </FormGroup>
+                    </fieldset>
                 </Col>
             </Row>
         );
@@ -73,16 +78,18 @@ class StructureEditor extends React.Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <ControlLabel>Predikáty</ControlLabel>
-                    {predicates.map((curr, i) =>
-                        <FormGroup validationState={this.state.iPredicate_error.get(curr[0]) != null ? 'error' : null}>
-                            <InputGroup>
-                                <InputGroup.Addon>{'𝘪 ('}{curr[0]}{")"}</InputGroup.Addon>
-                                <FormControl type='text' onChange={(e) => this.updatePredicateValue(curr[0], e)}/>
-                            </InputGroup>
-                            <HelpBlock>{this.state.iPredicate_error.get(curr[0])}</HelpBlock>
-                        </FormGroup>
-                    )}
+                    <fieldset>
+                        <legend>Interpretácia predikátových symbolov</legend>
+                        {predicates.map((curr, i) =>
+                            <FormGroup validationState={this.state.iPredicate_error.get(curr[0]) != null ? 'error' : null}>
+                                <InputGroup>
+                                    <label className='input-group-addon' htmlFor={'predicate-' + curr[0]}>{'𝘪 ('}{curr[0]}{")"}</label>
+                                    <FormControl type='text' id={'predicate-' + curr[0]} onChange={(e) => this.updatePredicateValue(curr[0], e)}/>
+                                </InputGroup>
+                                <HelpBlock>{this.state.iPredicate_error.get(curr[0])}</HelpBlock>
+                            </FormGroup>
+                        )}
+                    </fieldset>
                 </Col>
             </Row>
         );
@@ -96,16 +103,18 @@ class StructureEditor extends React.Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <ControlLabel>Funkcie</ControlLabel>
-                    {functions.map((curr, i) =>
-                        <FormGroup validationState={this.state.iFunction_error.get(curr[0]) != null ? 'error' : null}>
-                            <InputGroup>
-                                <InputGroup.Addon>{'𝘪 ('}{curr[0]}{')'}</InputGroup.Addon>
-                                <FormControl type='text' onChange={(e) => this.updateFunctionValue(curr[0], e)}/>
-                            </InputGroup>
-                            <HelpBlock>{this.state.iFunction_error.get(curr[0])}</HelpBlock>
-                        </FormGroup>
-                    )}
+                    <fieldset>
+                        <legend>Interpretácia funkčných symbolov</legend>
+                        {functions.map((curr, i) =>
+                            <FormGroup validationState={this.state.iFunction_error.get(curr[0]) != null ? 'error' : null}>
+                                <InputGroup>
+                                    <label className='input-group-addon' htmlFor={'function-' + curr[0]}>{'𝘪 ('}{curr[0]}{')'}</label>
+                                    <FormControl type='text' id={'function-' + curr[0]} onChange={(e) => this.updateFunctionValue(curr[0], e)}/>
+                                </InputGroup>
+                                <HelpBlock>{this.state.iFunction_error.get(curr[0])}</HelpBlock>
+                            </FormGroup>
+                        )}
+                    </fieldset>
                 </Col>
             </Row>
         );
@@ -127,16 +136,18 @@ class StructureEditor extends React.Component {
             <div className="structure-editor">
                 <Panel>
                     <Panel.Heading>
-                        <Panel.Title componentClass='h2'>Štruktúra</Panel.Title>
+                        <Panel.Title componentClass='h2'>Štruktúra 𝓜 = (M, i)</Panel.Title>
                         <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
                             <span>?</span>
                         </OverlayTrigger>
                     </Panel.Heading>
                     <Panel.Body>
-                        {this.getDomainValueInputElement()}
-                        {this.getConstantsValueInputElement()}
-                        {this.getPredicatesValueInputElement()}
-                        {this.getFunctionsValueInputElement()}
+                        <Form>
+                            {this.getDomainValueInputElement()}
+                            {this.getConstantsValueInputElement()}
+                            {this.getPredicatesValueInputElement()}
+                            {this.getFunctionsValueInputElement()}
+                        </Form>
                     </Panel.Body>
                 </Panel>
             </div>
