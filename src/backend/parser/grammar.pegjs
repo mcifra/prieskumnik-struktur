@@ -48,7 +48,7 @@ formula
     = spaces f:formula_cases spaces {return f}
 
 term
-    = spaces "(" t:term_cases ")" spaces {return t}
+    = spaces t:term_cases spaces {return t}
 
 formula_cases
     = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
