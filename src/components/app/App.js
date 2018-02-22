@@ -6,6 +6,7 @@ import LanguageEditor from './LanguageEditor';
 import StructureEditor from './StructureEditor';
 import Language from "../../backend/Language";
 import Structure from "../../backend/Structure";
+import ExpressionStorage from './ExpressionStorage';
 
 class App extends React.Component {
 
@@ -38,7 +39,12 @@ class App extends React.Component {
                 </Row>
                 <Row>
                     <Col lg={12}>
-                        <FormulaStorage structure={this.state.structure}/>
+                        <ExpressionStorage name='Spĺňanie formuly v štruktúre' startRule='formula' structure={this.state.structure} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={12}>
+                        <ExpressionStorage name='Hodnota termu' startRule='term' structure={this.state.structure} />
                     </Col>
                 </Row>
             </div>
