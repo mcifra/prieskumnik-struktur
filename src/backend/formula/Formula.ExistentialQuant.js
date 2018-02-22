@@ -25,11 +25,11 @@ class ExistentialQuant extends Formula {
      * @param {Map} e
      * @return {boolean}
      */
-    isSatisfied(structure, e) {
+    eval(structure, e) {
         var eCopy = new Map(e);
         for (let item of structure.domain) {
             eCopy.set(this.variableName, item);
-            if (this.subFormula.isSatisfied(structure, eCopy)) {
+            if (this.subFormula.eval(structure, eCopy)) {
                 return true;
             }
         }

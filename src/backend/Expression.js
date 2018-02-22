@@ -14,6 +14,10 @@ class Expression {
 
     }
 
+    eval(structure, e) {
+        return null;
+    }
+
 }
 
 export default Expression;

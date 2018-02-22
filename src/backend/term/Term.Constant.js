@@ -23,7 +23,7 @@ class Constant extends Term {
      * @param {Map} e
      * @return {string} Name of variable
      */
-    interpret(structure, e) {
+    eval(structure, e) {
         return structure.getConstantValue(this.name);
     }
 

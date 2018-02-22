@@ -23,7 +23,7 @@ class Variable extends Term {
      * @param {Map} e
      * @return {string}
      */
-    interpret(structure, e) {
+    eval(structure, e) {
         return e.get(this.name);
     }
 

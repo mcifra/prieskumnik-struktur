@@ -23,8 +23,8 @@ class Negation extends Formula {
      * @param {Map} e
      * @return {boolean}
      */
-    isSatisfied(structure, e) {
-        return !this.subFormula.isSatisfied(structure, e);
+    eval(structure, e) {
+        return !this.subFormula.eval(structure, e);
     }
 
     toString() {

@@ -13,16 +13,6 @@ class Term extends Expression {
         super();
     }
 
-    /**
-     * Abstract method
-     * @param {Structure} structure
-     * @param {Map} e
-     * @returns {null}
-     */
-    interpret(structure, e) {
-        return null;
-    }
-
     toString() {
         return null;
     }

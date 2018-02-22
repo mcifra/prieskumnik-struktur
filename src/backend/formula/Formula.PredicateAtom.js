@@ -25,10 +25,10 @@ class PredicateAtom extends Formula {
      * @param {Map} e
      * @return {boolean}
      */
-    isSatisfied(structure, e) {
+    eval(structure, e) {
         var translatedTerms = [];
         for (var i = 0; i < this.terms.length; i++) {
-            translatedTerms.push(this.terms[i].interpret(structure, e));
+            translatedTerms.push(this.terms[i].eval(structure, e));
         }
         var allTerms = structure.getPredicateValue(this.name);
 

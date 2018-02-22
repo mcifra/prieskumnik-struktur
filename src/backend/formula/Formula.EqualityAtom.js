@@ -25,8 +25,8 @@ class EqualityAtom extends Formula {
      * @param {Map} e
      * @return {boolean}
      */
-    isSatisfied(structure, e) {
-        return this.subLeft.interpret(structure, e) === this.subRight.interpret(structure, e);
+    eval(structure, e) {
+        return this.subLeft.eval(structure, e) === this.subRight.eval(structure, e);
     }
 
     toString() {

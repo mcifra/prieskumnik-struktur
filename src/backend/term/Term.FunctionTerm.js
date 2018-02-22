@@ -25,10 +25,10 @@ class FunctionTerm extends Term {
      * @param {Map} e
      * @returns {string} Name of variable
      */
-    interpret(structure, e) {
+    eval(structure, e) {
         var interpretedParams = [];
         for (var i = 0; i < this.terms.length; i++) {
-            interpretedParams.push(this.terms[i].interpret(structure, e));
+            interpretedParams.push(this.terms[i].eval(structure, e));
         }
         return structure.getFunctionValue(this.name, interpretedParams);
     }

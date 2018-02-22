@@ -25,8 +25,8 @@ class Disjunction extends Formula {
      * @param {Map} e
      * @return {boolean}
      */
-    isSatisfied(structure, e) {
-        return this.subLeft.isSatisfied(structure, e) || this.subRight.isSatisfied(structure, e);
+    eval(structure, e) {
+        return this.subLeft.eval(structure, e) || this.subRight.eval(structure, e);
     }
 
     toString() {
