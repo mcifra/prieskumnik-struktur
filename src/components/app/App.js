@@ -1,7 +1,6 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
 
-import FormulaStorage from "./FormulaStorage";
 import LanguageEditor from './LanguageEditor';
 import StructureEditor from './StructureEditor';
 import Language from "../../backend/Language";

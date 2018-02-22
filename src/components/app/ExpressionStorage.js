@@ -31,26 +31,6 @@ class ExpressionStorage extends React.Component {
                 Formula sa zmaže tlačidlom X vpravo.
             </Popover>
         );
-        let answerSelect = null;
-        if (this.props.startRule === 'formula') {
-            answerSelect = (
-                <select value='' onChange={null}>
-                    <option value=''></option>
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
-                </select>
-            );
-        } else {
-            let domain = [...this.props.structure.domain];
-            answerSelect = (
-                <select>
-                    <option value=''></option>
-                    {domain.map((item, i) =>
-                        <option value={item}>{item}</option>
-                    )}
-                </select>
-            )
-        }
         return (
             <Panel>
                 <Panel.Heading>
@@ -63,7 +43,7 @@ class ExpressionStorage extends React.Component {
                     {this.state.expressions.map((current, index) =>
                         <Row key={index}>
                             <Col lg={8}>
-                                <FormGroup validationState={current.satisfied ? 'success' : 'error'}>
+                                <FormGroup validationState={current.eval ? 'success' : 'error'}>
                                     <InputGroup>
                                         <FormControl type='text' value={current.formula}
                                                      onChange={(e) => this.checkExpression(e, index)}/>
@@ -77,7 +57,7 @@ class ExpressionStorage extends React.Component {
                             <Col lg={2}>
                                 <FormGroup>
                                     <InputGroup>
-                                        {answerSelect}
+                                        {this.getAnswerSelect(index)}
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -92,14 +72,36 @@ class ExpressionStorage extends React.Component {
         );
     }
 
+    getAnswerSelect(index) {
+        if (this.props.startRule === 'formula') {
+            return (
+                <select value='' onChange={(e) => this.evaluateExpression(index, e)}>
+                    <option value=''></option>
+                    <option value={true}>True</option>
+                    <option value={false}>False</option>
+                </select>
+            );
+        } else {
+            let domain = [...this.props.structure.domain];
+            return (
+                <select value='' onChange={(e) => this.evaluateExpression(index, e)}>
+                    <option value=''></option>
+                    {domain.map((item, i) =>
+                        <option value={item}>{item}</option>
+                    )}
+                </select>
+            )
+        }
+    }
+
     addExpression() {
         let expressions = this.state.expressions;
         expressions.push({
-            formula: '',
-            valid: true,
+            expression: '',
+            validSyntax: true,
             validationMessage: '',
-            formulaObj: null,
-            satisfied: false
+            parsedObject: null,
+            eval: false
         });
         this.setState({
             expressions: expressions
@@ -134,37 +136,51 @@ class ExpressionStorage extends React.Component {
         let givenExpression = e.target.value;
         let options = this.setParserOptions();
         let expressions = this.state.expressions;
-        expressions[index].formula = givenExpression;
+        expressions[index].expression = givenExpression;
         try {
             let parsedExpression = null;
             if (givenExpression.length > 0) {
                 parsedExpression = this.parser.parse("(" + givenExpression + ")", options);
             }
             console.log('Parsed expression:', parsedExpression);
-            let sat = this.evaluateExpression(parsedExpression);
             expressions[index].validationMessage = '';
-            expressions[index].valid = true;
-            expressions[index].formulaObj = parsedExpression;
-            expressions[index].satisfied = sat;
+            expressions[index].validSyntax = true;
+            expressions[index].parsedObject = parsedExpression;
             console.log('Final expression:', expressions[index]);
         } catch (e) {
             console.error(e);
             expressions[index].validationMessage = e.message;
-            expressions[index].valid = false;
-            expressions[index].formulaObj = null;
-            expressions[index].satisfied = false;
+            expressions[index].validSyntax = false;
+            expressions[index].parsedObject = null;
         }
         this.setState({
             expressions: expressions
         });
     }
 
-    evaluateExpression(expression) {
-        let e = new Map();
+    evaluateExpression(expressionIndex, e) {
+        let givenValue = e.target.value;
+        let expressions = this.state.expressions;
+
         // Temporary
-        e.set('x', 'a');
-        e.set('y', 'b');
-        return expression.eval(this.props.structure, e);
+        let eVar = new Map();
+        eVar.set('x', 'a');
+        eVar.set('y', 'b');
+
+        if (expressions[expressionIndex].parsedObject == null || !expressions[expressionIndex].validSyntax) {
+            console.log('Koniec');
+            return;
+        }
+
+        // Vrati true/false (formula), alebo hodnotu z domeny (term)
+        let value = expressions[expressionIndex].parsedObject.eval(this.props.structure, eVar);
+        givenValue = (givenValue === 'true');
+        expressions[expressionIndex].eval = (value === givenValue);
+
+        this.setState({
+            expressions: expressions
+        });
+
     }
 
 }
