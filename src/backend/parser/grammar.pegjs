@@ -47,6 +47,9 @@ start
 formula
     = spaces f:formula_cases spaces {return f}
 
+term
+    = spaces "(" t:term_cases ")" spaces {return t}
+
 formula_cases
     = "(" left:formula spaces conjunction_symbol spaces right:formula ")" {return new Conjunction(left, right)}
     / "(" left:formula spaces disjunction_symbol spaces right:formula ")" {return new Disjunction(left, right)}
@@ -58,6 +61,11 @@ formula_cases
     / negation_symbol f:formula {return new Negation(f)}
     / ps:predicate_symbol {return ps}
     / "(" f:formula ")" {return f}
+
+term_cases
+    = f:function_symbol {return new FunctionTerm(f[0], f[1])}
+    / c:constant_symbol {return new Constant(c)}
+    / v:variable_symbol {return new Variable(v)}
 
 constant_symbol
     = $ (i:Identifier & {return Structure.language.hasConstant(i)})
@@ -74,11 +82,6 @@ variable_symbol
 
 terms
     = t:term ts:(spaces "," spaces t1:term {return t1})* {return [t].concat(ts)}
-
-term
-    = f:function_symbol {return new FunctionTerm(f[0], f[1])}
-    / c:constant_symbol {return new Constant(c)}
-    / v:variable_symbol {return new Variable(v)}
 
 spaces "spaces"
     = [ \t\n\r]*
