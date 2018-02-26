@@ -2,6 +2,8 @@ import React from 'react';
 import {Row, Col, FormGroup, ControlLabel, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
 import Panel from 'react-bootstrap/lib/Panel';
 
+import LanguageEditorInput from './LanguageEditorInput';
+
 class LanguageEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -37,14 +39,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Symboly konštánt</legend>
-                                        <FormGroup validationState={this.state.constants_error != '' ? 'error' : null}>
-                                            <InputGroup>
-                                                <label className='input-group-addon' htmlFor='language-constants'>{'𝓒'}<sub>{'𝓛'}</sub></label>
-                                                <FormControl id='language-constants' type='text' onChange={(e) => this.updateConstants(e)}
-                                                             onFocus={(e) => this.updateConstants(e)}/>
-                                            </InputGroup>
-                                            <HelpBlock>{this.state.constants_error}</HelpBlock>
-                                        </FormGroup>
+                                        <LanguageEditorInput id='language-constants' label='𝓒'
+                                                             onChange={(parsedValue)=>this.updateConstants(parsedValue)}
+                                                             startRule='language_constants_list' />
                                     </fieldset>
                                 </Col>
                             </Row>
@@ -52,14 +49,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Predikátové symboly</legend>
-                                        <FormGroup validationState={this.state.predicates_error != '' ? 'error' : null}>
-                                            <InputGroup>
-                                                <label className='input-group-addon' htmlFor='language-predicates'>{'𝓟'}<sub>{'𝓛'}</sub></label>
-                                                <FormControl id='language-predicates' type='text' onChange={(e) => this.updatePredicates(e)}
-                                                             onFocus={(e) => this.updatePredicates(e)}/>
-                                            </InputGroup>
-                                            <HelpBlock>{this.state.predicates_error}</HelpBlock>
-                                        </FormGroup>
+                                        <LanguageEditorInput id='language-predicates' label='𝓟'
+                                                             onChange={(parsedValue)=>this.updatePredicates(parsedValue)}
+                                                             startRule='language_predicates_list' />
                                     </fieldset>
                                 </Col>
                             </Row>
@@ -67,14 +59,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Funkčné symboly</legend>
-                                        <FormGroup com validationState={this.state.functions_error != '' ? 'error' : null}>
-                                            <InputGroup>
-                                                <label className='input-group-addon' htmlFor='language-functions'>{'𝓕'}<sub>{'𝓛'}</sub></label>
-                                                <FormControl id='language-functions' type='text' onChange={(e) => this.updateFunctions(e)}
-                                                             onFocus={(e) => this.updateFunctions(e)}/>
-                                            </InputGroup>
-                                            <HelpBlock>{this.state.functions_error}</HelpBlock>
-                                        </FormGroup>
+                                        <LanguageEditorInput id='language-functions' label='𝓕'
+                                                             onChange={(parsedValue)=>this.updateFunctions(parsedValue)}
+                                                             startRule='language_functions_list' />
                                     </fieldset>
                                 </Col>
                             </Row>
@@ -85,65 +72,19 @@ class LanguageEditor extends React.Component {
         );
     }
 
-    updateConstants(e) {
-        let parser = require('../../backend/parser/grammar');
-        let inputValue = e.target.value;
-        this.setState({
-            constants_error: ''
-        });
-        try {
-            let parsedValue = [];
-            if (inputValue.length > 0)
-                parsedValue = parser.parse(inputValue, {startRule: 'language_constants_list'});
-            this.props.structure.setLanguageConstants(parsedValue);
-            this.props.onChange(this.props.structure);
-        } catch (e) {
-            console.error(e);
-            this.setState({
-                constants_error: e.message
-            });
-        }
-
+    updateConstants(parsedValue) {
+        this.props.structure.setLanguageConstants(parsedValue);
+        this.props.onChange(this.props.structure);
     }
 
-    updatePredicates(e) {
-        let parser = require('../../backend/parser/grammar');
-        let inputValue = e.target.value;
-        this.setState({
-            predicates_error: ''
-        });
-        try {
-            let parsedValue = [];
-            if (inputValue.length > 0)
-                parsedValue = parser.parse(inputValue, {startRule: 'language_predicates_list'});
-            this.props.structure.setLanguagePredicates(parsedValue);
-            this.props.onChange(this.props.structure);
-        } catch (e) {
-            console.error(e);
-            this.setState({
-                predicates_error: e.message
-            });
-        }
+    updatePredicates(parsedValue) {
+        this.props.structure.setLanguagePredicates(parsedValue);
+        this.props.onChange(this.props.structure);
     }
 
-    updateFunctions(e) {
-        let parser = require('../../backend/parser/grammar');
-        let inputValue = e.target.value;
-        this.setState({
-            functions_error: ''
-        });
-        try {
-            let parsedValue = [];
-            if (inputValue.length > 0)
-                parsedValue = parser.parse(inputValue, {startRule: 'language_functions_list'});
-            this.props.structure.setLanguageFunctions(parsedValue);
-            this.props.onChange(this.props.structure);
-        } catch (e) {
-            console.error(e);
-            this.setState({
-                functions_error: e.message
-            });
-        }
+    updateFunctions(parsedValue) {
+        this.props.structure.setLanguageFunctions(parsedValue);
+        this.props.onChange(this.props.structure);
     }
 }
 
