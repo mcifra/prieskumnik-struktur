@@ -1,18 +1,12 @@
 import React from 'react';
-import {Row, Col, FormGroup, ControlLabel, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
+import {Row, Col, Popover, OverlayTrigger} from 'react-bootstrap';
 import Panel from 'react-bootstrap/lib/Panel';
 
-import LanguageEditorInput from './LanguageEditorInput';
+import ParsedTextInput from "./ParsedTextInput";
 
 class LanguageEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            constants_error: '',
-            predicates_error: '',
-            functions_error: ''
-        };
-        this.lastConstantsValue = '';
     }
 
     render() {
@@ -24,6 +18,9 @@ class LanguageEditor extends React.Component {
                 formáte <code>funkcia/arita</code>.
             </Popover>
         );
+        const constantsParserOptions = {startRule: 'language_constants_list'};
+        const predicatesParserOptions = {startRule: 'language_predicates_list'};
+        const functionsParserOptions = {startRule: 'language_functions_list'};
         return (
             <div className='language-editor'>
                 <Panel>
@@ -39,9 +36,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Symboly konštánt</legend>
-                                        <LanguageEditorInput id='language-constants' label='𝓒'
+                                        <ParsedTextInput id='language-constants' label={<span>𝓒<sub>𝓛</sub></span>}
                                                              onChange={(parsedValue)=>this.updateConstants(parsedValue)}
-                                                             startRule='language_constants_list' />
+                                                             parserOptions={constantsParserOptions} />
                                     </fieldset>
                                 </Col>
                             </Row>
@@ -49,9 +46,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Predikátové symboly</legend>
-                                        <LanguageEditorInput id='language-predicates' label='𝓟'
-                                                             onChange={(parsedValue)=>this.updatePredicates(parsedValue)}
-                                                             startRule='language_predicates_list' />
+                                        <ParsedTextInput id='language-predicates' label={<span>𝓟<sub>𝓛</sub></span>}
+                                                         onChange={(parsedValue)=>this.updatePredicates(parsedValue)}
+                                                         parserOptions={predicatesParserOptions} />
                                     </fieldset>
                                 </Col>
                             </Row>
@@ -59,9 +56,9 @@ class LanguageEditor extends React.Component {
                                 <Col lg={12}>
                                     <fieldset>
                                         <legend>Funkčné symboly</legend>
-                                        <LanguageEditorInput id='language-functions' label='𝓕'
+                                        <ParsedTextInput id='language-functions' label={<span>𝓕<sub>𝓛</sub></span>}
                                                              onChange={(parsedValue)=>this.updateFunctions(parsedValue)}
-                                                             startRule='language_functions_list' />
+                                                             parserOptions={functionsParserOptions} />
                                     </fieldset>
                                 </Col>
                             </Row>
