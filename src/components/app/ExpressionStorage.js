@@ -42,7 +42,7 @@ class ExpressionStorage extends React.Component {
                 <Panel.Body>
                     {this.state.expressions.map((current, index) =>
                         <Row key={index}>
-                            <Col lg={8}>
+                            <Col sm={7}>
                                 <FormGroup validationState={current.eval ? 'success' : 'error'}>
                                     <InputGroup>
                                         <FormControl type='text' value={current.formula}
@@ -54,15 +54,15 @@ class ExpressionStorage extends React.Component {
                                     <HelpBlock>{current.validationMessage}</HelpBlock>
                                 </FormGroup>
                             </Col>
-                            <Col lg={2}>
+                            <Col sm={3}>
                                 <FormGroup>
                                     <InputGroup>
                                         {this.getAnswerSelect(index)}
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
-                            <Col lg={2}>
-
+                            <Col sm={2}>
+                                {current.eval ? "OK" : "ZLE"}
                             </Col>
                         </Row>
                     )}
@@ -75,7 +75,7 @@ class ExpressionStorage extends React.Component {
     getAnswerSelect(index) {
         if (this.props.startRule === 'formula') {
             return (
-                <select value='' onChange={(e) => this.evaluateExpression(index, e)}>
+                <select onChange={(e) => this.evaluateExpression(index, e)}>
                     <option value=''></option>
                     <option value={true}>True</option>
                     <option value={false}>False</option>
@@ -84,7 +84,7 @@ class ExpressionStorage extends React.Component {
         } else {
             let domain = [...this.props.structure.domain];
             return (
-                <select value='' onChange={(e) => this.evaluateExpression(index, e)}>
+                <select onChange={(e) => this.evaluateExpression(index, e)}>
                     <option value=''></option>
                     {domain.map((item, i) =>
                         <option value={item}>{item}</option>
@@ -140,7 +140,10 @@ class ExpressionStorage extends React.Component {
         try {
             let parsedExpression = null;
             if (givenExpression.length > 0) {
-                parsedExpression = this.parser.parse("(" + givenExpression + ")", options);
+                if (this.props.startRule === 'formula')
+                    parsedExpression = this.parser.parse("(" + givenExpression + ")", options);
+                else
+                    parsedExpression = this.parser.parse(givenExpression, options);
             }
             console.log('Parsed expression:', parsedExpression);
             expressions[index].validationMessage = '';
@@ -174,8 +177,11 @@ class ExpressionStorage extends React.Component {
 
         // Vrati true/false (formula), alebo hodnotu z domeny (term)
         let value = expressions[expressionIndex].parsedObject.eval(this.props.structure, eVar);
-        givenValue = (givenValue === 'true');
+        if (this.props.startRule === 'formula')
+            givenValue = (givenValue === 'true');
         expressions[expressionIndex].eval = (value === givenValue);
+
+        console.log('Evaluate:', value);
 
         this.setState({
             expressions: expressions
