@@ -90,20 +90,28 @@ class Structure {
      * @param {string} value
      */
     setFunctionValue(functionName, functionParams, value) {
-        if (this.iFunction.get(functionName) == null)
+        let stringified = JSON.stringify(functionParams);
+        if (this.iFunction.has(functionName) && this.iFunction.get(functionName).has(stringified)) {
+            throw new InvalidLanguageException('Funkcia už je definovaná pre parameter ' + stringified);
+        }
+        if (!this.iFunction.has(functionName)) {
             this.iFunction.set(functionName, new Map());
-        this.iFunction.get(functionName).set(JSON.stringify(functionParams), value);
+        }
+        this.iFunction.get(functionName).set(stringified, value);
     }
 
     /**
      *
      * @param {string} functionName
      * @param {Array} functionParams
-     * @return {string|undefined}
+     * @return {string|null}
      */
     getFunctionValue(functionName, functionParams) {
-        let functionValue = this.iFunction.get(functionName);
-        return functionValue.get(JSON.stringify(functionParams));
+        let stringified = JSON.stringify(functionParams);
+        if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName).has(stringified)) {
+            return null;
+        }
+        return this.iFunction.get(functionName).get(stringified);
     }
 
 }
