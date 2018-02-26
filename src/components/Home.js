@@ -93,7 +93,14 @@ class Home extends React.Component {
                                     <Panel.Title componentClass='h3'>Denník</Panel.Title>
                                 </Panel.Heading>
                                 <Panel.Body>
-                                    Čoskoro ...
+                                    <table className={"table table-hover"}>
+                                        <tbody>
+                                            <tr>
+                                                <td>1. týždeň</td>
+                                                <td>Konzultácie so školiteľom ohľadom ďalšieho postupu. Vytvorenie vyhodnocovania termov.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </Panel.Body>
                             </Panel>
                         </Col>
