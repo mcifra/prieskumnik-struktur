@@ -33,10 +33,17 @@
    function checkTupleArity(tuple) {
         var requiredArity = options.arity;
         console.log(requiredArity,tuple.length);
-        if (requiredArity == tuple.length)
+        if (requiredArity == tuple.length) {
+            for (var i=0; i<tuple.length; i++) {
+                if (!Structure.hasDomainItem(tuple[i])) {
+                    error("Prvok " + tuple[i] + " nie je v doméne štruktúry");
+                }
+            }
             return tuple;
-        else
+        }
+        else {
             error('N-tica ' + tuple + ' nema povoleny pocet prvkov!');
+        }
    }
 
 }
@@ -187,7 +194,7 @@ language_function
 // DOMENA
 
 structure_domain_items_list
-    = spaces i1:Identifier ids:(spaces "," spaces i2:Identifier {return i2})* spaces {return [i1].concat(ids)}
+    = spaces i1:DomainIdentifier ids:(spaces "," spaces i2:DomainIdentifier {return i2})* spaces {return [i1].concat(ids)}
 
 // START
 // PREDIKAT + FUNKCIA
@@ -201,6 +208,11 @@ structure_tuple
 
 
 
+DomainIdentifier
+    = name:IdentifierPart+ {return name.join("")}
+
+Emoji
+    = [\u1f600-\u1f64f]
 
 
 
