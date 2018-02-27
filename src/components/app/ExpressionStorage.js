@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col, Panel, Button, FormGroup, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger} from 'react-bootstrap';
+import { Row, Col, Panel, Button, FormGroup, InputGroup, FormControl, HelpBlock, Popover, OverlayTrigger } from 'react-bootstrap';
 
 import Conjunction from "../../backend/formula/Formula.Conjunction";
 import Disjunction from "../../backend/formula/Formula.Disjunction";
@@ -31,6 +31,7 @@ class ExpressionStorage extends React.Component {
                 Formula sa zmaže tlačidlom X vpravo.
             </Popover>
         );
+        const expressionLabel = this.props.startRule === 'formula' ? '𝝋' : '𝝉';
         return (
             <Panel>
                 <Panel.Heading>
@@ -43,10 +44,12 @@ class ExpressionStorage extends React.Component {
                     {this.state.expressions.map((current, index) =>
                         <Row key={index}>
                             <Col sm={7}>
-                                <FormGroup validationState={current.eval ? 'success' : 'error'}>
+                                <FormGroup validationState={current.expression ? (current.validSyntax ? 'success' : 'error') : null}>
                                     <InputGroup>
+                                        <label className='input-group-addon'
+                                            htmlFor={this.props.startRule+index}>{<span>{expressionLabel}<sub>{index+1}</sub></span>}</label>
                                         <FormControl type='text' value={current.formula}
-                                                     onChange={(e) => this.checkExpression(e, index)}/>
+                                            onChange={(e) => this.checkExpression(e, index)} id={this.props.startRule+index} />
                                         <InputGroup.Button>
                                             <Button onClick={() => this.deleteExpression(index)}>✖</Button>
                                         </InputGroup.Button>
@@ -57,7 +60,12 @@ class ExpressionStorage extends React.Component {
                             <Col sm={3}>
                                 <FormGroup>
                                     <InputGroup>
-                                        {this.getAnswerSelect(index)}
+                                        <label className='input-group-addon' htmlFor={'expression-answer-' + index}>{'Odpoveď'}</label>
+                                        <select className='form-control' onChange={(e) => this.evaluateExpression(index, e)}
+                                                id={'expression-answer-' + index} >
+                                            <option value=''></option>
+                                            {this.getSelectAnswers(index)}
+                                        </select>
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -72,26 +80,22 @@ class ExpressionStorage extends React.Component {
         );
     }
 
-    getAnswerSelect(index) {
-        if (this.props.startRule === 'formula') {
+    getSelectAnswers(index) {
+        if (this.props.startRule === 'formula')
             return (
-                <select onChange={(e) => this.evaluateExpression(index, e)}>
-                    <option value=''></option>
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
-                </select>
+                <React.Fragment>
+                    <option value={true}>{<span>𝓜 ⊨ 𝝋<sub>{index+1}</sub></span>}</option>
+                    <option value={false}>{<span>𝓜 ⊭ 𝝋<sub>{index+1}</sub></span>}</option>
+                </React.Fragment>
             );
-        } else {
-            let domain = [...this.props.structure.domain];
-            return (
-                <select onChange={(e) => this.evaluateExpression(index, e)}>
-                    <option value=''></option>
-                    {domain.map((item, i) =>
-                        <option value={item}>{item}</option>
-                    )}
-                </select>
-            )
-        }
+        let domain = [...this.props.structure.domain];
+        return (
+            <React.Fragment>
+                {domain.map((item, i) =>
+                    <option value={item}>{item}</option>
+                )}
+            </React.Fragment>
+        )
     }
 
     addExpression() {
