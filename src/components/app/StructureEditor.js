@@ -37,10 +37,10 @@ class StructureEditor extends React.Component {
                     <Panel.Body>
                         <Form>
                             {this.getDomainValueInputElement()}
-                            {this.getVariablesValueInputElement()}
                             {this.getConstantsValueInputElement()}
                             {this.getPredicatesValueInputElement()}
                             {this.getFunctionsValueInputElement()}
+                            {this.getVariablesValueInputElement()}
                         </Form>
                     </Panel.Body>
                 </Panel>
