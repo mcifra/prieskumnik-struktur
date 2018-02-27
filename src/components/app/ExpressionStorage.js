@@ -47,9 +47,9 @@ class ExpressionStorage extends React.Component {
                                 <FormGroup validationState={current.expression ? (current.validSyntax ? 'success' : 'error') : null}>
                                     <InputGroup>
                                         <label className='input-group-addon'
-                                            htmlFor={this.props.startRule+index}>{<span>{expressionLabel}<sub>{index+1}</sub></span>}</label>
+                                            htmlFor={this.props.startRule + '-' + index}>{<span>{expressionLabel}<sub>{index+1}</sub></span>}</label>
                                         <FormControl type='text' value={current.formula}
-                                            onChange={(e) => this.checkExpression(e, index)} id={this.props.startRule+index} />
+                                            onChange={(e) => this.checkExpression(e, index)} id={this.props.startRule + '-' + index} />
                                         <InputGroup.Button>
                                             <Button onClick={() => this.deleteExpression(index)}>✖</Button>
                                         </InputGroup.Button>
@@ -60,9 +60,9 @@ class ExpressionStorage extends React.Component {
                             <Col sm={3}>
                                 <FormGroup>
                                     <InputGroup>
-                                        <label className='input-group-addon' htmlFor={'expression-answer-' + index}>{'Odpoveď'}</label>
+                                        <label className='input-group-addon' htmlFor={this.props.startRule + '-answer-' + index}>{'Odpoveď'}</label>
                                         <select className='form-control' onChange={(e) => this.evaluateExpression(index, e)}
-                                                id={'expression-answer-' + index} >
+                                                id={this.props.startRule + '-answer-' + index} >
                                             <option value=''></option>
                                             {this.getSelectAnswers(index)}
                                         </select>
