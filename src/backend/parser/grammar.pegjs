@@ -208,7 +208,7 @@ structure_tuple
 
 
 
-DomainIdentifier
+DomainIdentifier "domain identifier"
     = name:IdentifierPart+ {return name.join("")}
 
 Emoji
