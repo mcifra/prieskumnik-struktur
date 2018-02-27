@@ -69,8 +69,8 @@ class StructureEditor extends React.Component {
             <Row>
                 <Col lg={12}>
                     <fieldset>
-                        <legend>Interpretácia indivíduových premenných ℯ</legend>
-                        <ParsedTextInput label='ℯ'
+                        <legend>Ohodnotenie indivíduových premenných</legend>
+                        <ParsedTextInput label={<i>e</i>}
                                          id='variables-value'
                                          onChange={(parsedValue) => this.updateVariableValue(parsedValue)}
                                          parserOptions={this.getDomainParserOptions()}/>
