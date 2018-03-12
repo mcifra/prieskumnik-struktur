@@ -5,7 +5,6 @@ class References extends React.Component {
         return (
             <div className={"references"}>
                 <h1>Zdroje</h1>
-                <p>Stiahnuť prezentáciu ako <a href="docs/zdroje.pptx">.pptx</a> alebo <a href="docs/zdroje.pdf">.pdf</a></p>
                 <h2>Logika : Neúplnost, složitost a nutnost / Vítězslav Švejdar. Praha : Academia, 2002</h2>
                 <ul>
                     <li>Teoretický zdroj</li>
@@ -33,8 +32,18 @@ class References extends React.Component {
                 <ul>
                     <li>Mountain View, California: Mozilla, 2016 [online] <a href="https://developer.mozilla.org/bm/docs/Web/JavaScript">https://developer.mozilla.org/bm/docs/Web/JavaScript</a></li>
                 </ul>
+                <h2>PEG.js / David Majda</h2>
+                <ul>
+                    <li>Javascript parser generátor</li>
+                    <li>využívaný na parsovanie vstupov od užívateľa</li>
+                    <li>online na <a href='https://pegjs.org/'>https://pegjs.org/</a></li>
+                </ul>
+                <h2>Redux</h2>
+                <ul>
+                    <li>Javascript open-source knižnica zameraná na spravovanie stavu aplikácie</li>
+                    <li>online na <a href='https://redux.js.org/'>https://redux.js.org/</a></li>
+                </ul>
             </div>
-
         );
     }
 }

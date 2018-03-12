@@ -13,6 +13,8 @@
     const EqualityAtom = options.equalityAtom;
     const Structure = options.structure;
 
+    if(options.domainCheck==null) options.domainCheck=true;
+
     function checkPredicateArity(id, terms) {
         if (Structure.language.getPredicate(id) == terms.length) {
             return new Predicate(id, terms);
@@ -23,22 +25,24 @@
 
 
    function isItemInDomain(item) {
-        if (Structure.hasDomainItem(item)) {
+        if (Structure.hasDomainItem(item))
             return true;
-        } else {
-            error("Item " + item + " is not in structure!");
-        }
+        error("Prvok " + item + " nie je v doméne štruktúry");
    }
 
    function checkTupleArity(tuple) {
         var requiredArity = options.arity;
         console.log(requiredArity,tuple.length);
         if (requiredArity == tuple.length) {
+          if(options.domainCheck){
             for (var i=0; i<tuple.length; i++) {
                 if (!Structure.hasDomainItem(tuple[i])) {
                     error("Prvok " + tuple[i] + " nie je v doméne štruktúry");
                 }
             }
+          } else {
+
+          }
             return tuple;
         }
         else {
@@ -196,6 +200,9 @@ language_function
 structure_domain_items_list
     = spaces i1:DomainIdentifier ids:(spaces "," spaces i2:DomainIdentifier {return i2})* spaces {return [i1].concat(ids)}
 
+
+
+
 // START
 // PREDIKAT + FUNKCIA
 
@@ -203,8 +210,21 @@ structure_tuples_list
     = spaces t1:structure_tuple tl:(spaces "," spaces t2:structure_tuple {return t2})* spaces {return [t1].concat(tl)}
 
 structure_tuple
-    = "(" spaces item1:Identifier items:(spaces "," spaces item2:Identifier {return item2})+ spaces ")" {return checkTupleArity([item1].concat(items))}
-    / spaces item:Identifier spaces {return checkTupleArity(item)}
+    = "(" spaces item1:DomainIdentifier items:(spaces "," spaces item2:DomainIdentifier {return item2})+ spaces ")" {return checkTupleArity([item1].concat(items))}
+    / spaces item:DomainIdentifier spaces {return checkTupleArity(item)}
+
+
+
+// START
+// OHODNOTENIE PREMENNYCH
+
+e_tuples
+  = spaces t1:e_tuple tl:(spaces "," spaces t2:e_tuple {return t2})* spaces {return [t1].concat(tl)}
+
+e_tuple
+  = "(" spaces item1:variable_symbol spaces "," spaces item2:DomainIdentifier & {return isItemInDomain(item2)} spaces ")" {return [item1, item2]}
+
+
 
 
 

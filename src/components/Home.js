@@ -94,9 +94,23 @@ class Home extends React.Component {
                                 </Panel.Heading>
                                 <Panel.Body>
                                     <table className={"table table-hover"}>
+                                        <thead>
+                                            <tr>
+                                                <th>Týždeň</th>
+                                                <th>Info</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             <tr>
-                                                <td>1. týždeň</td>
+                                                <td>3</td>
+                                                <td>Refaktorizácia do Redux-u</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Konzultácie so školiteľom ohľadom využitia knižnice <a href='https://redux.js.org/'>Redux</a> a spôsobe exportovania aplikácie.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
                                                 <td>Konzultácie so školiteľom ohľadom ďalšieho postupu. Vytvorenie vyhodnocovania termov.</td>
                                             </tr>
                                         </tbody>
