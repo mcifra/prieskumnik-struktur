@@ -1,17 +1,19 @@
 import React from 'react';
 
-const Expressions = ({formulas, terms, onInputChange, addExpression, onAnswerSelect, domain}) => (
+const Expressions = ({formulas, terms, onInputChange, addExpression, onAnswerSelect, domain, deleteExpression}) => (
     <div>
         <p>Formuly</p>
         {formulas.map((formula, index) =>
             <div>
                 <label>{'Formula ' + (index + 1)}</label>
                 <input type='text' onChange={(e) => onInputChange(e.target.value, index, 'FORMULA')}/>
+                <button onClick={(e)=>deleteExpression('FORMULA', index)}>Vymazat</button>
                 <select value={formula.answerValue} onChange={(e) => onAnswerSelect(e.target.value, 'FORMULA', index)}>
                     <option value={''}>{''}</option>
                     <option value={true}>true</option>
                     <option value={false}>false</option>
                 </select>
+                <span>{formula.answerValue !== '' ? (formula.answerValue === formula.expressionValue ? 'OK' : 'ZLE') : ''}</span>
                 <span>{formula.feedbackMessage}</span>
             </div>
         )}
@@ -21,6 +23,7 @@ const Expressions = ({formulas, terms, onInputChange, addExpression, onAnswerSel
             <div>
                 <label>{'Term ' + (index + 1)}</label>
                 <input type='text' onChange={(e) => onInputChange(e.target.value, index, 'TERM')}/>
+                <button onClick={(e)=>deleteExpression('TERM', index)}>Vymazat</button>
                 <select value={term.answerValue} onChange={(e) => onAnswerSelect(e.target.value, 'TERM', index)}>
                     <option value={''}>{''}</option>
                     {[...domain].map((item, index) =>

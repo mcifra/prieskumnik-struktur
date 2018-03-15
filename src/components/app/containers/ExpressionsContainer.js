@@ -1,4 +1,4 @@
-import {addExpression, checkExpressionSyntax, setExpressionAnswer} from "../actions";
+import {addExpression, checkExpressionSyntax, deleteExpression, setExpressionAnswer} from "../actions";
 import {connect} from 'react-redux';
 import Expressions from "../components/Expressions";
 
@@ -11,6 +11,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onInputChange: checkExpressionSyntax,
     addExpression: addExpression,
+    deleteExpression: deleteExpression,
     onAnswerSelect: setExpressionAnswer
 };
 

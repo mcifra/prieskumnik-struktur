@@ -54,6 +54,8 @@ function rootReducer(state = defaultState, action) {
             return setFunctions(state, action);
         case 'SET_DOMAIN':
             return setDomain(state, action);
+        case 'SET_VARIABLES_VALUE':
+            return setVariablesValue(state, action);
         case 'SET_CONSTANT_VALUE':
             return setConstantValue(state, action);
         case 'SET_PREDICATE_VALUE':
@@ -62,6 +64,8 @@ function rootReducer(state = defaultState, action) {
             return setFunctionValue(state, action);
         case 'ADD_EXPRESSION':
             return addExpression(state, action);
+        case 'DELETE_EXPRESSION':
+            return deleteExpression(state, action);
         case 'CHECK_EXPRESSION_SYNTAX':
             return checkExpressionSyntax(state, action);
         case 'SET_EXPRESSION_ANSWER':
@@ -317,6 +321,49 @@ function setDomain(state, action) {
     return newState;
 }
 
+function setVariablesValue(state, action) {
+    let newState = copyState(state);
+    let parsedValue = [];
+    let variableValues = new Map();
+    let error = '';
+    newState.inputs.variableValues.value = action.value;
+    try {
+        if (action.value.length > 0) {
+            parsedValue = parser.parse(action.value, {
+                structure: state.structure,
+                startRule: 'e_tuples',
+            });
+        }
+        // [<premenna>, <prvok domeny>]
+        for (let i = 0; i < parsedValue.length; i++) {
+            let variable = parsedValue[i][0];
+            let domainItem = parsedValue[i][1];
+            let valid = true;
+            if (newState.structure.language.hasItem(variable)) {
+                // nemoze byt konstanta
+                // throw new InvalidLanguageException('Prvok ' + variable + ' sa nachádza v jazyku');
+                valid = false;
+                error = 'Prvok ' + variable + ' sa nachádza v jazyku';
+            }
+            if (!newState.structure.domain.has(domainItem)) {
+                // nie je v domene
+                // throw new InvalidLanguageException('Prvok ' + domainItem + ' nie je v doméne štruktúry');
+                valid = false;
+                error = 'Prvok ' + domainItem + ' nie je v doméne štruktúry';
+            }
+            if (valid)
+                variableValues.set(variable, domainItem);
+        }
+    } catch (e) {
+        console.error(e);
+        error = e.message;
+    }
+    newState.inputs.variableValues.error = error;
+    newState.variableValues = variableValues;
+    console.log(newState);
+    return newState;
+}
+
 function checkPredicatesValues(domain, predicates) {
     let p = new Map();
     let add = false;
@@ -445,6 +492,20 @@ function addExpression(state, action) {
     return state;
 }
 
+function deleteExpression(state, action) {
+    let newState = copyState(state);
+    if (action.expressionType === 'FORMULA') {
+        if (newState.expressions.formulas[action.expressionIndex]) {
+            newState.expressions.formulas.splice(action.expressionIndex, 1);
+        }
+    } else if (action.expressionType === 'TERM') {
+        if (newState.expressions.terms[action.expressionIndex]) {
+            newState.expressions.terms.splice(action.expressionIndex, 1);
+        }
+    }
+    return newState;
+}
+
 function checkExpressionSyntax(state, action) {
     let givenExpression = action.value;
     let options = setParserOptions(action.expressionType.toLowerCase(), state.structure);
@@ -512,12 +573,12 @@ function setExpressionAnswer(state, action) {
 
     if (action.expressionType === 'FORMULA') {
         let expression = newState.expressions.formulas[action.expressionIndex];
-        expression.answerValue = action.answer;
+
         if (expression.parsedObject) {
             expressionValue = newState.expressions.formulas[action.expressionIndex].parsedObject.eval(newState.structure, new Map());
             let givenAnswer = (action.answer === "true");
-            console.log(givenAnswer);
-            expression.expressionValue = (givenAnswer === expressionValue);
+            expression.answerValue = givenAnswer;
+            expression.expressionValue = expressionValue;
         }
 
     } else {

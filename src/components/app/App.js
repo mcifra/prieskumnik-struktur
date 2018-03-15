@@ -19,6 +19,7 @@ import ConstantsValueEditorContainer from './containers/ConstantsValueEditorCont
 import FunctionsValueEditorContainer from './containers/FunctionsValueEditorContainer';
 import PredicatesValueEditorContainer from './containers/PredicatesValueEditorContainer';
 import ExpressionsContainer from './containers/ExpressionsContainer';
+import VariablesValueContainer from "./containers/VariablesValueContainer";
 
 const store = createStore(reducer);
 
@@ -32,6 +33,7 @@ const App = () => (
             <ConstantsValueEditorContainer />
             <FunctionsValueEditorContainer />
             <PredicatesValueEditorContainer />
+            <VariablesValueContainer />
             <ExpressionsContainer />
         </div>
     </Provider>

@@ -68,25 +68,39 @@ export const setFunctionValue = (value, functionName) => ({
     functionName
 });
 
-export function checkExpressionSyntax(value, index, expressionType) {
-    return {
-        type: 'CHECK_EXPRESSION_SYNTAX',
-        value: value,
-        index: index,
-        expressionType: expressionType
-    }
-}
+export const checkExpressionSyntax = (value, index, expressionType) => ({
+    type: 'CHECK_EXPRESSION_SYNTAX',
+    value,
+    index,
+    expressionType
+});
 
-export function addExpression(expressionType) {
-    return {
-        type: 'ADD_EXPRESSION',
-        expressionType
-    }
-}
+export const addExpression = (expressionType) => ({
+    type: 'ADD_EXPRESSION',
+    expressionType
+});
 
-export const setExpressionAnswer = (answer, expressionType, expressionIndex)  => ({
+export const deleteExpression = (expressionType, expressionIndex) => ({
+    type: 'DELETE_EXPRESSION',
+    expressionType,
+    expressionIndex
+});
+
+export const setExpressionAnswer = (answer, expressionType, expressionIndex) => ({
     type: 'SET_EXPRESSION_ANSWER',
     answer,
+    expressionType,
+    expressionIndex
+});
+
+export const lockExpressionValue = (expressionType, expressionIndex) => ({
+    type: 'LOCK_EXPRESSION_VALUE',
+    expressionType,
+    expressionIndex
+});
+
+export const lockExpressionAnswer = (expressionType, expressionIndex) => ({
+    type: 'LOCK_EXPRESSION_ANSWER',
     expressionType,
     expressionIndex
 });
@@ -96,4 +110,9 @@ export const setEditMode = (value, itemType, name) => ({
     value,
     itemType,
     name
+});
+
+export const setVariablesValue = (value) => ({
+    type: 'SET_VARIABLES_VALUE',
+    value
 });
