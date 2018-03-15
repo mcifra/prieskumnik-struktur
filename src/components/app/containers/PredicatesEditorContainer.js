@@ -3,15 +3,15 @@ import TextInput from '../components/TextInput';
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state) => ({
-    name: 'Funkcie',
-    error: state.inputs.functions.error
+    name: 'Predikaty',
+    error: state.inputs.predicates.error
 });
 
 const mapDispatchOnProps = {
     onInputChange: setPredicates
 };
 
-const PredicatesEditorContainer=connect(
+const PredicatesEditorContainer = connect(
     mapStateToProps,
     mapDispatchOnProps
 )(TextInput);

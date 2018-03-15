@@ -3,8 +3,8 @@ import TextInput from '../components/TextInput';
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state) => ({
-    name: 'Predikaty',
-    error: state.inputs.predicates.error
+    name: 'Funkcie',
+    error: state.inputs.functions.error
 });
 
 const mapDispatchOnProps = {

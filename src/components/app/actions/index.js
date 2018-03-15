@@ -1,3 +1,12 @@
+export const exportApp = () => ({
+    type: 'EXPORT_APP'
+});
+
+export const importApp = () => ({
+    type: 'IMPORT_APP'
+});
+
+
 // zmena inputu pre konstanty (editor jazyka)
 export function setConstants(value) {
     return {
@@ -45,3 +54,46 @@ export function setConstantValue(value, constantName) {
         value: value,
     }
 }
+
+export const setPredicateValue = (value, predicateName, domainItems = null) => ({
+    type: 'SET_PREDICATE_VALUE',
+    value,
+    predicateName,
+    domainItems
+});
+
+export const setFunctionValue = (value, functionName) => ({
+    type: 'SET_FUNCTION_VALUE',
+    value,
+    functionName
+});
+
+export function checkExpressionSyntax(value, index, expressionType) {
+    return {
+        type: 'CHECK_EXPRESSION_SYNTAX',
+        value: value,
+        index: index,
+        expressionType: expressionType
+    }
+}
+
+export function addExpression(expressionType) {
+    return {
+        type: 'ADD_EXPRESSION',
+        expressionType
+    }
+}
+
+export const setExpressionAnswer = (answer, expressionType, expressionIndex)  => ({
+    type: 'SET_EXPRESSION_ANSWER',
+    answer,
+    expressionType,
+    expressionIndex
+});
+
+export const setEditMode = (value, itemType, name) => ({
+    type: 'SET_EDIT_MODE',
+    value,
+    itemType,
+    name
+});
