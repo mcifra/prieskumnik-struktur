@@ -15,14 +15,6 @@ import Implication from "../../../backend/formula/Formula.Implication";
 
 let parser = require('../../../backend/parser/grammar');
 
-// function rootReducer(state = {}, action) {
-//     let language = Language(state.language, action);
-//     let structure = Structure(state.structure, action, language);
-//     let rootState = {language, structure};
-//     console.log(rootState);
-//     return rootState;
-// }
-
 const defaultState = {
     structure: new Structure(new Language()),
     variableValues: new Map(),
@@ -32,7 +24,7 @@ const defaultState = {
         functions: {value: '', error: '', locked: false},
         variableValues: {value: '', error: '', locked: false},
         structure: {
-            domain: {value: '', error: '', locked: false},
+            domain: {value: '', error: 'Doména nesmie byť prázdna', locked: false},
             constants: {},
             predicates: {},
             functions: {}
@@ -78,41 +70,40 @@ function rootReducer(state = defaultState, action) {
 }
 
 function setConstants(state, action) {
-    let structure = state.structure;
-    let constants = {value: action.value, locked: state.inputs.constants.locked};
-    let iConstants = state.inputs.structure.constants;
-    let parsedValue = null;
+    let newState = copyState(state);
+    let iConstants = newState.inputs.structure.constants;
+    let parsedValue = {error: null, items: []};
     try {
-        parsedValue = parser.parse(action.value, {startRule: 'language_constants_list'});
-        structure.setLanguageConstants(parsedValue);
-        constants.error = '';
+        if (action.value.length > 0) {
+            parsedValue = parser.parse(action.value, {startRule: 'constants', structure: newState.structure});
+            console.log('parsed constants:', parsedValue);
+        }
+        newState.structure.setLanguageConstants(parsedValue.items);
+        if (parsedValue.error) {
+            // chyba sposobena strukturou, napr. obsahuje konstantu
+            // ktora uz je v jazyku
+            newState.inputs.constants.error = parsedValue.error.message;
+            // + parsedValue.pos je pozicia kde je chyba
+        } else {
+            newState.inputs.constants.error = '';
+        }
         iConstants = {};
-        for (let i = 0; i < parsedValue.length; i++) {
-            iConstants[parsedValue[i]] = {value: '', error: '', locked: false};
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            iConstants[parsedValue.items[i]] = {value: '', error: '', locked: false};
         }
-    } catch (e) {
-        console.error(e);
-        constants.error = e.message;
-    }
-    let newState = {
-        ...state,
-        structure: structure,
-        inputs: {...state.inputs},
-        expressions: {
-            ...state.expressions,
-            formulas: [...state.expressions.formulas],
-            terms: [...state.expressions.terms]
-        }
-    };
-    newState.inputs.constants = constants;
-    newState.inputs.structure.constants = iConstants;
 
+    } catch (e) {
+        // syntakticka chyba
+        console.error(e);
+        newState.inputs.constants.error = e.message;
+    }
+    newState.inputs.structure.constants = iConstants;
 
     // sparsovanie vsetkych formul pre opatovnu kontrolu
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.formulas.length; i++) {
         try {
-            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', structure));
+            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', newState.structure));
             newState.expressions.formulas[i].feedbackMessage = '';
             newState.expressions.formulas[i].validSyntax = true;
             newState.expressions.formulas[i].parsedObject = test;
@@ -128,7 +119,7 @@ function setConstants(state, action) {
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.terms.length; i++) {
         try {
-            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', structure));
+            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', newState.structure));
             newState.expressions.terms[i].feedbackMessage = '';
             newState.expressions.terms[i].validSyntax = true;
             newState.expressions.terms[i].parsedObject = test;
@@ -145,43 +136,35 @@ function setConstants(state, action) {
 }
 
 function setPredicates(state, action) {
-    let structure = state.structure;
-    let predicates = {value: action.value, locked: state.inputs.predicates.locked};
-    let iPredicates = state.inputs.structure.predicates;
-    let parsedValue = null;
+    let newState = copyState(state);
+    let iPredicates = newState.inputs.structure.predicates;
+    let parsedValue = {error: null, items: []};
     try {
-        parsedValue = parser.parse(action.value, {startRule: 'language_predicates_list'});
-        structure.setLanguagePredicates(parsedValue);
-        predicates.error = '';
+        if (action.value.length > 0) {
+            parsedValue = parser.parse(action.value, {startRule: 'predicates', structure: newState.structure});
+            console.log('parsed predicates:', parsedValue);
+        }
+        newState.structure.setLanguagePredicates(parsedValue.items);
+        if (parsedValue.error) {
+            newState.inputs.predicates.error = parsedValue.error.message;
+        } else {
+            newState.inputs.predicates.error = '';
+        }
         iPredicates = {};
-        for (let i = 0; i < parsedValue.length; i++) {
-            iPredicates[parsedValue[i].name] = {value: '', error: '', locked: false, editMode: 'TABLE'};
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            iPredicates[parsedValue.items[i].name] = {value: '', error: '', locked: false, editMode: 'TEXT'};
         }
     } catch (e) {
         console.error(e);
-        predicates.error = e.message;
+        newState.inputs.predicates.error = e.message;
     }
-
-    let newState = {
-        ...state,
-        structure: structure,
-        inputs: {...state.inputs},
-        expressions: {
-            ...state.expressions,
-            formulas: [...state.expressions.formulas],
-            terms: [...state.expressions.terms]
-        }
-    };
-
-    newState.inputs.predicates = predicates;
     newState.inputs.structure.predicates = iPredicates;
-
 
     // sparsovanie vsetkych formul pre opatovnu kontrolu
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.formulas.length; i++) {
         try {
-            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', structure));
+            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', newState.structure));
             newState.expressions.formulas[i].feedbackMessage = '';
             newState.expressions.formulas[i].validSyntax = true;
             newState.expressions.formulas[i].parsedObject = test;
@@ -197,7 +180,7 @@ function setPredicates(state, action) {
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.terms.length; i++) {
         try {
-            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', structure));
+            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', newState.structure));
             newState.expressions.terms[i].feedbackMessage = '';
             newState.expressions.terms[i].validSyntax = true;
             newState.expressions.terms[i].parsedObject = test;
@@ -210,46 +193,39 @@ function setPredicates(state, action) {
     }
 
     console.log(newState);
-
     return newState;
 }
 
 function setFunctions(state, action) {
-    let structure = state.structure;
-    let functions = {value: action.value, locked: state.inputs.functions.locked};
-    let iFunctions = state.inputs.structure.functions;
-    let parsedValue = null;
+    let newState = copyState(state);
+    let iFunctions = newState.inputs.structure.functions;
+    let parsedValue = {error: null, items: []};
     try {
-        parsedValue = parser.parse(action.value, {startRule: 'language_functions_list'});
-        console.log(parsedValue);
-        structure.setLanguageFunctions(parsedValue);
-        functions.error = '';
+        if (action.value.length > 0) {
+            parsedValue = parser.parse(action.value, {startRule: 'functions', structure: newState.structure});
+            console.log('parsed functions:', parsedValue);
+        }
+        newState.structure.setLanguageFunctions(parsedValue.items);
+        if (parsedValue.error) {
+            newState.inputs.functions.error = parsedValue.error.message;
+        } else {
+            newState.inputs.functions.error = '';
+        }
         iFunctions = {};
-        for (let i = 0; i < parsedValue.length; i++) {
-            iFunctions[parsedValue[i].name] = {value: '', error: '', locked: false};
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            iFunctions[parsedValue.items[i].name] = {value: '', error: '', locked: false};
         }
     } catch (e) {
         console.error(e);
-        functions.error = e.message;
+        newState.inputs.functions.error = e.message;
     }
-    let newState = {
-        ...state,
-        structure: structure,
-        inputs: {...state.inputs},
-        expressions: {
-            ...state.expressions,
-            formulas: [...state.expressions.formulas],
-            terms: [...state.expressions.terms]
-        }
-    };
-    newState.inputs.functions = functions;
     newState.inputs.structure.functions = iFunctions;
 
     // sparsovanie vsetkych formul pre opatovnu kontrolu
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.formulas.length; i++) {
         try {
-            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', structure));
+            let test = parser.parse('(' + newState.expressions.formulas[i].inputValue + ')', setParserOptions('formula', newState.structure));
             newState.expressions.formulas[i].feedbackMessage = '';
             newState.expressions.formulas[i].validSyntax = true;
             newState.expressions.formulas[i].parsedObject = test;
@@ -265,7 +241,7 @@ function setFunctions(state, action) {
     // pri zmenenej strukture
     for (let i = 0; i < newState.expressions.terms.length; i++) {
         try {
-            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', structure));
+            let test = parser.parse(newState.expressions.terms[i].inputValue, setParserOptions('term', newState.structure));
             newState.expressions.terms[i].feedbackMessage = '';
             newState.expressions.terms[i].validSyntax = true;
             newState.expressions.terms[i].parsedObject = test;
@@ -287,16 +263,12 @@ function setDomain(state, action) {
     newState.inputs.structure.domain.value = action.value;
     let parsedValue = null;
     try {
-        parsedValue = parser.parse(action.value, {
-            structure: structure,
-            startRule: 'structure_domain_items_list'
-        });
-        let newDomain = new Set();
-        for (let i = 0; i < parsedValue.length; i++) {
-            if (newDomain.has(parsedValue[i]))
-                throw new InvalidLanguageException('Štruktúra už obsahuje prvok ' + parsedValue[i]);
-            newDomain.add(parsedValue[i]);
-        }
+        if (action.value.length === 0)
+            throw new InvalidLanguageException('Doména nesmie byť prázdna');
+
+        parsedValue = parser.parse(action.value, {startRule: 'domain'});
+        console.log('parsed domain:', parsedValue);
+        let newDomain = new Set(parsedValue.items);
         structure.setDomain(newDomain);
         newState.inputs.structure.domain.error = '';
     } catch (e) {
@@ -304,18 +276,21 @@ function setDomain(state, action) {
         newState.inputs.structure.domain.error = e.message;
     }
 
-    let newPredicates = checkPredicatesValues(structure.domain, structure.iPredicate);
-    structure.iPredicate = newPredicates[0];
-    for (let name in newPredicates[1]) {
-        if (!newPredicates[1].hasOwnProperty(name)) continue;
-        newState.inputs.structure.predicates[name].error = newPredicates[1][name];
-    }
+    // let newPredicates = checkPredicatesValues(structure.domain, structure.iPredicate);
+    // structure.iPredicate = newPredicates[0];
+    // for (let name in newPredicates[1]) {
+    //     if (!newPredicates[1].hasOwnProperty(name)) continue;
+    //     newState.inputs.structure.predicates[name].error = newPredicates[1][name];
+    // }
 
-    // VYKONAT PO TOMTO:
+    // TODO VYKONAT PO TOMTO:
     // 1) skontrolovanie syntaxe a semantiky vsetkych vyrazov
     // 2) skontrolovanie hodnot predikatov
     // 3) skontrolovanie honost funkcii
     // 4) skontrolovanie hodnot konstant
+
+    let iPredicate = newState.inputs.structure.predicates;
+
 
     console.log(newState);
     return newState;
@@ -323,7 +298,7 @@ function setDomain(state, action) {
 
 function setVariablesValue(state, action) {
     let newState = copyState(state);
-    let parsedValue = [];
+    let parsedValue = null;
     let variableValues = new Map();
     let error = '';
     newState.inputs.variableValues.value = action.value;
@@ -333,26 +308,13 @@ function setVariablesValue(state, action) {
                 structure: state.structure,
                 startRule: 'e_tuples',
             });
-        }
-        // [<premenna>, <prvok domeny>]
-        for (let i = 0; i < parsedValue.length; i++) {
-            let variable = parsedValue[i][0];
-            let domainItem = parsedValue[i][1];
-            let valid = true;
-            if (newState.structure.language.hasItem(variable)) {
-                // nemoze byt konstanta
-                // throw new InvalidLanguageException('Prvok ' + variable + ' sa nachádza v jazyku');
-                valid = false;
-                error = 'Prvok ' + variable + ' sa nachádza v jazyku';
+            console.log('parsed variables value:', parsedValue);
+            if (parsedValue.error)
+                error = parsedValue.error.message;
+            // [<premenna>, <prvok domeny>]
+            for (let i = 0; i < parsedValue.items.length; i++) {
+                variableValues.set(parsedValue.items[i][0], parsedValue.items[i][1]);
             }
-            if (!newState.structure.domain.has(domainItem)) {
-                // nie je v domene
-                // throw new InvalidLanguageException('Prvok ' + domainItem + ' nie je v doméne štruktúry');
-                valid = false;
-                error = 'Prvok ' + domainItem + ' nie je v doméne štruktúry';
-            }
-            if (valid)
-                variableValues.set(variable, domainItem);
         }
     } catch (e) {
         console.error(e);
@@ -409,11 +371,8 @@ function setConstantValue(state, action) {
 }
 
 function setPredicateValue(state, action) {
-    console.log(action);
-
     let newState = copyState(state);
     let structure = newState.structure;
-
     if (action.domainItems) {
         // tabulka mode
         if (action.value) {
@@ -442,11 +401,15 @@ function setPredicateValue(state, action) {
         try {
             parsedValue = parser.parse(action.value, {
                 structure: structure,
-                startRule: 'structure_tuples_list',
+                startRule: 'tuples',
                 arity: structure.language.getPredicate(action.predicateName)
             });
-            structure.setPredicateValue(action.predicateName, parsedValue);
-            iPredicate.error = '';
+            structure.setPredicateValue(action.predicateName, parsedValue.items);
+            if (parsedValue.error) {
+                iPredicate.error = parsedValue.error.message;
+            } else {
+                iPredicate.error = '';
+            }
         } catch (e) {
             console.error(e);
             iPredicate.error = e.message;
@@ -454,13 +417,13 @@ function setPredicateValue(state, action) {
         newState.inputs.structure.predicates[action.predicateName] = iPredicate;
     }
 
-
     console.log(newState);
     return newState;
 }
 
 function setFunctionValue(state, action) {
-
+    // TODO dokoncit
+    return state;
 }
 
 function addExpression(state, action) {

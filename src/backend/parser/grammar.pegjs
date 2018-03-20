@@ -1,4 +1,6 @@
 {
+    var f = require('./functions.js');
+
     const Conjunction = options.conjunction;
     const Disjunction = options.disjunction;
     const Implication = options.implication;
@@ -12,6 +14,102 @@
     const Predicate = options.predicate;
     const EqualityAtom = options.equalityAtom;
     const Structure = options.structure;
+
+    let itemsList = {error: null, items: []};
+
+    function list() {
+        let res = {error: {...itemsList.error}, items: [...itemsList.items]};
+        itemsList = {error: null, items: []};
+        return res;
+    }
+
+    function list_domain() {
+        let res = {error: {...itemsList.error}, items: [...itemsList.items]};
+        if (res.items.length === 0) {
+            res.error.message = 'Doména nesmie byť prázdna';
+            res.error.pos = null;
+        }
+        return res;
+    }
+
+   function addConstantToList(constant) {
+        let language = options.structure.language;
+        let error = f.data.checkConstantOccurence(constant, itemsList.items, language, location());
+        if(error)
+            itemsList.error = error;
+        else
+            itemsList.items.push(constant);
+   }
+
+   function addPredicateToList(name, arity) {
+        let language = options.structure.language;
+        let error = f.data.checkPredicateOccurence(name,itemsList.items,language,location());
+        if(error)
+            itemsList.error = error;
+        else
+            itemsList.items.push({name:name, arity:arity});
+   }
+
+    function addFunctionToList(name, arity) {
+        let language = options.structure.language;
+        let error = f.data.checkFunctionOccurence(name,itemsList.items,language,location());
+        if(error)
+            itemsList.error = error;
+        else
+            itemsList.items.push({name: name, arity: arity});
+    }
+
+    function addDomainItemToList(name) {
+        itemsList.items.push(name);
+    }
+
+    function checkInDomain(i){
+        if(!options.structure.domain.has(i)){
+            return {error:{message:'prvok '+i+'nie je v domene', pos:location()}, item:i}
+        }
+        return {error:null, item:i}
+    }
+
+    function checkNotInLanguage(i){
+        let language=options.structure.language;
+        if(language.hasConstant(i) || language.hasPredicate(i) || language.hasFunction(i)) {
+            return {error: {message: 'Prvok '+i+' uz je v jazyku', pos:location()}, item:i};
+        }
+        return {error:null, item:i};
+    }
+
+    function checkTuple(tuple,arity) {
+        let items = [];
+        for(let i=0; i<tuple.length; i++){
+            items.push(tuple[i].item);
+        }
+
+        let valid=true;
+
+        if (tuple.length == arity) {
+            for (let i=0; i<tuple.length; i++){
+                if (tuple[i].error){
+                    valid=false;
+                    itemsList.error=tuple[i].error;
+                    break;
+                }
+            }
+        } else {
+            valid=false;
+            itemsList.error={message: 'Ntica '+items+' nema povoleny pocet prvkov', pos:location()}
+        }
+
+        if(itemsList.items.findIndex(e => JSON.stringify(e) === JSON.stringify(items)) > -1){
+            valid=false;
+            itemsList.error={message: 'Ntica '+items+' sa uz nachadza v interpretacii', pos:location()}
+        }
+
+        if (valid){
+            itemsList.items.push(items);
+        }
+
+
+    }
 
     if(options.domainCheck==null) options.domainCheck=true;
 
@@ -155,39 +253,25 @@ non_equality_symbol
 //  Language parsing
 //
 
+//  START
+constants
+    = spaces c1:language_constant l:(spaces "," spaces c2:language_constant)* spaces {return list()}
+predicates
+    = spaces p1:language_predicate l:(spaces "," spaces p2:language_predicate)* spaces {return list()}
+functions
+    = spaces f1:language_function l:(spaces "," spaces f2:language_function)* spaces {return list()}
 
-language_predicate_arity
+predicate_arity
     = $ ([0-9]+)
-
-language_function_arity
+function_arity
     = $ ([1-9]+)
 
-//  START
-// KONSTANTY
-// C
-
-language_constants_list
-    = spaces c1:Identifier c_list:(spaces "," spaces c2:Identifier {return c2})* spaces {return [c1].concat(c_list)}
-
-// START
-// PREDIKATY
-// P/2
-
-language_predicates_list
-    = spaces p1:language_predicate p_list:(spaces "," spaces p2:language_predicate {return p2})* spaces {return [p1].concat(p_list)}
-
+language_constant
+    = constant:Identifier {addConstantToList(constant)}
 language_predicate
-    = spaces i:Identifier "/" arity:language_predicate_arity spaces {return {name: i, arity: arity}}
-
-// START
-// FUNKCIE
-// F/2
-
-language_functions_list
-    = spaces f1:language_function f_list:(spaces "," spaces f2:language_function {return f2})* spaces {return [f1].concat(f_list)}
-
+    = spaces predicate:Identifier "/" arity:predicate_arity spaces {addPredicateToList(predicate, arity)}
 language_function
-    = spaces i:Identifier "/" arity:language_function_arity spaces {return {name: i, arity: arity}}
+    = spaces f:Identifier "/" arity:function_arity spaces {addFunctionToList(f, arity)}
 
 
 //
@@ -195,36 +279,25 @@ language_function
 //
 
 // START
-// DOMENA
-
-structure_domain_items_list
-    = spaces i1:DomainIdentifier ids:(spaces "," spaces i2:DomainIdentifier {return i2})* spaces {return [i1].concat(ids)}
-
-
-
-
-// START
-// PREDIKAT + FUNKCIA
-
-structure_tuples_list
-    = spaces t1:structure_tuple tl:(spaces "," spaces t2:structure_tuple {return t2})* spaces {return [t1].concat(tl)}
-
-structure_tuple
-    = "(" spaces item1:DomainIdentifier items:(spaces "," spaces item2:DomainIdentifier {return item2})+ spaces ")" {return checkTupleArity([item1].concat(items))}
-    / spaces item:DomainIdentifier spaces {return checkTupleArity(item)}
-
-
-
-// START
-// OHODNOTENIE PREMENNYCH
-
+domain
+    = spaces domain_item (spaces "," spaces domain_item)* spaces {return list()}
+tuples
+    = spaces tuple (spaces "," spaces tuple)* spaces {return list()}
 e_tuples
-  = spaces t1:e_tuple tl:(spaces "," spaces t2:e_tuple {return t2})* spaces {return [t1].concat(tl)}
+  = spaces e_tuple (spaces "," spaces e_tuple)* spaces {return list()}
 
+tuple
+    = "(" spaces i1:tuple_item items:(spaces "," spaces i2:tuple_item {return i2})+ spaces ")" {return checkTuple([i1].concat(items), options.arity)}
+    / spaces i:tuple_item spaces {return checkTuple([i])}
 e_tuple
-  = "(" spaces item1:variable_symbol spaces "," spaces item2:DomainIdentifier & {return isItemInDomain(item2)} spaces ")" {return [item1, item2]}
+    = "(" spaces i1:var_item spaces "," spaces i2:tuple_item spaces ")" {return checkTuple([i1, i2], 2)}
 
-
+domain_item
+    = i:DomainIdentifier {addDomainItemToList(i)}
+tuple_item
+    = i:DomainIdentifier {return checkInDomain(i)}
+var_item
+    = i:Identifier {return checkNotInLanguage(i)}
 
 
 

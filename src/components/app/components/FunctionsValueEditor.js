@@ -9,7 +9,7 @@ function FunctionsValueEditor(props) {
                 <div>
                     <label>{name}</label>
                     <input type='text' onChange={(e) => props.onInputChange(e.target.value, name)}/>
-                    <span>{props.predicates[name].error}</span>
+                    <span>{props.functions[name].error}</span>
                 </div>
             )}
         </div>

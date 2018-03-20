@@ -4,6 +4,7 @@
  * @class
  */
 import InvalidLanguageException from "../exceptions/InvalidLanguageException";
+import language from "../components/app/reducers/language";
 
 class Structure {
 
@@ -21,14 +22,32 @@ class Structure {
 
     setLanguageConstants(constants) {
         this.language.setConstants(constants);
+        let iConstantKeys = [...this.iConstant.keys()];
+        for (let i = 0; i < iConstantKeys.length; i++) {
+            if (!this.language.hasConstant(iConstantKeys[i])) {
+                this.iConstant.delete(iConstantKeys[i]);
+            }
+        }
     }
 
     setLanguagePredicates(predicates) {
         this.language.setPredicates(predicates);
+        let iPredicateKeys = [...this.iPredicate.keys()];
+        for (let i = 0; i < iPredicateKeys.length; i++) {
+            if (!this.language.hasConstant(iPredicateKeys[i])) {
+                this.iConstant.delete(iPredicateKeys[i]);
+            }
+        }
     }
 
     setLanguageFunctions(functions) {
         this.language.setFunctions(functions);
+        let iFunctionKeys = [...this.iFunction.keys()];
+        for (let i = 0; i < iFunctionKeys.length; i++) {
+            if (!this.language.hasConstant(iFunctionKeys[i])) {
+                this.iConstant.delete(iFunctionKeys[i]);
+            }
+        }
     }
 
     hasDomainItem(name) {
