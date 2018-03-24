@@ -19,7 +19,7 @@ function RelationalTable(props) {
 
     let arity2 = domain.map((item, index) =>
         <tr>
-            <td>{item}</td>
+            <th>{item}</th>
             {domain.map((item2, index2) =>
                 <td><input type='checkbox'
                            onChange={(e) => props.onInputChange(e.target.checked, props.name, [item, item2])}
@@ -30,14 +30,18 @@ function RelationalTable(props) {
     );
 
     return (
-        <table>
+        <table class="table table-bordered">
+            <thead>
             <tr>
-                <td>{props.name}</td>
+                <th>{props.name}</th>
                 {domain.map((item, index) =>
-                    <td>{item}</td>
+                    <th>{item}</th>
                 )}
             </tr>
-            {props.arity == 1 ? arity1 : arity2}
+            </thead>
+            <tbody>
+                {props.arity == 1 ? arity1 : arity2}
+            </tbody>
         </table>
     )
 }

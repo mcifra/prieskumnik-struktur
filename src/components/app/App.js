@@ -11,30 +11,30 @@ import ExpressionStorage from './ExpressionStorage';
 import {createStore} from 'redux';
 import reducer from './reducers';
 import {Provider} from 'react-redux';
-import ConstantsEditorContainer from "./containers/ConstantsEditorContainer";
-import PredicatesEditorContainer from './containers/PredicatesEditorContainer';
-import FunctionsEditorContainer from './containers/FunctionsEditorContainer';
-import DomainEditorContainer from './containers/DomainEditorContainer';
-import ConstantsValueEditorContainer from './containers/ConstantsValueEditorContainer';
-import FunctionsValueEditorContainer from './containers/FunctionsValueEditorContainer';
-import PredicatesValueEditorContainer from './containers/PredicatesValueEditorContainer';
 import ExpressionsContainer from './containers/ExpressionsContainer';
 import VariablesValueContainer from "./containers/VariablesValueContainer";
+import LanguageContainer from './containers/LanguageContainer';
+import StructureContainer from './containers/StructureContainer';
 
 const store = createStore(reducer);
 
 const App = () => (
     <Provider store={store}>
-        <div>
-            <ConstantsEditorContainer />
-            <PredicatesEditorContainer />
-            <FunctionsEditorContainer />
-            <DomainEditorContainer />
-            <ConstantsValueEditorContainer />
-            <FunctionsValueEditorContainer />
-            <PredicatesValueEditorContainer />
-            <VariablesValueContainer />
-            <ExpressionsContainer />
+        <div className={"app"}>
+            <Row>
+                <Col md={6}>
+                    <LanguageContainer />
+                    <VariablesValueContainer/>
+                </Col>
+                <Col md={6}>
+                    <StructureContainer />
+                </Col>
+            </Row>
+            <Row>
+                <Col lg={12}>
+                    <ExpressionsContainer />
+                </Col>
+            </Row>
         </div>
     </Provider>
 );

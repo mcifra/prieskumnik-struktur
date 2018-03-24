@@ -4,7 +4,6 @@
  * @class
  */
 import InvalidLanguageException from "../exceptions/InvalidLanguageException";
-import language from "../components/app/reducers/language";
 
 class Structure {
 
@@ -75,7 +74,7 @@ class Structure {
             throw new InvalidLanguageException('Jazyk neobsahuje konštantu ' + constantName);
         }
         if (value === '' || value == null || value === undefined) {
-            throw new InvalidLanguageException('Hodnota konštanty nesmie byť prázdna');
+            throw new InvalidLanguageException('Interpretačná hodnota konštanty nesmie byť prázdna');
         }
         this.iConstant.set(constantName, value);
     }

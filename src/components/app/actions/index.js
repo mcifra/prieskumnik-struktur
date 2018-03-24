@@ -105,9 +105,8 @@ export const lockExpressionAnswer = (expressionType, expressionIndex) => ({
     expressionIndex
 });
 
-export const setEditMode = (value, itemType, name) => ({
-    type: 'SET_EDIT_MODE',
-    value,
+export const toggleTable = (itemType, name) => ({
+    type: 'TOGGLE_EDIT_TABLE',
     itemType,
     name
 });
