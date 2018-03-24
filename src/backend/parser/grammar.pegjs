@@ -288,7 +288,7 @@ e_tuples
 
 tuple
     = "(" spaces i1:tuple_item items:(spaces "," spaces i2:tuple_item {return i2})+ spaces ")" {return checkTuple([i1].concat(items), options.arity)}
-    / spaces i:tuple_item spaces {return checkTuple([i])}
+    / spaces i:tuple_item spaces {return checkTuple([i], options.arity)}
 e_tuple
     = "(" spaces i1:var_item spaces "," spaces i2:tuple_item spaces ")" {return checkTuple([i1, i2], 2)}
 

@@ -256,7 +256,7 @@ function peg$parse(input, options) {
       peg$c112 = function() {return list()},
       peg$c113 = function(i1, i2) {return i2},
       peg$c114 = function(i1, items) {return checkTuple([i1].concat(items), options.arity)},
-      peg$c115 = function(i) {return checkTuple([i])},
+      peg$c115 = function(i) {return checkTuple([i], options.arity)},
       peg$c116 = function(i1, i2) {return checkTuple([i1, i2], 2)},
       peg$c117 = function(i) {addDomainItemToList(i)},
       peg$c118 = function(i) {return checkInDomain(i)},
