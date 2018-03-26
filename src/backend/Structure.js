@@ -109,13 +109,16 @@ class Structure {
      */
     setFunctionValue(functionName, functionParams, value) {
         let stringified = JSON.stringify(functionParams);
-        if (this.iFunction.has(functionName) && this.iFunction.get(functionName).has(stringified)) {
-            throw new InvalidLanguageException('Funkcia už je definovaná pre parameter ' + stringified);
-        }
+        // if (this.iFunction.has(functionName) && this.iFunction.get(functionName).has(stringified)) {
+        //     throw new InvalidLanguageException('Funkcia už je definovaná pre parameter ' + stringified);
+        // }
         if (!this.iFunction.has(functionName)) {
             this.iFunction.set(functionName, new Map());
         }
-        this.iFunction.get(functionName).set(stringified, value);
+        if (value.length === 0)
+            this.iFunction.get(functionName).delete(stringified);
+        else
+            this.iFunction.get(functionName).set(stringified, value);
     }
 
     /**
@@ -124,12 +127,15 @@ class Structure {
      * @param {Array} functionParams
      * @return {string|null}
      */
-    getFunctionValue(functionName, functionParams) {
-        let stringified = JSON.stringify(functionParams);
-        if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName).has(stringified)) {
-            return null;
+    getFunctionValue(functionName, functionParams=null) {
+        if(functionParams){
+            let stringified = JSON.stringify(functionParams);
+            if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName).has(stringified)) {
+                return null;
+            }
+            return this.iFunction.get(functionName).get(stringified);
         }
-        return this.iFunction.get(functionName).get(stringified);
+        return this.iFunction.get(functionName);
     }
 
 }

@@ -129,7 +129,6 @@ function parseAndSetPredicates(value, state) {
     state.inputs.predicates.value = value;
     state.inputs.predicates.error = '';
     let parsedValue = {error: null, items: []};
-    let iPredicates = state.inputs.structure.predicates;
     try {
         if (value.length > 0) {
             parsedValue = parser.parse(value, {startRule: 'predicates', structure: state.structure});
@@ -138,15 +137,27 @@ function parseAndSetPredicates(value, state) {
         state.structure.setLanguagePredicates(parsedValue.items);
         if (parsedValue.error && parsedValue.error.message)
             state.inputs.predicates.error = parsedValue.error.message;
-        iPredicates = {};
-
-        for (let i = 0; i < parsedValue.items.length; i++)
-            iPredicates[parsedValue.items[i].name] = {value: '', error: '', locked: false, editMode: 'TEXT'};
+        let newInterpretInputs = {};
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            if (state.inputs.structure.predicates[parsedValue.items[i].name] &&
+                state.inputs.structure.predicates[parsedValue.items[i].name].arity === parsedValue.items[i].arity)
+                newInterpretInputs[parsedValue.items[i].name] = state.inputs.structure.predicates[parsedValue.items[i].name];
+            else {
+                newInterpretInputs[parsedValue.items[i].name] = {
+                    value: '',
+                    error: '',
+                    locked: false,
+                    editMode: 'TEXT',
+                    arity: parsedValue.items[i].arity
+                };
+                state.structure.setPredicateValue(parsedValue.items[i].name, []);
+            }
+        }
+        state.inputs.structure.predicates = newInterpretInputs;
     } catch (e) {
         console.error(e);
         state.inputs.predicates.error = e.message;
     }
-    state.inputs.structure.predicates = iPredicates;
 }
 
 function setFunctions(state, action) {
@@ -163,7 +174,6 @@ function parseAndSetFunctions(value, state) {
     state.inputs.functions.value = value;
     state.inputs.functions.error = '';
     let parsedValue = {error: null, items: []};
-    let iFunctions = state.inputs.structure.functions;
     try {
         if (value.length > 0) {
             parsedValue = parser.parse(value, {startRule: 'functions', structure: state.structure});
@@ -172,9 +182,14 @@ function parseAndSetFunctions(value, state) {
         state.structure.setLanguageFunctions(parsedValue.items);
         if (parsedValue.error && parsedValue.error.message)
             state.inputs.functions.error = parsedValue.error.message;
-        iFunctions = {};
-        for (let i = 0; i < parsedValue.items.length; i++)
-            iFunctions[parsedValue.items[i].name] = {value: '', error: '', locked: false};
+        let newInterpretInputs = {};
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            if (state.inputs.structure.functions[parsedValue.items[i].name])
+                newInterpretInputs[parsedValue.items[i].name] = state.inputs.structure.functions[parsedValue.items[i].name];
+            else
+                newInterpretInputs[parsedValue.items[i].name] = {value: '', error: '', locked: false, editMode: 'TEXT'};
+        }
+        state.inputs.structure.functions = newInterpretInputs;
     } catch (e) {
         console.error(e);
         state.inputs.functions.error = e.message;
@@ -220,10 +235,19 @@ function setDomain(state, action) {
         else {
             let newValue = syncPredicateValue(newState.structure.domain, newState.structure.getPredicateValue(predicates[i]));
             newState.structure.setPredicateValue(predicates[i], newValue);
+            newState.inputs.structure.predicates[predicates[i]].value = predicateValueToString(newValue);
         }
     }
 
-    // TODO skontrolovanie hodnot funkcii:
+    let functions = Object.keys(newState.inputs.structure.functions);
+    for (let i = 0; i < functions.length; i++) {
+        if (newState.inputs.structure.functions[functions[i]].editMode === 'TEXT')
+            parseAndSetFunctionValue(functions[i], newState.inputs.structure.functions[functions[i]].value, newState);
+        else {
+            syncFunctionValue(newState.structure.domain, newState.structure.getFunctionValue(functions[i]));
+            newState.inputs.structure.functions[functions[i]].value=functionValueToString(newState.structure.getFunctionValue(functions[i]));
+        }
+    }
 
     console.log('STATE:', newState);
     return newState;
@@ -242,6 +266,22 @@ function syncPredicateValue(domain, value) {
             res.push(value[i]);
     }
     return res;
+}
+
+function syncFunctionValue(domain, value) {
+    let keys = [...value.keys()];
+    for (let i = 0; i < keys.length; i++) {
+        let keysTemp = JSON.parse(keys[i]);
+        for (let j = 0; j < keysTemp.length; j++) {
+            if (!domain.has(keysTemp[j])) {
+                value.delete(keys[i]);
+                break;
+            }
+        }
+        if (!domain.has(value.get(keys[i]))) {
+            value.delete(keys[i]);
+        }
+    }
 }
 
 // pri zmene domeny a je editMode = TEXT
@@ -286,6 +326,20 @@ function tupleToString(tuple) {
             res += ', ';
     }
     res += ')';
+    return res;
+}
+
+function functionValueToString(value) {
+    // value je Map()
+    let res = '';
+    value.forEach((val, key) => {
+        let tuple = JSON.parse(key);
+        tuple.push(val);
+        let temp = tupleToString(tuple);
+        res += temp + ', ';
+    });
+    if (res.substring(res.length - 2, res.length) === ', ')
+        res = res.substring(0, res.length - 2);
     return res;
 }
 
@@ -403,9 +457,80 @@ function setPredicateValue(state, action) {
     return newState;
 }
 
+function parseAndSetFunctionValue(functionName, value, state) {
+    let iFunction = state.inputs.structure.functions[functionName];
+    iFunction.value = value;
+    iFunction.error = '';
+    let parsedValue = {error: null, items: []};
+    try {
+        if (value.length > 0) {
+            let arity = parseInt(state.structure.language.getFunction(functionName)) + 1;
+            parsedValue = parser.parse(value, {
+                structure: state.structure,
+                startRule: 'tuples',
+                arity: arity
+            });
+        }
+        console.log('parsed value', parsedValue);
+        if (state.structure.iFunction.has(functionName))
+            state.structure.iFunction.get(functionName).clear();
+        for (let i = 0; i < parsedValue.items.length; i++) {
+            let params = parsedValue.items[i].slice(0, parsedValue.items[i].length - 1);
+            let val = parsedValue.items[i][parsedValue.items[i].length - 1];
+            state.structure.setFunctionValue(functionName, params, val);
+        }
+        if (parsedValue.error && parsedValue.error.message) {
+            iFunction.error = parsedValue.error.message;
+        }
+    } catch (e) {
+        console.error(e);
+        iFunction.error = e.message;
+    }
+    state.inputs.structure.functions[functionName] = iFunction;
+}
+
 function setFunctionValue(state, action) {
-    // TODO dokoncit
-    return state;
+    let newState = copyState(state);
+    if (action.params) {
+        // tabulka mode
+        newState.structure.setFunctionValue(action.functionName, action.params, action.value);
+        newState.inputs.structure.functions[action.functionName].value = functionValueToString(newState.structure.getFunctionValue(action.functionName));
+    } else {
+        parseAndSetFunctionValue(action.functionName, action.value, newState);
+        // text mode
+        // let iFunction = newState.inputs.structure.functions[action.functionName];
+        // iFunction.value = action.value;
+        // iFunction.error = '';
+        // let parsedValue = {error: null, items: []};
+        // try {
+        //     if (action.value.length > 0) {
+        //         let arity = parseInt(newState.structure.language.getFunction(action.functionName)) + 1;
+        //         parsedValue = parser.parse(action.value, {
+        //             structure: newState.structure,
+        //             startRule: 'tuples',
+        //             arity: arity
+        //         });
+        //     }
+        //     console.log('parsed value', parsedValue);
+        //     if (newState.structure.iFunction.has(action.functionName))
+        //         newState.structure.iFunction.get(action.functionName).clear();
+        //     for (let i = 0; i < parsedValue.items.length; i++) {
+        //         let params = parsedValue.items[i].slice(0, parsedValue.items[i].length - 1);
+        //         let val = parsedValue.items[i][parsedValue.items[i].length - 1];
+        //         newState.structure.setFunctionValue(action.functionName, params, val);
+        //     }
+        //     if (parsedValue.error && parsedValue.error.message) {
+        //         iFunction.error = parsedValue.error.message;
+        //     }
+        // } catch (e) {
+        //     console.error(e);
+        //     iFunction.error = e.message;
+        // }
+        // newState.inputs.structure.functions[action.functionName] = iFunction;
+    }
+    updateExpressionsValue(newState);
+    console.log(newState);
+    return newState;
 }
 
 function addExpression(state, action) {

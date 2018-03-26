@@ -45,8 +45,8 @@ function Structure(props) {
                                                 id='structure-editor-domain'
                                                 type='text'
                                                 onChange={(e) => props.onDomainChange(e.target.value)}/>
-                                            <span className='input-group-addon'>{'}'}</span>
-                                            <span class="input-group-btn">
+                                                <span className='input-group-addon'>{'}'}</span>
+                                            <span className="input-group-btn">
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
@@ -107,7 +107,7 @@ function Structure(props) {
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getPredicate(name)}
                                                                      value={props.structure.iPredicate.get(name) ? props.structure.iPredicate.get(name) : []}
-                                                                     onInputChange={props.onPredicateValueChange}/>
+                                                                     onInputChange={props.onPredicateValueChange} type='PREDICATE'/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.predicates[name].error}</HelpBlock>
                                             </FormGroup>
@@ -131,7 +131,17 @@ function Structure(props) {
                                                                  value={props.inputs.structure.functions[name].value}
                                                                  type='text'
                                                                  onChange={(e) => props.onFunctionValueChange(e.target.value, name)}/>
+                                                    <InputGroup.Button>
+                                                        <Button
+                                                            onClick={(e) => props.toggleTable('FUNCTION', name)}>T</Button>
+                                                    </InputGroup.Button>
                                                 </InputGroup>
+                                                {props.inputs.structure.functions[name].editMode === 'TEXT' ? null : (
+                                                    <RelationalTable name={name} domain={props.structure.domain}
+                                                                     arity={props.structure.language.getFunction(name)}
+                                                                     value={props.structure.iFunction.get(name) ? props.structure.iFunction.get(name) : new Map()}
+                                                                     onInputChange={props.onFunctionValueChange} type='FUNCTION'/>
+                                                )}
                                                 <HelpBlock>{props.inputs.structure.functions[name].error}</HelpBlock>
                                             </FormGroup>
                                         )}

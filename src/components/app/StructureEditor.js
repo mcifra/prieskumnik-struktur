@@ -13,6 +13,10 @@ class StructureEditor extends React.Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+      console.log('new props', nextProps);
+    }
+
     render() {
         const popoverHelp = (
             <Popover id='popover-trigger-click' title='Editor štruktúry'>
@@ -73,7 +77,7 @@ class StructureEditor extends React.Component {
                         <ParsedTextInput label={<i>e</i>}
                                          id='variables-value'
                                          onChange={(parsedValue) => this.updateVariableValue(parsedValue)}
-                                         parserOptions={this.getDomainParserOptions()}/>
+                                         parserOptions={this.getVariableParserOptions()}/>
                     </fieldset>
                 </Col>
             </Row>
@@ -163,6 +167,13 @@ class StructureEditor extends React.Component {
             structure: this.props.structure,
             startRule: 'structure_domain_items_list'
         }
+    }
+
+    getVariableParserOptions() {
+      return {
+        structure: this.props.structure,
+        startRule: 'e_tuples',
+      }
     }
 
     getPredicateParserOptions(predicateName) {

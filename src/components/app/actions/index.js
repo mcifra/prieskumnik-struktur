@@ -62,10 +62,11 @@ export const setPredicateValue = (value, predicateName, domainItems = null) => (
     domainItems
 });
 
-export const setFunctionValue = (value, functionName) => ({
+export const setFunctionValue = (value, functionName, params = null) => ({
     type: 'SET_FUNCTION_VALUE',
     value,
-    functionName
+    functionName,
+    params
 });
 
 export const checkExpressionSyntax = (value, index, expressionType) => ({

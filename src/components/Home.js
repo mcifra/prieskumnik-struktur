@@ -102,6 +102,10 @@ class Home extends React.Component {
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td>5</td>
+                                                <td>Aktualizácia parsera, interpretácia premenných.</td>
+                                            </tr>
+                                            <tr>
                                                 <td>4</td>
                                                 <td>Refaktorizácia do Redux-u. Vytvorenie editovania interpretácie predikátových a funkčných symbolov cez tabuľku.</td>
                                             </tr>

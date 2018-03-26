@@ -37,7 +37,7 @@ function Language(props) {
                                                          onChange={(e) => props.onConstantsChange(e.target.value)}
                                                          value={props.inputs.constants.value}/>
                                             <span className='input-group-addon'>{'}'}</span>
-                                            <span class="input-group-btn">
+                                            <span className="input-group-btn">
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
@@ -59,7 +59,7 @@ function Language(props) {
                                                          onChange={(e) => props.onPredicatesChange(e.target.value)}
                                                          value={props.inputs.predicates.value}/>
                                             <span className='input-group-addon'>{'}'}</span>
-                                            <span class="input-group-btn">
+                                            <span className="input-group-btn">
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
@@ -81,7 +81,7 @@ function Language(props) {
                                                          onChange={(e) => props.onFunctionsChange(e.target.value)}
                                                          value={props.inputs.functions.value}/>
                                             <span className='input-group-addon'>{'}'}</span>
-                                            <span class="input-group-btn">
+                                            <span className="input-group-btn">
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
