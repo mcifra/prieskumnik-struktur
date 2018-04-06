@@ -11,14 +11,18 @@ class Language {
         this.predicates = new Map();
     }
 
+    getConstants() {
+        return this.constants;
+    }
+
     hasItem(item) {
         return this.hasConstant(item) || this.hasFunction(item) || this.hasPredicate(item);
     }
 
-    clearAll() {
-        this.constants = new Set();
-        this.functions = new Map();
-        this.predicates = new Map();
+    clear() {
+        this.clearConstants();
+        this.clearPredicates();
+        this.clearFunctions();
     }
 
     clearConstants() {
@@ -34,8 +38,7 @@ class Language {
     }
 
     setConstants(constants) {
-        this.constants = new Set(constants);
-        this.constants.clear();
+        this.clearConstants();
         let message = '';
         constants.forEach(c => {
             if (this.functions.has(c)) {
@@ -46,78 +49,73 @@ class Language {
                 message = 'Jazyk štruktúry už obsahuje predikát ' + c;
                 return;
             }
-            this.constants.add(c);
+            this.addConstant(c);
         });
         return message;
     }
 
     setPredicates(predicates) {
+        this.clearPredicates();
         let message = '';
-        let newPredicates = new Map();
-        for (let i = 0; i < predicates.length; i++) {
-            if (this.constants.has(predicates[i].name)) {
-                message = 'Jazyk štruktúry už obsahuje konštantu ' + predicates[i].name;
+        predicates.forEach(p => {
+            if (this.constants.has(p.name)) {
+                message = 'Jazyk štruktúry už obsahuje konštantu ' + p.name;
+                return;
             }
-            if (this.functions.has(predicates[i].name)) {
-                message = 'Jazyk štruktúry už obsahuje funkciu ' + predicates[i].name;
+            if (this.functions.has(p.name)) {
+                message = 'Jazyk štruktúry už obsahuje funkciu ' + p.name;
+                return;
             }
-            newPredicates.set(predicates[i].name, predicates[i].arity);
-        }
-        this.predicates = newPredicates;
+            this.addPredicate(p.name, parseInt(p.arity));
+        });
         return message;
     }
 
     setFunctions(functions) {
+        this.clearFunctions();
         let message = '';
-        let newFunctions = new Map();
-        for (let i = 0; i < functions.length; i++) {
-            if (this.constants.has(functions[i].name)) {
-                message = 'Jazyk štruktúry už obsahuje konštantu ' + functions[i].name;
+        functions.forEach(f => {
+            if (this.constants.has(f.name)) {
+                message = 'Jazyk štruktúry už obsahuje konštantu ' + f.name;
+                return;
             }
-            if (this.predicates.has(functions[i].name)) {
-                message = 'Jazyk štruktúry už obsahuje predikát ' + functions[i].name;
+            if (this.predicates.has(f.name)) {
+                message = 'Jazyk štruktúry už obsahuje predikát ' + f.name;
+                return;
             }
-            newFunctions.set(functions[i].name, functions[i].arity);
-        }
-        this.functions = newFunctions;
+            this.addFunction(f.name, parseInt(f.arity));
+        });
         return message;
     }
 
-    // /**
-    //  * Add constant name to the language
-    //  * @param {string} constantName Constant name
-    //  */
-    // addConstant(constantName) {
-    //     this.constants.add(constantName);
-    // }
+    /**
+     * Add constant name to the language
+     * @param {string} constantName Constant name
+     */
+    addConstant(constantName) {
+        this.constants.add(constantName);
+    }
 
-    // /**
-    //  * Add function name to the language
-    //  * @param {string} functionName Name of function
-    //  * @param {int} arity Arity of function
-    //  */
-    // addFunction(functionName, arity) {
-    //     this.functions.set(functionName, arity);
-    // }
+    /**
+     * Add predicate name to the language
+     * @param {string} predicateName Name of the predicate
+     * @param {int} arity Arity of predicate
+     */
+    addPredicate(predicateName, arity) {
+        this.predicates.set(predicateName, arity);
+    }
 
-    // /**
-    //  * Add predicate name to the language
-    //  * @param {string} predicateName Name of the predicate
-    //  * @param {int} arity Arity of predicate
-    //  */
-    // addPredicate(predicateName, arity) {
-    //     this.predicates.set(predicateName, arity);
-    // }
+    /**
+     * Add function name to the language
+     * @param {string} functionName Name of function
+     * @param {int} arity Arity of function
+     */
+    addFunction(functionName, arity) {
+        this.functions.set(functionName, arity);
+    }
 
     hasConstant(constantName) {
         return this.constants.has(constantName);
-    }
-
-    hasFunction(functionName) {
-        let splited = functionName.split('/');
-        if (splited.length !== 2 || isNaN(parseInt(splited[1])))
-            return null;
-        return this.functions.has(splited[0]) && this.functions.get(splited[0]) === parseInt(splited[1]);
     }
 
     hasPredicate(predicateName) {
@@ -128,20 +126,19 @@ class Language {
         if (isNaN(parseInt(splited[1]))) {
             return false;
         }
-        return this.predicates.has(splited[0]) && this.predicates.get(splited[0]) == parseInt(splited[1]);
+        return this.predicates.has(splited[0]) && this.predicates.get(splited[0]) === parseInt(splited[1]);
     }
 
-    // deleteConstant(constantName) {
-    //     this.constants.delete(constantName);
-    // }
-    //
-    // deleteFunction(functionName) {
-    //     this.functions.delete(functionName);
-    // }
-    //
-    // deletePredicate(predicateName) {
-    //     this.predicates.delete(predicateName);
-    // }
+    hasFunction(functionName) {
+        let splited = functionName.split('/');
+        if (splited.length !== 2) {
+            return this.functions.has(splited[0]);
+        }
+        if (isNaN(parseInt(splited[1]))) {
+            return false;
+        }
+        return this.functions.has(splited[0]) && this.functions.get(splited[0]) === parseInt(splited[1]);
+    }
 
     /**
      * Return arity of the function

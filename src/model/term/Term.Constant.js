@@ -24,6 +24,10 @@ class Constant extends Term {
      * @return {string} Name of variable
      */
     eval(structure, e) {
+        if (!structure.getConstantValue(this.name)) {
+            // hodnota nie je definovana
+            throw 'Hodnota konštanty ' + this.name + ' nie je definovaná';
+        }
         return structure.getConstantValue(this.name);
     }
 

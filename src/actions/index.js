@@ -1,17 +1,3 @@
-export const exportApp = () => ({
-    type: 'EXPORT_APP'
-});
-
-export const importApp = () => ({
-    type: 'IMPORT_APP'
-});
-
-export const upload = (event) => ({
-    type: 'UPLOAD',
-    event: event
-});
-
-
 // zmena inputu pre konstanty (editor jazyka)
 export function setConstants(value) {
     return {

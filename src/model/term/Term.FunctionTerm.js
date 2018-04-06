@@ -26,11 +26,15 @@ class FunctionTerm extends Term {
      * @returns {string} Name of variable
      */
     eval(structure, e) {
-        var interpretedParams = [];
-        for (var i = 0; i < this.terms.length; i++) {
-            interpretedParams.push(this.terms[i].eval(structure, e));
+        let interpretedParams = [];
+        this.terms.forEach(term => {
+            interpretedParams.push(term.eval(structure, e));
+        });
+        if (!structure.getFunctionValue(this.name + '/' + structure.language.getFunction(this.name), interpretedParams)) {
+            // hodnota nie je definovana
+            throw 'Hodnota funkčného symbolu ' + this.name + ' nie je definovaná';
         }
-        return structure.getFunctionValue(this.name, interpretedParams);
+        return structure.getFunctionValue(this.name + '/' + structure.language.getFunction(this.name), interpretedParams);
     }
 
     toString() {

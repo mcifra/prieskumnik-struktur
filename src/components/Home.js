@@ -64,7 +64,7 @@ class Home extends React.Component {
                                     <div className='row-margin'>
                                         <Row>
                                         <Col sm={7}>
-                                            <h4>Prototyp</h4>
+                                            <h4>Aplikácia</h4>
                                         </Col>
                                         <Col sm={5}>
                                             <Link to='/app' className='btn btn-primary my-btn'>Spustiť</Link>
@@ -88,45 +88,31 @@ class Home extends React.Component {
                             </Panel>
                         </Col>
                         <Col md={12}>
-                            <Panel bsStyle='warning'>
+                            <Panel bsStyle='info'>
                                 <Panel.Heading>
-                                    <Panel.Title componentClass='h3'>Denník</Panel.Title>
+                                    <Panel.Title componentClass='h3'>Ciele práce</Panel.Title>
                                 </Panel.Heading>
                                 <Panel.Body>
-                                    <table className={"table table-hover"}>
-                                        <thead>
-                                            <tr>
-                                                <th>Týždeň</th>
-                                                <th>Info</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Písanie práce, dolaďovanie aplikácie.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Aktualizácia parsera, interpretácia premenných.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Refaktorizácia do Redux-u. Vytvorenie editovania interpretácie predikátových a funkčných symbolov cez tabuľku.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Refaktorizácia do Redux-u</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Konzultácie so školiteľom ohľadom využitia knižnice <a href='https://redux.js.org/'>Redux</a> a spôsobe exportovania aplikácie.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Konzultácie so školiteľom ohľadom ďalšieho postupu. Vytvorenie vyhodnocovania termov.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <p>
+                                        Cieľom práce je navrhnúť, implementovať a otestovať prototyp interaktívneho
+                                        webového
+                                        nástroja – prieskumníka
+                                        sémantiky logiky prvého rádu. Umožní definovanie prvorádového jazyka,
+                                        konkrétnej
+                                        konečnej štruktúry pre
+                                        tento jazyk a kontrolu splnenia formúl.
+                                    </p>
+                                    <p>
+                                        Prieskumník by mal slúžiť na riešenie úloh, ale aj na ich tvorbu.
+                                        Vykonávať sa bude na strane klienta (t.j., vo webovom prehliadači), bude
+                                        implementovaný vo vhodnom frameworku
+                                        (<a href="http://www.reactjs.org">React</a>, <a
+                                        href="http://www.angularjs.org">AngularJS</a>, <a
+                                        href="http://elm-lang.org/">elm</a>, …) a tak, aby ho bolo možné integrovať
+                                        do
+                                        kvízového modulu výučbového systému <a
+                                        href="http://www.courses.matfyz.sk">courses.matfyz.sk</a>.
+                                    </p>
                                 </Panel.Body>
                             </Panel>
                         </Col>
@@ -134,6 +120,53 @@ class Home extends React.Component {
                 </Col>
                 <Col md={6}>
                     <Row>
+                        <Col md={12}>
+                            <Panel bsStyle='warning'>
+                                <Panel.Heading>
+                                    <Panel.Title componentClass='h3'>Denník</Panel.Title>
+                                </Panel.Heading>
+                                <Panel.Body>
+                                    <table className={"table table-hover"}>
+                                        <thead>
+                                        <tr>
+                                            <th>Dátum</th>
+                                            <th>Info</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td className='col-md-3'>02.04 - 08.04.</td>
+                                            <td className='col-md-9'>Refaktorizácia, export-import, písanie práce.</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='col-md-3'>26.03. - 01.04.</td>
+                                            <td className='col-md-9'>Písanie práce, dolaďovanie aplikácie.</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='col-md-3'>19.03. - 25.03.</td>
+                                            <td className='col-md-9'>Aktualizácia parsera, interpretácia premenných.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12.03. - 18.03.</td>
+                                            <td>Refaktorizácia do Redux-u. Vytvorenie editovania interpretácie predikátových a funkčných symbolov cez tabuľku.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>05.03. - 11.03.</td>
+                                            <td>Refaktorizácia do Redux-u</td>
+                                        </tr>
+                                        <tr>
+                                            <td>26.02. - 04.03.</td>
+                                            <td>Konzultácie so školiteľom ohľadom využitia knižnice <a href='https://redux.js.org/'>Redux</a> a spôsobe exportovania aplikácie.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>19.02. - 25.02.</td>
+                                            <td>Konzultácie so školiteľom ohľadom ďalšieho postupu. Vytvorenie vyhodnocovania termov.</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </Panel.Body>
+                            </Panel>
+                        </Col>
                         <Col md={12}>
                             <Panel bsStyle='info'>
                                 <Panel.Heading>
@@ -165,35 +198,6 @@ class Home extends React.Component {
                                         nám však známy nástroj poskytujúci
                                         interaktívne vyhodnocovanie riešení a dostatočné možnosti zadávať rozličné
                                         úlohy.
-                                    </p>
-                                </Panel.Body>
-                            </Panel>
-                        </Col>
-                        <Col md={12}>
-                            <Panel bsStyle='info'>
-                                <Panel.Heading>
-                                    <Panel.Title componentClass='h3'>Ciele práce</Panel.Title>
-                                </Panel.Heading>
-                                <Panel.Body>
-                                    <p>
-                                        Cieľom práce je navrhnúť, implementovať a otestovať prototyp interaktívneho
-                                        webového
-                                        nástroja – prieskumníka
-                                        sémantiky logiky prvého rádu. Umožní definovanie prvorádového jazyka,
-                                        konkrétnej
-                                        konečnej štruktúry pre
-                                        tento jazyk a kontrolu splnenia formúl.
-                                    </p>
-                                    <p>
-                                        Prieskumník by mal slúžiť na riešenie úloh, ale aj na ich tvorbu.
-                                        Vykonávať sa bude na strane klienta (t.j., vo webovom prehliadači), bude
-                                        implementovaný vo vhodnom frameworku
-                                        (<a href="http://www.reactjs.org">React</a>, <a
-                                        href="http://www.angularjs.org">AngularJS</a>, <a
-                                        href="http://elm-lang.org/">elm</a>, …) a tak, aby ho bolo možné integrovať
-                                        do
-                                        kvízového modulu výučbového systému <a
-                                        href="http://www.courses.matfyz.sk">courses.matfyz.sk</a>.
                                     </p>
                                 </Panel.Body>
                             </Panel>

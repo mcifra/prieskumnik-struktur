@@ -20,30 +20,30 @@ class Structure {
     }
 
     setLanguageConstants(constants) {
-        return this.language.setConstants(constants);
-        // let iConstantKeys = [...this.iConstant.keys()];
-        // iConstantKeys.forEach(constantName => {
-        //     if (!this.language.hasConstant(constantName))
-        //         this.iConstant.delete(constantName);
-        // });
+        let message = this.language.setConstants(constants);
+        let unusedConstants = [...this.iConstant.keys()].filter(e => !this.language.hasConstant(e));
+        unusedConstants.forEach(c => {
+            this.iConstant.delete(c);
+        });
+        return message;
     }
 
     setLanguagePredicates(predicates) {
-        return this.language.setPredicates(predicates);
-        // let iPredicateKeys = [...this.iPredicate.keys()];
-        // iPredicateKeys.forEach(predicateName => {
-        //     if (!this.language.hasPredicate(predicateName))
-        //         this.iPredicate.delete(predicateName);
-        // });
+        let message = this.language.setPredicates(predicates);
+        let unusedPredicates = [...this.iPredicate.keys()].filter(e => !this.language.hasPredicate(e));
+        unusedPredicates.forEach(p => {
+            this.iPredicate.delete(p);
+        });
+        return message;
     }
 
     setLanguageFunctions(functions) {
-        return this.language.setFunctions(functions);
-        // let iFunctionKeys = [...this.iFunction.keys()];
-        // iFunctionKeys.forEach(functionName => {
-        //     if (!this.language.hasFunction(functionName))
-        //         this.iFunction.delete(functionName);
-        // });
+        let message = this.language.setFunctions(functions);
+        let unusedFunctions = [...this.iFunction.keys()].filter(e => !this.language.hasFunction(e));
+        unusedFunctions.forEach(f => {
+            this.iFunction.delete(f);
+        });
+        return message;
     }
 
     hasDomainItem(item) {
@@ -51,10 +51,7 @@ class Structure {
     }
 
     setDomain(domain) {
-        if (domain.constructor === Set)
-            this.domain = domain;
-        else
-            this.domain = new Set(domain)
+        this.domain = new Set(domain);
         return '';
     }
 
@@ -62,19 +59,13 @@ class Structure {
         this.domain.clear();
     }
 
-    // addDomainItem(name) {
-    //     this.domain.add(name);
-    // }
-    //
-    // deleteDomainItem(name) {
-    //     this.domain.delete(name);
-    // }
-
     setConstantValue(constantName, value) {
         if (!this.language.hasConstant(constantName)) {
             throw new InvalidLanguageException('Jazyk neobsahuje konštantu ' + constantName);
         }
-        if (value === '' || value == null || value === undefined) {
+        if (value.length === 0) {
+            if (this.iConstant.has(constantName))
+                this.iConstant.delete(constantName);
             throw new InvalidLanguageException('Interpretačná hodnota konštanty nesmie byť prázdna');
         }
         this.iConstant.set(constantName, value);
@@ -91,7 +82,6 @@ class Structure {
      */
     setPredicateValue(predicateName, predicateParams) {
         if (!this.language.hasPredicate(predicateName)) {
-            //throw new InvalidLanguageException('Jazyk neobsahuje predikátový symbol ' + predicateName);
             console.log('nie je v jazyku');
             return;
         }
@@ -105,6 +95,10 @@ class Structure {
      */
     getPredicateValue(predicateName) {
         return this.iPredicate.get(predicateName);
+    }
+
+    clearPredicateValue(predicateName) {
+        this.iPredicate.set(predicateName, []);
     }
 
     /**
@@ -140,6 +134,23 @@ class Structure {
             return this.iFunction.get(functionName).get(JSON.stringify(functionParams));
         }
         return this.iFunction.get(functionName);
+    }
+
+    getFunctionValueArray(functionName) {
+        if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName))
+            return [];
+        let res = [];
+        this.iFunction.get(functionName).forEach((value, params) => {
+            let tuple = JSON.parse(params);
+            tuple.push(value);
+            res.push(tuple);
+        });
+        return res;
+    }
+
+    clearFunctionValue(functionName) {
+        if (this.iFunction.has(functionName))
+            this.iFunction.get(functionName).clear();
     }
 
 }

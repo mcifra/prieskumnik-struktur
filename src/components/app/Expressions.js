@@ -89,12 +89,12 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                         <Row key={index}>
                             <Col sm={7}>
                                 <FormGroup
-                                    validationState={term.inputValue ? (term.parsedObject ? 'success' : 'error') : null}>
+                                    validationState={term.value ? (term.validSyntax ? 'success' : 'error') : null}>
                                     <InputGroup>
                                         <label className='input-group-addon'
                                                htmlFor={'term-' + index}>
                                             𝝉<sub>{index + 1}</sub> = </label>
-                                        <FormControl type='text' value={term.inputValue}
+                                        <FormControl type='text' value={term.value}
                                                      onChange={(e) => onInputChange(e.target.value, index, 'TERM')}
                                                      id={'term-' + index}/>
                                         <InputGroup.Button>
@@ -102,7 +102,7 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                                             <Button onClick={(e) => removeTerm(index)}>🔒</Button>
                                         </InputGroup.Button>
                                     </InputGroup>
-                                    <HelpBlock>{term.feedbackMessage}</HelpBlock>
+                                    <HelpBlock>{term.feedback.message}</HelpBlock>
                                 </FormGroup>
                             </Col>
                             <Col sm={3}>

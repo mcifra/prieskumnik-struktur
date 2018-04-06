@@ -161,10 +161,10 @@ tuple
     = "(" spaces i1:DomainIdentifier l:(spaces "," spaces i2:DomainIdentifier {return i2})+ spaces ")" {return [i1].concat(l)}
     / spaces i:DomainIdentifier spaces {return [i]}
 e_tuple
-    = "(" spaces i1:Identifier spaces "," spaces i2:Identifier spaces ")" {return [i1, i2]}
+    = "(" spaces i1:Identifier spaces "," spaces i2:DomainIdentifier spaces ")" {return [i1, i2]}
 
 
-DomainIdentifier "domain identifier"
+DomainIdentifier
     = name:IdentifierPart+ {return name.join("")}
 
 Emoji
@@ -194,7 +194,7 @@ IdentifierPart
     / "\u200C"
     / "\u200D"
 
-UnicodeLetter
+UnicodeLetter "letter"
     = Lu
     / Ll
     / Lt
@@ -202,11 +202,11 @@ UnicodeLetter
     / Lo
     / Nl
 
-UnicodeCombiningMark
+UnicodeCombiningMark "combining mark"
     = Mn
     / Mc
 
-UnicodeDigit
+UnicodeDigit "digit"
     = Nd
 
 // Letter, Lowercase

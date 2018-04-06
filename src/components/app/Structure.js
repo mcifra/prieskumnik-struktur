@@ -93,7 +93,7 @@ function Structure(props) {
                                                 validationState={props.inputs.structure.predicates[name].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
-                                                           htmlFor={'predicate-' + name}><var>i</var> ({name})</label>
+                                                           htmlFor={'predicate-' + name}><var>i</var> ({name.split('/')[0]})</label>
                                                     <FormControl id={'predicate-' + name}
                                                                  value={props.inputs.structure.predicates[name].value}
                                                                  type='text'
@@ -105,7 +105,7 @@ function Structure(props) {
                                                 </InputGroup>
                                                 {props.inputs.structure.predicates[name].editMode === 'TEXT' ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
-                                                                     arity={props.structure.language.getPredicate(name)}
+                                                                     arity={props.structure.language.getPredicate(name.split('/')[0])}
                                                                      value={props.structure.iPredicate.get(name) ? props.structure.iPredicate.get(name) : []}
                                                                      onInputChange={props.onPredicateValueChangeTable} type='PREDICATE'/>
                                                 )}
@@ -123,10 +123,10 @@ function Structure(props) {
                                         <legend>Interpretácia funkčných symbolov</legend>
                                         {functions.map((name) =>
                                             <FormGroup
-                                                validationState={props.inputs.structure.functions[name].error !== '' ? 'error' : null}>
+                                                validationState={props.inputs.structure.functions[name].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
-                                                           htmlFor={'function-' + name}><var>i</var> ({name})</label>
+                                                           htmlFor={'function-' + name}><var>i</var> ({name.split('/')[0]})</label>
                                                     <FormControl id={'function-' + name}
                                                                  value={props.inputs.structure.functions[name].value}
                                                                  type='text'
@@ -138,11 +138,11 @@ function Structure(props) {
                                                 </InputGroup>
                                                 {props.inputs.structure.functions[name].editMode === 'TEXT' ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
-                                                                     arity={props.structure.language.getFunction(name)}
+                                                                     arity={props.structure.language.getFunction(name.split('/')[0])}
                                                                      value={props.structure.iFunction.get(name) ? props.structure.iFunction.get(name) : new Map()}
                                                                      onInputChange={props.onFunctionValueChangeTable} type='FUNCTION'/>
                                                 )}
-                                                <HelpBlock>{props.inputs.structure.functions[name].error}</HelpBlock>
+                                                <HelpBlock>{props.inputs.structure.functions[name].feedback.message}</HelpBlock>
                                             </FormGroup>
                                         )}
                                     </fieldset>

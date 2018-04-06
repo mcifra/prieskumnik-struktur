@@ -24,6 +24,10 @@ class Variable extends Term {
      * @return {string}
      */
     eval(structure, e) {
+        if (!e.has(this.name)) {
+            // hodnota nie je definovana
+            throw 'Hodnota premennej ' + this.name + ' nie je definovaná';
+        }
         return e.get(this.name);
     }
 

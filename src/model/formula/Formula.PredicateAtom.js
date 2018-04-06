@@ -26,13 +26,16 @@ class PredicateAtom extends Formula {
      * @return {boolean}
      */
     eval(structure, e) {
-        var translatedTerms = [];
-        for (var i = 0; i < this.terms.length; i++) {
-            translatedTerms.push(this.terms[i].eval(structure, e));
+        let translatedTerms = [];
+        this.terms.forEach(term => {
+            translatedTerms.push(term.eval(structure, e));
+        });
+        let arity = structure.language.getPredicate(this.name);
+        if (!structure.getPredicateValue(this.name + '/' + arity)) {
+            return false;
         }
-        var allTerms = structure.getPredicateValue(this.name);
-
-        return JSON.stringify(allTerms).indexOf(JSON.stringify(translatedTerms)) > -1;
+        let value = structure.getPredicateValue(this.name + '/' + arity);
+        return value.findIndex(e => JSON.stringify(e) === JSON.stringify(translatedTerms)) > -1;
     }
 
     toString() {

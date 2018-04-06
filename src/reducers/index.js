@@ -46,54 +46,52 @@ function rootReducer(state = s, action) {
         case 'SET_CONSTANTS':
             parseText(action.value, s.inputs.constants, {startRule: 'constants'});
             if (s.inputs.constants.parsed) {
-                syncLanguageSymbols(setConstants(), setPredicates(), setFunctions());
-                syncLanguageInterpretation();
+                setConstants();
+                setPredicates();
+                setFunctions();
                 setVariables();
             }
             return s;
         case 'SET_PREDICATES':
             parseText(action.value, s.inputs.predicates, {startRule: 'predicates'});
             if (s.inputs.predicates.parsed) {
-                syncLanguageSymbols(setPredicates(), setConstants(), setFunctions());
-                syncLanguageInterpretation();
+                setPredicates();
+                setConstants();
+                setFunctions();
                 setVariables();
             }
             return s;
         case 'SET_FUNCTIONS':
             parseText(action.value, s.inputs.functions, {startRule: 'functions'});
             if (s.inputs.functions.parsed) {
-                syncLanguageSymbols(setFunctions(), setPredicates(), setConstants());
-                syncLanguageInterpretation();
+                setFunctions();
+                setPredicates();
+                setConstants();
                 setVariables();
             }
             return s;
         case 'SET_DOMAIN':
-            if (action.value.length === 0) {
-                s.inputs.structure.domain.value = '';
-                s.inputs.structure.domain.parsed = [];
-                s.inputs.structure.domain.feedback.message = 'Doména nesmie byť prázdna';
-                s.inputs.structure.domain.feedback.type = 'error';
-            } else {
-                parseText(action.value, s.inputs.structure.domain, {startRule: 'domain'});
-            }
+            parseText(action.value, s.inputs.structure.domain, {startRule: 'domain'});
             setDomain();
-            syncConstantsValues();
-            syncPredicatesValues();
+            setConstantsValues();
+            setPredicatesValues();
+            setFunctionsValues();
             setVariables();
+            syncExpressionsValue();
             return s;
         case 'SET_VARIABLES_VALUE':
             parseText(action.value, s.inputs.variableValues, {structure: s.structure, startRule: 'e_tuples',});
             setVariables();
+            syncExpressionsValue();
             return s;
         case 'SET_CONSTANT_VALUE':
-            return setConstantValue(s, action);
+            setConstantValue(action.constantName, action.value);
+            syncExpressionsValue();
+            return s;
         case 'SET_PREDICATE_VALUE_TEXT':
-            parseText(action.value, s.inputs.structure.predicates[action.predicateName], {
-                structure: s.structure,
-                startRule: 'tuples',
-                arity: s.structure.language.getPredicate(action.predicateName.split('/')[0])
-            });
+            parseText(action.value, s.inputs.structure.predicates[action.predicateName], {startRule: 'tuples'});
             setPredicateValue(action.predicateName);
+            syncExpressionsValue();
             return s;
         case 'SET_PREDICATE_VALUE_TABLE':
             if (action.checked)
@@ -103,20 +101,20 @@ function rootReducer(state = s, action) {
             let predicateValue = s.structure.getPredicateValue(action.predicateName);
             s.inputs.structure.predicates[action.predicateName].parsed = predicateValue;
             s.inputs.structure.predicates[action.predicateName].value = predicateValueToString(predicateValue);
+            syncExpressionsValue();
             return s;
         case 'SET_FUNCTION_VALUE_TEXT':
-            let text = action.value;
-            let arity = parseInt(s.structure.language.getFunction(action.functionName.split('/')[0])) + 1;
-            parseText(text, s.inputs.structure.functions[action.functionName], {
-                structure: s.structure,
-                startRule: 'tuples',
-                arity: arity
-            });
+            parseText(action.value, s.inputs.structure.functions[action.functionName], {startRule: 'tuples'});
             setFunctionValue(action.functionName);
+            syncExpressionsValue();
             return s;
         case 'SET_FUNCTION_VALUE_TABLE':
             let tuple = action.value;
             addFunctionValue(action.functionName, tuple);
+            let functionValue = s.structure.getFunctionValueArray(action.functionName);
+            s.inputs.structure.functions[action.functionName].parsed = functionValue;
+            s.inputs.structure.functions[action.functionName].value = predicateValueToString(functionValue);
+            syncExpressionsValue();
             return s;
         case 'TOGGLE_EDIT_TABLE':
             toggleEditTable(action);
@@ -147,53 +145,17 @@ function rootReducer(state = s, action) {
     }
 }
 
-// synchronizuje cely jazyk s interpretaciou
-function syncLanguageInterpretation() {
-    syncConstantsInterpretation();
-    syncPredicatesInterpretation();
-    syncFunctionsInterpretation();
-}
-
-// nastavi konstanty, predikaty a funkcie do jazyka v pozadovanom poradi
-function syncLanguageSymbols(f1, f2, f3) {
-    f1;
-    f2;
-    f3
-}
-
 function setConstants() {
     if (!s.inputs.constants.parsed)
         return;
     s.inputs.constants.feedback.message = s.structure.setLanguageConstants(s.inputs.constants.parsed);
-}
-
-function setPredicates() {
-    if (!s.inputs.predicates.parsed)
-        return;
-    s.inputs.predicates.feedback.message = s.structure.setLanguagePredicates(s.inputs.predicates.parsed);
-}
-
-function setFunctions() {
-    if (!s.inputs.functions.parsed)
-        return;
-    s.inputs.functions.feedback.message = s.structure.setLanguageFunctions(s.inputs.functions.parsed);
-}
-
-function setDomain() {
-    if (!s.inputs.structure.domain.parsed)
-        return;
-    s.inputs.structure.domain.feedback.message = s.structure.setDomain(s.inputs.structure.domain.parsed);
-}
-
-// synchronizuje konstanty v jazyku s interpretaciou
-function syncConstantsInterpretation() {
-    let constants = s.structure.language.constants;
-    let unusedConstants = [...s.structure.iConstant.keys()].filter(e => !s.structure.language.hasConstant(e));
-    unusedConstants.forEach(constant => {
-        s.structure.iConstant.delete(constant);
-        delete s.inputs.structure.constants[constant];
+    let inputs = Object.keys(s.inputs.structure.constants);
+    inputs.forEach(c => {
+        if (!s.structure.language.hasConstant(c)) {
+            delete s.inputs.structure.constants[c];
+        }
     });
-    constants.forEach(constant => {
+    s.structure.language.getConstants().forEach(constant => {
         if (!s.inputs.structure.constants[constant])
             s.inputs.structure.constants[constant] = {
                 value: '',
@@ -203,45 +165,17 @@ function syncConstantsInterpretation() {
     });
 }
 
-// po zmene domeny sa aktualizuju hodnoty konstant
-function syncConstantsValues() {
-    let it = s.structure.iConstant.keys();
-    let k = null;
-    while (k = it.next().value) {
-        if (!s.structure.hasDomainItem(s.structure.getConstantValue(k))) {
-            s.structure.iConstant.delete(k);
-            s.inputs.structure.constants[k].feedback.message = 'Interpretačná hodnota konštanty nesmie byť prázdna';
-            s.inputs.structure.constants[k].feedback.type = 'error';
-            s.inputs.structure.constants[k].value = '';
+function setPredicates() {
+    if (!s.inputs.predicates.parsed)
+        return;
+    s.inputs.predicates.feedback.message = s.structure.setLanguagePredicates(s.inputs.predicates.parsed);
+    let inputs = Object.keys(s.inputs.structure.predicates);
+    inputs.forEach(p => { // zmazanie vstupu
+        if (!s.structure.language.hasPredicate(p)) {
+            delete s.inputs.structure.predicates[p];
         }
-    }
-}
-
-function setConstantValue(state, action) {
-    let newState = copyState(state);
-    newState.inputs.structure.constants[action.constantName].value = action.value;
-    newState.inputs.structure.constants[action.constantName].feedback.message = '';
-    try {
-        newState.structure.setConstantValue(action.constantName, action.value);
-    } catch (e) {
-        console.error(e);
-        newState.inputs.structure.constants[action.constantName].feedback.message = e.message;
-        newState.inputs.structure.constants[action.constantName].feedback.type = 'error';
-    }
-    return newState;
-}
-
-// synchronizuje predikaty v jazyku s interpretaciou
-// zmaze hodnoty vymazanych predikatov
-// aktualizuje vstupy
-function syncPredicatesInterpretation() {
-    let predicates = s.structure.language.predicates;
-    let unusedPredicates = [...s.structure.iPredicate.keys()].filter(e => !s.structure.language.hasPredicate(e)); // predikaty ktore nie su v jazyku
-    unusedPredicates.forEach(predicate => { // zmazanie vstupu a hodnoty
-        s.structure.iPredicate.delete(predicate);
-        delete s.inputs.structure.predicates[predicate];
     });
-    predicates.forEach((arity, predicate) => {
+    s.structure.language.predicates.forEach((arity, predicate) => {
         if (!s.inputs.structure.predicates[predicate + '/' + arity])
             s.inputs.structure.predicates[predicate + '/' + arity] = {
                 value: '',
@@ -252,8 +186,67 @@ function syncPredicatesInterpretation() {
     })
 }
 
+function setFunctions() {
+    if (!s.inputs.functions.parsed)
+        return;
+    s.inputs.functions.feedback.message = s.structure.setLanguageFunctions(s.inputs.functions.parsed);
+    let inputs = Object.keys(s.inputs.structure.functions);
+    inputs.forEach(f => {
+        if (!s.structure.language.hasFunction(f)) {
+            delete s.inputs.structure.functions[f];
+        }
+    });
+    s.structure.language.functions.forEach((arity, f) => {
+        if (!s.inputs.structure.functions[f + '/' + arity])
+            s.inputs.structure.functions[f + '/' + arity] = {
+                value: '',
+                feedback: {type: null, message: ''},
+                locked: false,
+                editMode: 'TEXT'
+            }
+    })
+}
+
+function setDomain() {
+    if (!s.inputs.structure.domain.parsed)
+        return;
+    let message = '';
+    if (s.inputs.structure.domain.parsed.length === 0) {
+        message = 'Doména nesmie byť prázdna';
+        s.inputs.structure.domain.feedback.type = 'error';
+    }
+    s.structure.setDomain(s.inputs.structure.domain.parsed);
+    s.inputs.structure.domain.feedback.message = message;
+}
+
+// po zmene domeny sa aktualizuju hodnoty konstant
+function setConstantsValues() {
+    let it = s.structure.iConstant.keys();
+    let k;
+    while (k = it.next().value) {
+        if (!s.structure.hasDomainItem(s.structure.getConstantValue(k))) {
+            s.structure.iConstant.delete(k);
+            s.inputs.structure.constants[k].feedback.message = 'Interpretačná hodnota konštanty nesmie byť prázdna';
+            s.inputs.structure.constants[k].feedback.type = 'error';
+            s.inputs.structure.constants[k].value = '';
+        }
+    }
+}
+
+function setConstantValue(constantName, value) {
+    s.inputs.structure.constants[constantName].value = value;
+    s.inputs.structure.constants[constantName].feedback.message = '';
+    try {
+        s.structure.setConstantValue(constantName, value);
+    } catch (e) {
+        console.error(e);
+        s.inputs.structure.constants[constantName].feedback.message = e.message;
+        s.inputs.structure.constants[constantName].feedback.type = 'error';
+    }
+}
+
 // po zmene domeny sa aktualizuju hodnoty predikatov
-function syncPredicatesValues() {
+function setPredicatesValues() {
     let predicates = Object.keys(s.inputs.structure.predicates);
     predicates.forEach(predicate => {
         setPredicateValue(predicate);
@@ -265,7 +258,7 @@ function syncPredicatesValues() {
 function setPredicateValue(predicateName) {
     if (!s.inputs.structure.predicates[predicateName] || !s.inputs.structure.predicates[predicateName].parsed)
         return;
-    s.structure.setPredicateValue(predicateName, []); // vyprazdnenie hodnoty
+    s.structure.clearPredicateValue(predicateName);
     s.inputs.structure.predicates[predicateName].feedback.message = '';
     s.inputs.structure.predicates[predicateName].feedback.type = null;
     s.inputs.structure.predicates[predicateName].parsed.forEach(tuple => {
@@ -278,8 +271,7 @@ function setPredicateValue(predicateName) {
 // kontroluje aritu a ci su prvky v domene
 function addPredicateValue(predicateName, tuple) {
     let p = predicateName.split('/')[0];
-    let arity = s.structure.language.getPredicate(p);
-    if (arity != tuple.length) {
+    if (s.structure.language.getPredicate(p) !== tuple.length) {
         s.inputs.structure.predicates[predicateName].feedback.message = 'N-tica ' + tuple + ' nemá povolený počet prvkov';
         s.inputs.structure.predicates[predicateName].feedback.type = 'error';
         removePredicateValue(predicateName, tuple);
@@ -312,29 +304,8 @@ function removePredicateValue(predicateName, tuple) {
         s.structure.getPredicateValue(predicateName).splice(index, 1);
 }
 
-// synchronizuje funkcie v jazyku s interpretaciou
-// zmaze hodnoty vymazanych funkcii
-// aktualizuje vstupy
-function syncFunctionsInterpretation() {
-    let functions = s.structure.language.functions;
-    let unusedFunctions = [...s.structure.iFunction.keys()].filter(e => !s.structure.language.hasFunction(e));
-    unusedFunctions.forEach(f => {
-        s.structure.iFunction.delete(f);
-        delete s.inputs.structure.functions[f];
-    });
-    functions.forEach((arity, f) => {
-        if (!s.inputs.structure.functions[f + '/' + arity])
-            s.inputs.structure.functions[f + '/' + arity] = {
-                value: '',
-                feedback: {type: null, message: ''},
-                locked: false,
-                editMode: 'TEXT'
-            }
-    })
-}
-
 // po zmene domeny sa aktualizuju hodnoty funkcii
-function syncFunctionsValues() {
+function setFunctionsValues() {
     let functions = Object.keys(s.inputs.structure.functions);
     functions.forEach(f => {
         setFunctionValue(f);
@@ -346,6 +317,9 @@ function syncFunctionsValues() {
 function setFunctionValue(functionName) {
     if (!s.inputs.structure.functions[functionName] || !s.inputs.structure.functions[functionName].parsed)
         return;
+    s.structure.clearFunctionValue(functionName);
+    s.inputs.structure.functions[functionName].feedback.message = '';
+    s.inputs.structure.functions[functionName].feedback.type = null;
     s.inputs.structure.functions[functionName].parsed.forEach(tuple => {
         addFunctionValue(functionName, tuple);
     });
@@ -356,8 +330,7 @@ function setFunctionValue(functionName) {
 // kontroluje aritu a ci su prvky v domene
 function addFunctionValue(functionName, tuple) {
     let p = functionName.split('/')[0];
-    let arity = s.structure.language.getFunction(p);
-    if (arity != tuple.length) {
+    if (tuple.length !== s.structure.language.getFunction(p) + 1) {
         s.inputs.structure.functions[functionName].feedback.message = 'N-tica ' + tuple + ' nemá povolený počet prvkov';
         s.inputs.structure.functions[functionName].feedback.type = 'error';
         removeFunctionValue(functionName, tuple);
@@ -440,22 +413,6 @@ function parseText(text, textData, parserOptions) {
     }
 }
 
-// function syncFunctionValue(domain, value) {
-//     let keys = [...value.keys()];
-//     for (let i = 0; i < keys.length; i++) {
-//         let keysTemp = JSON.parse(keys[i]);
-//         for (let j = 0; j < keysTemp.length; j++) {
-//             if (!domain.has(keysTemp[j])) {
-//                 value.delete(keys[i]);
-//                 break;
-//             }
-//         }
-//         if (!domain.has(value.get(keys[i]))) {
-//             value.delete(keys[i]);
-//         }
-//     }
-// }
-
 function tupleToString(tuple) {
     if (tuple.length === 0)
         return '';
@@ -485,25 +442,9 @@ function predicateValueToString(value) {
     return res;
 }
 
-// prerobi hodnotu funkcie (struktura Map) na string
-// v tvare "(...), (...), ..."
-function functionValueToString(value) {
-    // value je Map()
-    let res = '';
-    value.forEach((val, key) => {
-        let tuple = JSON.parse(key);
-        tuple.push(val);
-        let temp = tupleToString(tuple);
-        res += temp + ', ';
-    });
-    if (res.substring(res.length - 2, res.length) === ', ')
-        res = res.substring(0, res.length - 2);
-    return res;
-}
-
 // prida sa formula do zoznamu formul
 function addFormula() {
-    s.expressions.formulas.push(defaultExpression);
+    s.expressions.formulas.push(defaultExpression());
 }
 
 // zmaze sa formula zo zoznamu formul
@@ -515,7 +456,7 @@ function removeFormula(index) {
 
 // prida sa term do zoznamu termov
 function addTerm() {
-    s.expressions.terms.push(defaultExpression);
+    s.expressions.terms.push(defaultExpression());
 }
 
 // zmaze sa term zo zoznamu termov
@@ -525,19 +466,28 @@ function removeTerm(index) {
     }
 }
 
-// po zmene domeny sa zobberie hodnota z .parsed
+// po zmene domeny sa zoberie hodnota z .parsed
 // a znova sa vyraz vyhodnoti, neparsuje sa znova
 function syncExpressionsValue() {
     s.expressions.formulas.forEach(formula => {
-        if (formula.parsedObject) {
-            formula.expressionValue = formula.parsedObject.eval(s.structure, s.variableValues);
-        }
+        evalExpression(formula);
     });
     s.expressions.terms.forEach(term => {
-        if (term.parsedObject) {
-            term.expressionValue = term.parsedObject.eval(s.structure, s.variableValues);
-        }
+        evalExpression(term);
     });
+}
+
+// vyhodnoti vyraz
+function evalExpression(expression) {
+    if (!expression.parsed || expression.parsed.length === 0)
+        return;
+    expression.feedback.message = '';
+    try {
+        expression.expressionValue = expression.parsed.eval(s.structure, s.variableValues);
+    } catch (e) {
+        expression.feedback.message = e;
+        expression.feedback.type = 'error';
+    }
 }
 
 // po zmene hodnoty inputu
@@ -552,7 +502,7 @@ function checkExpressionSyntax(action) {
     expression.value = action.value; // aby tam neboli zatvorky
     if (expression.feedback.message.length === 0) {
         expression.validSyntax = true;
-        expression.expressionValue = expression.parsed.eval(s.structure, s.variableValues);
+        evalExpression(expression);
     } else {
         expression.validSyntax = false;
     }
@@ -599,9 +549,9 @@ function importAppState(content) {
         setConstants();
         setPredicates();
         setFunctions();
-        // setConstantsValues();
-        syncPredicatesValues();
-        syncFunctionsValues();
+        setConstantsValues();
+        setPredicatesValues();
+        setFunctionsValues();
     } catch (e) {
         console.error(e);
     }
@@ -623,14 +573,14 @@ const setParserOptions = (startRule) => ({
     equalityAtom: EqualityAtom
 });
 
-const defaultExpression = {
+const defaultExpression = () => ({
     value: '',
     expressionValue: null,
     answerValue: '',
     feedback: {type: null, message: ''},
     inputLocked: false,
     answerLocked: false
-};
+});
 
 const copyState = (s) => ({
     structure: s.structure,
