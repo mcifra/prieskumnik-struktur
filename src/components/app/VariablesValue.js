@@ -28,7 +28,7 @@ function VariablesValue(props) {
                             <fieldset>
                                 <legend>Interpretácia premenných</legend>
                                 <FormGroup
-                                    validationState={props.error !== '' ? 'error' : null}>
+                                    validationState={props.feedback !== '' ? 'error' : null}>
                                     <InputGroup>
                                         <label className='input-group-addon'
                                                htmlFor='structure-editor-variables'>{<var>e</var>}</label>
@@ -37,7 +37,7 @@ function VariablesValue(props) {
                                                      type='text'
                                                      onChange={(e) => props.onInputChange(e.target.value)}/>
                                     </InputGroup>
-                                    <HelpBlock>{props.error}</HelpBlock>
+                                    <HelpBlock>{props.feedback}</HelpBlock>
                                 </FormGroup>
                             </fieldset>
                         </Col>

@@ -1,6 +1,9 @@
-import {addExpression, checkExpressionSyntax, deleteExpression, setExpressionAnswer} from "../actions";
+import {
+    addFormula, addTerm, checkExpressionSyntax, removeFormula, removeTerm,
+    setFormulaAnswer, setTermAnswer
+} from "../actions/index";
 import {connect} from 'react-redux';
-import Expressions from "../components/Expressions";
+import Expressions from "../components/app/Expressions";
 
 const mapStateToProps = (state) => ({
     formulas: state.expressions.formulas,
@@ -10,9 +13,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     onInputChange: checkExpressionSyntax,
-    addExpression: addExpression,
-    deleteExpression: deleteExpression,
-    onAnswerSelect: setExpressionAnswer
+    addTerm: addTerm,
+    addFormula: addFormula,
+    removeFormula: removeFormula,
+    removeTerm: removeTerm,
+    setFormulaAnswer: setFormulaAnswer,
+    setTermAnswer: setTermAnswer
 };
 
 const ExpressionContainer = connect (

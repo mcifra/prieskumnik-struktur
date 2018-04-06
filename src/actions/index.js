@@ -6,6 +6,11 @@ export const importApp = () => ({
     type: 'IMPORT_APP'
 });
 
+export const upload = (event) => ({
+    type: 'UPLOAD',
+    event: event
+});
+
 
 // zmena inputu pre konstanty (editor jazyka)
 export function setConstants(value) {
@@ -55,53 +60,76 @@ export function setConstantValue(value, constantName) {
     }
 }
 
-export const setPredicateValue = (value, predicateName, domainItems = null) => ({
-    type: 'SET_PREDICATE_VALUE',
+export const setPredicateValueText = (value, predicateName) => ({
+    type: 'SET_PREDICATE_VALUE_TEXT',
     value,
-    predicateName,
-    domainItems
+    predicateName
 });
 
-export const setFunctionValue = (value, functionName, params = null) => ({
-    type: 'SET_FUNCTION_VALUE',
+export const setPredicateValueTable = (value, predicateName, checked) => ({
+    type: 'SET_PREDICATE_VALUE_TABLE',
     value,
-    functionName,
-    params
+    predicateName,
+    checked
+});
+
+export const setFunctionValueText = (value, functionName) => ({
+    type: 'SET_FUNCTION_VALUE_TEXT',
+    value,
+    functionName
+});
+
+export const setFunctionValueTable = (value, functionName) => ({
+    type: 'SET_FUNCTION_VALUE_TABLE',
+    value,
+    functionName
 });
 
 export const checkExpressionSyntax = (value, index, expressionType) => ({
-    type: 'CHECK_EXPRESSION_SYNTAX',
+    type: 'CHECK_SYNTAX',
     value,
     index,
     expressionType
 });
 
-export const addExpression = (expressionType) => ({
-    type: 'ADD_EXPRESSION',
-    expressionType
+export const addFormula = () => ({
+    type: 'ADD_FORMULA'
 });
 
-export const deleteExpression = (expressionType, expressionIndex) => ({
-    type: 'DELETE_EXPRESSION',
-    expressionType,
-    expressionIndex
+export const addTerm = () => ({
+    type: 'ADD_TERM'
 });
 
-export const setExpressionAnswer = (answer, expressionType, expressionIndex) => ({
-    type: 'SET_EXPRESSION_ANSWER',
+export const removeFormula = (index) => ({
+    type: 'REMOVE_FORMULA',
+    index
+});
+
+export const removeTerm = (index) => ({
+    type: 'REMOVE_TERM',
+    index
+});
+
+export const setFormulaAnswer = (answer, index) => ({
+    type: 'SET_FORMULA_ANSWER',
     answer,
-    expressionType,
-    expressionIndex
+    index
+});
+
+export const setTermAnswer = (answer, index) => ({
+    type: 'SET_TERM_ANSWER',
+    answer,
+    index
 });
 
 export const lockExpressionValue = (expressionType, expressionIndex) => ({
-    type: 'LOCK_EXPRESSION_VALUE',
+    type: 'LOCK_VALUE',
     expressionType,
     expressionIndex
 });
 
 export const lockExpressionAnswer = (expressionType, expressionIndex) => ({
-    type: 'LOCK_EXPRESSION_ANSWER',
+    type: 'LOCK_ANSWER',
     expressionType,
     expressionIndex
 });

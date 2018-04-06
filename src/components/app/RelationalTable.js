@@ -5,7 +5,7 @@ function renderFunctionValueSelect(functionName, functionValues, params, domain,
     if (value === undefined)
         value = '';
     return (
-        <select onChange={(e) => onChange(e.target.value, functionName, params)} value={value}>
+        <select onChange={(e) => onChange(params.concat([e.target.value]), functionName)} value={value}>
             <option value=''>{''}</option>
             {domain.map(item =>
                 <option value={item}>{item}</option>
@@ -25,7 +25,7 @@ function RelationalTable(props) {
                 <td>
                     {props.type === 'PREDICATE' ? (
                         <input type='checkbox'
-                               onChange={(e) => props.onInputChange(e.target.checked, props.name, [item])}
+                               onChange={(e) => props.onInputChange([item], props.name, e.target.checked)}
                                checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item])) > -1}/>
                     ) : (
                         renderFunctionValueSelect(props.name, props.value, [item], domain, props.onInputChange)
@@ -42,7 +42,7 @@ function RelationalTable(props) {
                 <td>
                     {props.type === 'PREDICATE' ? (
                         <input type='checkbox'
-                               onChange={(e) => props.onInputChange(e.target.checked, props.name, [item, item2])}
+                               onChange={(e) => props.onInputChange([item,item2], props.name, e.target.checked)}
                                checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item, item2])) > -1}/>
                     ) : (
                         renderFunctionValueSelect(props.name, props.value, [item, item2], domain, props.onInputChange)

@@ -1,10 +1,10 @@
 
 
-import FunctionAtom from "../backend/term/Term.FunctionTerm";
-import Constant from "../backend/term/Term.Constant";
-import Language from "../backend/Language";
-import Structure from "../backend/Structure";
-import Variable from "../backend/term/Term.Variable";
+import FunctionAtom from "../model/term/Term.FunctionTerm";
+import Constant from "../model/term/Term.Constant";
+import Language from "../model/Language";
+import Structure from "../model/Structure";
+import Variable from "../model/term/Term.Variable";
 
 var l = new Language();
 l.addConstant("C1");

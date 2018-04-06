@@ -28,7 +28,7 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Symboly konštánt</legend>
-                                    <FormGroup validationState={props.inputs.constants.error !== '' ? 'error' : null}>
+                                    <FormGroup validationState={props.inputs.constants.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-constants'>
@@ -41,7 +41,7 @@ function Language(props) {
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
-                                        <HelpBlock>{props.inputs.constants.error}</HelpBlock>
+                                        <HelpBlock>{props.inputs.constants.feedback.message}</HelpBlock>
                                     </FormGroup>
                                 </fieldset>
                             </Col>
@@ -50,7 +50,7 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Predikátové symboly</legend>
-                                    <FormGroup validationState={props.inputs.predicates.error !== '' ? 'error' : null}>
+                                    <FormGroup validationState={props.inputs.predicates.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-predicates'>
@@ -63,7 +63,7 @@ function Language(props) {
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
-                                        <HelpBlock>{props.inputs.predicates.error}</HelpBlock>
+                                        <HelpBlock>{props.inputs.predicates.feedback.message}</HelpBlock>
                                     </FormGroup>
                                 </fieldset>
                             </Col>
@@ -72,7 +72,7 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Funkčné symboly</legend>
-                                    <FormGroup validationState={props.inputs.functions.error !== '' ? 'error' : null}>
+                                    <FormGroup validationState={props.inputs.functions.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-functions'>
@@ -85,7 +85,7 @@ function Language(props) {
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
-                                        <HelpBlock>{props.inputs.functions.error}</HelpBlock>
+                                        <HelpBlock>{props.inputs.functions.feedback.message}</HelpBlock>
                                     </FormGroup>
                                 </fieldset>
                             </Col>

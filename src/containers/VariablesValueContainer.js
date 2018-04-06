@@ -1,9 +1,9 @@
-import {setVariablesValue} from "../actions";
+import {setVariablesValue} from "../actions/index";
 import {connect} from 'react-redux';
-import VariablesValue from "../components/VariablesValue";
+import VariablesValue from "../components/app/VariablesValue";
 
 const mapStateToProps = (state) => ({
-    error: state.inputs.variableValues.error,
+    feedback: state.inputs.variableValues.feedback.message,
     value: state.inputs.variableValues.value
 });
 

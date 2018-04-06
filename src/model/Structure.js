@@ -20,54 +20,55 @@ class Structure {
     }
 
     setLanguageConstants(constants) {
-        this.language.setConstants(constants);
-        let iConstantKeys = [...this.iConstant.keys()];
-        for (let i = 0; i < iConstantKeys.length; i++) {
-            if (!this.language.hasConstant(iConstantKeys[i])) {
-                this.iConstant.delete(iConstantKeys[i]);
-            }
-        }
+        return this.language.setConstants(constants);
+        // let iConstantKeys = [...this.iConstant.keys()];
+        // iConstantKeys.forEach(constantName => {
+        //     if (!this.language.hasConstant(constantName))
+        //         this.iConstant.delete(constantName);
+        // });
     }
 
     setLanguagePredicates(predicates) {
-        this.language.setPredicates(predicates);
-        let iPredicateKeys = [...this.iPredicate.keys()];
-        for (let i = 0; i < iPredicateKeys.length; i++) {
-            if (!this.language.hasConstant(iPredicateKeys[i])) {
-                this.iConstant.delete(iPredicateKeys[i]);
-            }
-        }
+        return this.language.setPredicates(predicates);
+        // let iPredicateKeys = [...this.iPredicate.keys()];
+        // iPredicateKeys.forEach(predicateName => {
+        //     if (!this.language.hasPredicate(predicateName))
+        //         this.iPredicate.delete(predicateName);
+        // });
     }
 
     setLanguageFunctions(functions) {
-        this.language.setFunctions(functions);
-        let iFunctionKeys = [...this.iFunction.keys()];
-        for (let i = 0; i < iFunctionKeys.length; i++) {
-            if (!this.language.hasConstant(iFunctionKeys[i])) {
-                this.iConstant.delete(iFunctionKeys[i]);
-            }
-        }
+        return this.language.setFunctions(functions);
+        // let iFunctionKeys = [...this.iFunction.keys()];
+        // iFunctionKeys.forEach(functionName => {
+        //     if (!this.language.hasFunction(functionName))
+        //         this.iFunction.delete(functionName);
+        // });
     }
 
-    hasDomainItem(name) {
-        return this.domain.has(name);
+    hasDomainItem(item) {
+        return this.domain.has(item);
     }
 
     setDomain(domain) {
-        this.domain = domain;
+        if (domain.constructor === Set)
+            this.domain = domain;
+        else
+            this.domain = new Set(domain)
+        return '';
     }
 
     clearDomain() {
         this.domain.clear();
     }
 
-    addDomainItem(name) {
-        this.domain.add(name);
-    }
-
-    deleteDomainItem(name) {
-        this.domain.delete(name);
-    }
+    // addDomainItem(name) {
+    //     this.domain.add(name);
+    // }
+    //
+    // deleteDomainItem(name) {
+    //     this.domain.delete(name);
+    // }
 
     setConstantValue(constantName, value) {
         if (!this.language.hasConstant(constantName)) {
@@ -89,6 +90,11 @@ class Structure {
      * @param {Array} predicateParams
      */
     setPredicateValue(predicateName, predicateParams) {
+        if (!this.language.hasPredicate(predicateName)) {
+            //throw new InvalidLanguageException('Jazyk neobsahuje predikátový symbol ' + predicateName);
+            console.log('nie je v jazyku');
+            return;
+        }
         this.iPredicate.set(predicateName, predicateParams);
     }
 
@@ -108,10 +114,10 @@ class Structure {
      * @param {string} value
      */
     setFunctionValue(functionName, functionParams, value) {
+        if (!this.language.hasFunction(functionName)) {
+            throw new InvalidLanguageException('Jazyk neobsahuje funkčný symbol ' + functionName);
+        }
         let stringified = JSON.stringify(functionParams);
-        // if (this.iFunction.has(functionName) && this.iFunction.get(functionName).has(stringified)) {
-        //     throw new InvalidLanguageException('Funkcia už je definovaná pre parameter ' + stringified);
-        // }
         if (!this.iFunction.has(functionName)) {
             this.iFunction.set(functionName, new Map());
         }
@@ -127,13 +133,11 @@ class Structure {
      * @param {Array} functionParams
      * @return {string|null}
      */
-    getFunctionValue(functionName, functionParams=null) {
-        if(functionParams){
-            let stringified = JSON.stringify(functionParams);
-            if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName).has(stringified)) {
+    getFunctionValue(functionName, functionParams = null) {
+        if (functionParams) {
+            if (!this.iFunction.has(functionName))
                 return null;
-            }
-            return this.iFunction.get(functionName).get(stringified);
+            return this.iFunction.get(functionName).get(JSON.stringify(functionParams));
         }
         return this.iFunction.get(functionName);
     }

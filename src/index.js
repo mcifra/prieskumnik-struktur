@@ -5,7 +5,7 @@ import Navigation from './components/Navigation';
 import Home from './components/Home';
 import Plan from './components/Plan';
 import References from './components/References';
-import App from './components/app/App';
+import App from './components/App';
 import {Route, HashRouter, Switch} from 'react-router-dom';
 
 const Main = () => (

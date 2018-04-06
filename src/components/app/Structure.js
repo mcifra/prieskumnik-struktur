@@ -37,7 +37,7 @@ function Structure(props) {
                                 <fieldset>
                                     <legend>Doména</legend>
                                     <FormGroup
-                                        validationState={props.inputs.structure.domain.error !== '' ? 'error' : null}>
+                                        validationState={props.inputs.structure.domain.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='structure-editor-domain'><var>M</var> = {'{'}</label>
@@ -50,7 +50,7 @@ function Structure(props) {
                                                 <Button onClick={(e) => e.preventDefault()}>🔒</Button>
                                             </span>
                                         </InputGroup>
-                                        <HelpBlock>{props.inputs.structure.domain.error}</HelpBlock>
+                                        <HelpBlock>{props.inputs.structure.domain.feedback.message}</HelpBlock>
                                     </FormGroup>
                                 </fieldset>
                             </Col>
@@ -62,7 +62,7 @@ function Structure(props) {
                                         <legend>Interpretácia symbolov konštánt</legend>
                                         {constants.map((constant) =>
                                             <FormGroup
-                                                validationState={props.inputs.structure.constants[constant].error !== '' ? 'error' : null}>
+                                                validationState={props.inputs.structure.constants[constant].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
                                                            htmlFor={'constant-' + constant}><var>i</var> ({constant})</label>
@@ -76,7 +76,7 @@ function Structure(props) {
                                                         )}
                                                     </select>
                                                 </InputGroup>
-                                                <HelpBlock>{props.inputs.structure.constants[constant].error}</HelpBlock>
+                                                <HelpBlock>{props.inputs.structure.constants[constant].feedback.message}</HelpBlock>
                                             </FormGroup>
                                         )}
                                     </fieldset>
@@ -90,14 +90,14 @@ function Structure(props) {
                                         <legend>Interpretácia predikátových symbolov</legend>
                                         {predicates.map((name) =>
                                             <FormGroup
-                                                validationState={props.inputs.structure.predicates[name].error !== '' ? 'error' : null}>
+                                                validationState={props.inputs.structure.predicates[name].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
                                                            htmlFor={'predicate-' + name}><var>i</var> ({name})</label>
                                                     <FormControl id={'predicate-' + name}
                                                                  value={props.inputs.structure.predicates[name].value}
                                                                  type='text'
-                                                                 onChange={(e) => props.onPredicateValueChange(e.target.value, name)}/>
+                                                                 onChange={(e) => props.onPredicateValueChangeText(e.target.value, name)}/>
                                                     <InputGroup.Button>
                                                         <Button
                                                             onClick={(e) => props.toggleTable('PREDICATE', name)}>T</Button>
@@ -107,9 +107,9 @@ function Structure(props) {
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getPredicate(name)}
                                                                      value={props.structure.iPredicate.get(name) ? props.structure.iPredicate.get(name) : []}
-                                                                     onInputChange={props.onPredicateValueChange} type='PREDICATE'/>
+                                                                     onInputChange={props.onPredicateValueChangeTable} type='PREDICATE'/>
                                                 )}
-                                                <HelpBlock>{props.inputs.structure.predicates[name].error}</HelpBlock>
+                                                <HelpBlock>{props.inputs.structure.predicates[name].feedback.message}</HelpBlock>
                                             </FormGroup>
                                         )}
                                     </fieldset>
@@ -130,7 +130,7 @@ function Structure(props) {
                                                     <FormControl id={'function-' + name}
                                                                  value={props.inputs.structure.functions[name].value}
                                                                  type='text'
-                                                                 onChange={(e) => props.onFunctionValueChange(e.target.value, name)}/>
+                                                                 onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}/>
                                                     <InputGroup.Button>
                                                         <Button
                                                             onClick={(e) => props.toggleTable('FUNCTION', name)}>T</Button>
@@ -140,7 +140,7 @@ function Structure(props) {
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getFunction(name)}
                                                                      value={props.structure.iFunction.get(name) ? props.structure.iFunction.get(name) : new Map()}
-                                                                     onInputChange={props.onFunctionValueChange} type='FUNCTION'/>
+                                                                     onInputChange={props.onFunctionValueChangeTable} type='FUNCTION'/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.functions[name].error}</HelpBlock>
                                             </FormGroup>

@@ -102,6 +102,10 @@ class Home extends React.Component {
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td>6</td>
+                                                <td>Písanie práce, dolaďovanie aplikácie.</td>
+                                            </tr>
+                                            <tr>
                                                 <td>5</td>
                                                 <td>Aktualizácia parsera, interpretácia premenných.</td>
                                             </tr>

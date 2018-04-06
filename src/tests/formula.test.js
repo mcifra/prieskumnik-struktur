@@ -1,18 +1,18 @@
 
-import Language from "../backend/Language";
-import Structure from "../backend/Structure";
-import Conjunction from "../backend/formula/Formula.Conjunction";
-import Constant from "../backend/term/Term.Constant";
-import FunctionAtom from "../backend/term/Term.FunctionTerm";
-import PredicateSymbol from "../backend/formula/Formula.PredicateAtom";
-import Variable from "../backend/term/Term.Variable";
-import Negation from "../backend/formula/Formula.Negation";
-import Disjunction from "../backend/formula/Formula.Disjunction";
-import Implication from "../backend/formula/Formula.Implication";
-import UniversalQuant from "../backend/formula/Formula.UniversalQuant";
-import ExistentialQuant from "../backend/formula/Formula.ExistentialQuant";
-import EqualityAtom from "../backend/formula/Formula.EqualityAtom";
-let parser = require('../backend/parser/grammar');
+import Language from "../model/Language";
+import Structure from "../model/Structure";
+import Conjunction from "../model/formula/Formula.Conjunction";
+import Constant from "../model/term/Term.Constant";
+import FunctionAtom from "../model/term/Term.FunctionTerm";
+import PredicateSymbol from "../model/formula/Formula.PredicateAtom";
+import Variable from "../model/term/Term.Variable";
+import Negation from "../model/formula/Formula.Negation";
+import Disjunction from "../model/formula/Formula.Disjunction";
+import Implication from "../model/formula/Formula.Implication";
+import UniversalQuant from "../model/formula/Formula.UniversalQuant";
+import ExistentialQuant from "../model/formula/Formula.ExistentialQuant";
+import EqualityAtom from "../model/formula/Formula.EqualityAtom";
+let parser = require('../parser/grammar');
 
 var l = new Language();
 l.addConstant("C1");

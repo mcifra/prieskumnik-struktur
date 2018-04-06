@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
-import {setConstants, setFunctions, setPredicates} from "../actions";
-import Language from '../components/Language';
+import {setConstants, setFunctions, setPredicates} from "../actions/index";
+import Language from '../components/app/Language';
 
 const mapStateToProps = (state) => ({
     inputs: state.inputs

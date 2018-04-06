@@ -1,6 +1,6 @@
-import Language from "../backend/Language";
-import Structure from "../backend/Structure";
-import Constant from "../backend/term/Term.Constant";
+import Language from "../model/Language";
+import Structure from "../model/Structure";
+import Constant from "../model/term/Term.Constant";
 
 var l = new Language();
 l.addConstant("C1");

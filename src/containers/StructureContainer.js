@@ -1,9 +1,10 @@
 import {connect} from 'react-redux';
 import {
-    setConstantValue, setDomain, setFunctionValue, setPredicateValue,
+    setConstantValue, setDomain, setFunctionValueTable, setFunctionValueText, setPredicateValueTable,
+    setPredicateValueText,
     setVariablesValue, toggleTable
-} from "../actions";
-import Structure from '../components/Structure';
+} from "../actions/index";
+import Structure from '../components/app/Structure';
 
 const mapStateToProps = (state) => ({
     inputs: state.inputs,
@@ -13,8 +14,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onDomainChange: setDomain,
     onConstantValueChange: setConstantValue,
-    onPredicateValueChange: setPredicateValue,
-    onFunctionValueChange: setFunctionValue,
+    onPredicateValueChangeText: setPredicateValueText,
+    onPredicateValueChangeTable: setPredicateValueTable,
+    onFunctionValueChangeText: setFunctionValueText,
+    onFunctionValueChangeTable: setFunctionValueTable,
     onVariablesValueChange: setVariablesValue,
     toggleTable: toggleTable
 };
