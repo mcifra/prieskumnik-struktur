@@ -7,6 +7,7 @@ import ExpressionsContainer from '../containers/ExpressionsContainer';
 import VariablesValueContainer from "../containers/VariablesValueContainer";
 import LanguageContainer from '../containers/LanguageContainer';
 import StructureContainer from '../containers/StructureContainer';
+import DownloadButton from './app/lib/DownloadButton';
 
 const store = createStore(reducer);
 
@@ -16,9 +17,8 @@ store.subscribe(() => {
     console.log('STATE:', state);
 });
 
-// precitanie vstupneho suboru a importovanie
-function readFile(event) {
-    let file = event.target.files[0];
+function importState(e) {
+    let file = e.target.files[0];
     let fr = new FileReader();
     fr.onload = function (e) {
         store.dispatch({type: 'IMPORT_APP', content: e.target.result});
@@ -26,11 +26,26 @@ function readFile(event) {
     fr.readAsText(file);
 }
 
+function exportState() {
+    let state = store.getState();
+    let json = JSON.stringify({inputs: state.inputs, expressions: state.expressions});
+    return {
+        mime: 'application/json',
+        filename: 'export.json',
+        contents: json
+    }
+}
+
 const App = () => (
     <Provider store={store}>
         <div className={"app"}>
-            <button onClick={(e) => store.dispatch({type: 'EXPORT_APP'})}>Export</button>
-            <input type='file' name='jsonFile' onChange={e => readFile(e)}/>
+
+            <label className="btn btn-success">
+                Import <input type="file" name='jsonFile' onChange={e => importState(e)} hidden={true}
+                              style={{display: 'none'}}/>
+            </label>
+            <DownloadButton genFile={exportState} downloadTitle='Export' className='btn btn-success'/>
+
             <Row>
                 <Col md={6}>
                     <LanguageContainer/>

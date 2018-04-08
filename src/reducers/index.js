@@ -38,8 +38,6 @@ let s = {
 function rootReducer(state = s, action) {
     s = copyState(state);
     switch (action.type) {
-        case 'EXPORT_APP':
-            return exportAppState();
         case 'IMPORT_APP':
             importAppState(action.content);
             return s;
@@ -221,16 +219,11 @@ function setDomain() {
 
 // po zmene domeny sa aktualizuju hodnoty konstant
 function setConstantsValues() {
-    let it = s.structure.iConstant.keys();
-    let k;
-    while (k = it.next().value) {
-        if (!s.structure.hasDomainItem(s.structure.getConstantValue(k))) {
-            s.structure.iConstant.delete(k);
-            s.inputs.structure.constants[k].feedback.message = 'Interpretačná hodnota konštanty nesmie byť prázdna';
-            s.inputs.structure.constants[k].feedback.type = 'error';
-            s.inputs.structure.constants[k].value = '';
-        }
-    }
+    let constants = Object.keys(s.inputs.structure.constants);
+    constants.forEach(c => {
+        console.log(c, s.inputs.structure.constants[c]);
+        setConstantValue(c, s.inputs.structure.constants[c].value);
+    })
 }
 
 function setConstantValue(constantName, value) {
@@ -242,6 +235,7 @@ function setConstantValue(constantName, value) {
         console.error(e);
         s.inputs.structure.constants[constantName].feedback.message = e.message;
         s.inputs.structure.constants[constantName].feedback.type = 'error';
+        s.inputs.structure.constants[constantName].value = '';
     }
 }
 
@@ -270,26 +264,11 @@ function setPredicateValue(predicateName) {
 // do struktury
 // kontroluje aritu a ci su prvky v domene
 function addPredicateValue(predicateName, tuple) {
-    let p = predicateName.split('/')[0];
-    if (s.structure.language.getPredicate(p) !== tuple.length) {
-        s.inputs.structure.predicates[predicateName].feedback.message = 'N-tica ' + tuple + ' nemá povolený počet prvkov';
+    try {
+        s.structure.addPredicateValue(predicateName, tuple);
+    } catch (e) {
+        s.inputs.structure.predicates[predicateName].feedback.message = e;
         s.inputs.structure.predicates[predicateName].feedback.type = 'error';
-        removePredicateValue(predicateName, tuple);
-        return;
-    }
-    let illegalItems = tuple.filter(item => !s.structure.hasDomainItem(item)); // prvky ktore nie su v domene
-    if (illegalItems.length > 0) {
-        s.inputs.structure.predicates[predicateName].feedback.message = 'Prvok ' + illegalItems[0] + ' nie je v doméne štruktúry';
-        s.inputs.structure.predicates[predicateName].feedback.type = 'error';
-        removePredicateValue(predicateName, tuple);
-        return;
-    }
-    if (!s.structure.iPredicate.has(predicateName)) {
-        s.structure.iPredicate.set(predicateName, []);
-    }
-    if (s.structure.iPredicate.get(predicateName).findIndex(e => JSON.stringify(e) === JSON.stringify(tuple)) === -1) {
-        // prida iba ked tam este nie je
-        s.structure.iPredicate.get(predicateName).push(tuple);
     }
 }
 
@@ -297,11 +276,7 @@ function addPredicateValue(predicateName, tuple) {
 // zo struktury
 // iba ked existuje
 function removePredicateValue(predicateName, tuple) {
-    if (!s.structure.getPredicateValue(predicateName))
-        return;
-    let index = s.structure.getPredicateValue(predicateName).findIndex(e => JSON.stringify(e) === JSON.stringify(tuple));
-    if (index > -1)
-        s.structure.getPredicateValue(predicateName).splice(index, 1);
+    s.structure.removePredicateValue(predicateName, tuple);
 }
 
 // po zmene domeny sa aktualizuju hodnoty funkcii
@@ -329,41 +304,13 @@ function setFunctionValue(functionName) {
 // do struktury
 // kontroluje aritu a ci su prvky v domene
 function addFunctionValue(functionName, tuple) {
-    let p = functionName.split('/')[0];
-    if (tuple.length !== s.structure.language.getFunction(p) + 1) {
-        s.inputs.structure.functions[functionName].feedback.message = 'N-tica ' + tuple + ' nemá povolený počet prvkov';
+    try {
+        s.structure.addFunctionValue(functionName, tuple);
+    } catch (e) {
+        console.error(e);
+        s.inputs.structure.functions[functionName].feedback.message = e;
         s.inputs.structure.functions[functionName].feedback.type = 'error';
-        removeFunctionValue(functionName, tuple);
-        return;
     }
-    let params = tuple.slice(0, tuple.length - 1);
-    let value = tuple[tuple.length - 1];
-    if (!value) {
-        // vyuzitie pri tabulke
-        removeFunctionValue(functionName, params);
-        return;
-    }
-    let illegalItems = tuple.filter(item => !s.structure.hasDomainItem(item)); // prvky ktore nie su v domene
-    if (illegalItems.length > 0) {
-        s.inputs.structure.functions[functionName].feedback.message = 'Prvok ' + illegalItems[0] + ' nie je v doméne štruktúry';
-        s.inputs.structure.functions[functionName].feedback.type = 'error';
-        removeFunctionValue(functionName, tuple);
-        return;
-    }
-    if (!s.structure.iFunction.has(functionName)) {
-        s.structure.iFunction.set(functionName, new Map());
-    }
-    let m = s.structure.iFunction.get(functionName);
-    m.set(JSON.stringify(params), value);
-}
-
-// pokusi sa zmazat n-ticu z hodnoty funkcie
-// zo struktury
-// iba ked existuje
-function removeFunctionValue(functionName, params) {
-    let m = s.structure.iFunction.get(functionName);
-    if (m)
-        m.delete(JSON.stringify(params));
 }
 
 // zoberie hodnotu z .parsed,
@@ -535,16 +482,11 @@ function toggleEditTable(action) {
     }
 }
 
-function exportAppState() {
-    let x = JSON.stringify({inputs: s.inputs, expressions: s.expressions});
-    console.log(x);
-    return s;
-}
-
 function importAppState(content) {
     try {
         s = JSON.parse(content);
         s.structure = new Structure(new Language());
+        s.variableValues = new Map();
         setDomain();
         setConstants();
         setPredicates();
@@ -552,6 +494,7 @@ function importAppState(content) {
         setConstantsValues();
         setPredicatesValues();
         setFunctionsValues();
+        setVariables();
     } catch (e) {
         console.error(e);
     }

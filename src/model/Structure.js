@@ -63,6 +63,11 @@ class Structure {
         if (!this.language.hasConstant(constantName)) {
             throw new InvalidLanguageException('Jazyk neobsahuje konštantu ' + constantName);
         }
+        if (!this.domain.has(value)) {
+            if (this.iConstant.has(constantName))
+                this.iConstant.delete(constantName);
+            throw new InvalidLanguageException('Interpretačná hodnota konštanty nesmie byť prázdna');
+        }
         if (value.length === 0) {
             if (this.iConstant.has(constantName))
                 this.iConstant.delete(constantName);
@@ -82,10 +87,40 @@ class Structure {
      */
     setPredicateValue(predicateName, predicateParams) {
         if (!this.language.hasPredicate(predicateName)) {
-            console.log('nie je v jazyku');
             return;
         }
+        if (!this.iPredicate.has(predicateName)) {
+            this.iPredicate.set(predicateName, []);
+        }
         this.iPredicate.set(predicateName, predicateParams);
+    }
+
+    addPredicateValue(predicateName, tuple) {
+        let p = predicateName.split('/')[0];
+        if (this.language.getPredicate(p) !== tuple.length) {
+            // this.removePredicateValue(predicateName, tuple);
+            throw 'N-tica ' + tuple + 'nemá povolený počet prvkov';
+        }
+        let illegalItems = tuple.filter(item => !this.domain.has(item)); // prvky ktore nie su v domene
+        if (illegalItems.length > 0) {
+            this.removePredicateValue(predicateName, tuple);
+            throw 'Prvok ' + illegalItems[0] + ' nie je v doméne štruktúry';
+        }
+        if (!this.iPredicate.has(predicateName)) {
+            this.iPredicate.set(predicateName, []);
+        }
+        if(this.iPredicate.get(predicateName).findIndex(e => JSON.stringify(e) === JSON.stringify(tuple)) === -1) {
+            this.iPredicate.get(predicateName).push(tuple);
+        }
+    }
+
+    removePredicateValue(predicateName, tuple) {
+        if (!this.iPredicate.has(predicateName)) {
+            return;
+        }
+        let index = this.iPredicate.get(predicateName).findIndex(e => JSON.stringify(e) === JSON.stringify(tuple));
+        if (index > -1)
+            this.iPredicate.get(predicateName).splice(index, 1);
     }
 
     /**
@@ -119,6 +154,34 @@ class Structure {
             this.iFunction.get(functionName).delete(stringified);
         else
             this.iFunction.get(functionName).set(stringified, value);
+    }
+
+    addFunctionValue(functionName, tuple) {
+        let p = functionName.split('/')[0];
+        if (tuple.length !== this.language.getFunction(p) + 1) {
+            throw 'N-tica ' + tuple + ' nemá povolený počet prvkov';
+        }
+        let params = tuple.slice(0, tuple.length - 1);
+        let value = tuple[tuple.length - 1];
+        if (!value) {
+            // vyuzitie pri tabulke
+            this.removeFunctionValue(functionName, params);
+            return;
+        }
+        let illegalItems = tuple.filter(item => !this.domain.has(item)); // prvky ktore nie su v domene
+        if (illegalItems.length > 0) {
+            throw 'Prvok ' + illegalItems[0] + ' nie je v doméne štruktúry';
+        }
+        if (!this.iFunction.has(functionName)) {
+            this.iFunction.set(functionName, new Map());
+        }
+        this.iFunction.get(functionName).set(JSON.stringify(params), value);
+    }
+
+    removeFunctionValue(functionName, tuple) {
+        let m = this.iFunction.get(functionName);
+        if (m)
+            m.delete(JSON.stringify(tuple));
     }
 
     /**
