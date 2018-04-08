@@ -4,6 +4,7 @@ import {
 } from "../actions/index";
 import {connect} from 'react-redux';
 import Expressions from "../components/app/Expressions";
+import {lockExpressionAnswer, lockExpressionValue} from "../actions";
 
 const mapStateToProps = (state) => ({
     formulas: state.expressions.formulas,
@@ -18,7 +19,9 @@ const mapDispatchToProps = {
     removeFormula: removeFormula,
     removeTerm: removeTerm,
     setFormulaAnswer: setFormulaAnswer,
-    setTermAnswer: setTermAnswer
+    setTermAnswer: setTermAnswer,
+    lockExpressionValue: lockExpressionValue,
+    lockExpressionAnswer: lockExpressionAnswer
 };
 
 const ExpressionContainer = connect (

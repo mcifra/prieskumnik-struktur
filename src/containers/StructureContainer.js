@@ -5,6 +5,7 @@ import {
     setVariablesValue, toggleTable
 } from "../actions/index";
 import Structure from '../components/app/Structure';
+import {lockConstantValue, lockDomain, lockFunctionValue, lockPredicateValue} from "../actions";
 
 const mapStateToProps = (state) => ({
     inputs: state.inputs,
@@ -19,7 +20,11 @@ const mapDispatchToProps = {
     onFunctionValueChangeText: setFunctionValueText,
     onFunctionValueChangeTable: setFunctionValueTable,
     onVariablesValueChange: setVariablesValue,
-    toggleTable: toggleTable
+    toggleTable: toggleTable,
+    lockDomain: lockDomain,
+    lockConstantValue: lockConstantValue,
+    lockPredicateValue: lockPredicateValue,
+    lockFunctionValue: lockFunctionValue
 };
 
 const StructureContainer = connect(

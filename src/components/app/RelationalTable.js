@@ -1,6 +1,6 @@
 import React from 'react';
 
-function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange) {
+function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange, disabled) {
     let value = functionValues.get(JSON.stringify(params));
     if (value === undefined)
         value = '';
@@ -8,7 +8,7 @@ function renderFunctionValueSelect(functionName, functionValues, params, domain,
         <select onChange={(e) => onChange(params.concat([e.target.value]), functionName)} value={value}>
             <option value=''>{''}</option>
             {domain.map(item =>
-                <option value={item}>{item}</option>
+                <option disabled={disabled} value={item}>{item}</option>
             )}
         </select>
     )
@@ -17,7 +17,7 @@ function renderFunctionValueSelect(functionName, functionValues, params, domain,
 function RelationalTable(props) {
     let domain = [...props.domain];
     if (props.arity > 2)
-        return <p>Nepodporovana arita</p>;
+        return <p>Nepodporovaná arita</p>;
     let arity1 = (
         <tr>
             <td>{''}</td>
@@ -26,9 +26,10 @@ function RelationalTable(props) {
                     {props.type === 'PREDICATE' ? (
                         <input type='checkbox'
                                onChange={(e) => props.onInputChange([item], props.name, e.target.checked)}
-                               checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item])) > -1}/>
+                               checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item])) > -1}
+                        disabled={props.disabled}/>
                     ) : (
-                        renderFunctionValueSelect(props.name, props.value, [item], domain, props.onInputChange)
+                        renderFunctionValueSelect(props.name, props.value, [item], domain, props.onInputChange, props.disabled)
                     )}
                 </td>
             )}
@@ -43,9 +44,10 @@ function RelationalTable(props) {
                     {props.type === 'PREDICATE' ? (
                         <input type='checkbox'
                                onChange={(e) => props.onInputChange([item,item2], props.name, e.target.checked)}
-                               checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item, item2])) > -1}/>
+                               checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item, item2])) > -1}
+                        disabled={props.disabled}/>
                     ) : (
-                        renderFunctionValueSelect(props.name, props.value, [item, item2], domain, props.onInputChange)
+                        renderFunctionValueSelect(props.name, props.value, [item, item2], domain, props.onInputChange, props.disabled)
                     )}
                 </td>
             )}

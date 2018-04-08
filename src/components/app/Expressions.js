@@ -12,7 +12,10 @@ import {
     Popover
 } from "react-bootstrap";
 
-function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFormulaAnswer, setTermAnswer, domain, removeFormula, removeTerm}) {
+function Expressions({
+                         formulas, terms, onInputChange, addFormula, addTerm, setFormulaAnswer, setTermAnswer, domain, removeFormula, removeTerm,
+                         lockExpressionValue, lockExpressionAnswer
+                     }) {
     const popoverHelp = (
         <Popover id='popover-trigger-click' title='Editor štruktúry'>
             Tu sa pridávajú formuly a kontroluje sa či spĺňajú vyššie definovanú štruktúru. Všetky termy a predikáty
@@ -41,10 +44,11 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                                             <span>𝝋<sub>{index + 1}</sub></span></label>
                                         <FormControl type='text' value={formula.value}
                                                      onChange={(e) => onInputChange(e.target.value, index, 'FORMULA')}
-                                                     id={'formula-' + index}/>
+                                                     id={'formula-' + index}
+                                                     disabled={formula.inputLocked}/>
                                         <InputGroup.Button>
-                                            <Button onClick={(e) => removeFormula(index)}>✖</Button>
-                                            <Button onClick={(e) => removeFormula(index)}>🔒</Button>
+                                            <Button onClick={() => removeFormula(index)}>✖</Button>
+                                            <Button onClick={() => lockExpressionValue('FORMULA', index)}>🔒</Button>
                                         </InputGroup.Button>
                                     </InputGroup>
                                     <HelpBlock>{formula.feedback.message}</HelpBlock>
@@ -57,13 +61,13 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                                                htmlFor={'formula-answer-' + index}>{'Odpoveď'}</label>
                                         <select className='form-control' value={formula.answerValue}
                                                 onChange={(e) => setFormulaAnswer(e.target.value, index)}
-                                                id={'formula-answer-' + index} disabled={!formula.validSyntax}>
+                                                id={'formula-answer-' + index} disabled={formula.answerLocked}>
                                             <option value={'-1'}>Vyber ...</option>
                                             <option value={'true'}>𝓜 ⊨ 𝝋[e]</option>
                                             <option value={'false'}>𝓜 ⊭ 𝝋[e]</option>
                                         </select>
                                         <InputGroup.Button>
-                                            <Button onClick={(e) => removeFormula(index)}>🔒</Button>
+                                            <Button onClick={() => lockExpressionAnswer('FORMULA', index)}>🔒</Button>
                                         </InputGroup.Button>
                                     </InputGroup>
                                 </FormGroup>
@@ -96,10 +100,11 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                                             𝝉<sub>{index + 1}</sub> = </label>
                                         <FormControl type='text' value={term.value}
                                                      onChange={(e) => onInputChange(e.target.value, index, 'TERM')}
-                                                     id={'term-' + index}/>
+                                                     id={'term-' + index}
+                                                     disabled={term.inputLocked}/>
                                         <InputGroup.Button>
-                                            <Button onClick={(e) => removeTerm(index)}>✖</Button>
-                                            <Button onClick={(e) => removeTerm(index)}>🔒</Button>
+                                            <Button onClick={() => removeTerm(index)}>✖</Button>
+                                            <Button onClick={() => lockExpressionValue('TERM', index)}>🔒</Button>
                                         </InputGroup.Button>
                                     </InputGroup>
                                     <HelpBlock>{term.feedback.message}</HelpBlock>
@@ -112,18 +117,22 @@ function Expressions({formulas, terms, onInputChange, addFormula, addTerm, setFo
                                                htmlFor={'term-answer-' + index}>{'Odpoveď'}</label>
                                         <select className='form-control' value={term.answerValue}
                                                 onChange={(e) => setTermAnswer(e.target.value, index)}
-                                                id={'term-answer-' + index}>
+                                                id={'term-answer-' + index}
+                                                disabled={term.answerLocked}>
                                             <option value={''}>Vyber hodnotu ...</option>
                                             {[...domain].map((item) =>
                                                 <option value={item}>{item}</option>
                                             )}
                                         </select>
+                                        <InputGroup.Button>
+                                            <Button onClick={() => lockExpressionAnswer('TERM', index)}>🔒</Button>
+                                        </InputGroup.Button>
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
                             <Col sm={2}>
                                 {term.answerValue !== '' ? (term.answerValue === term.expressionValue ? 'OK' : 'ZLE') : ''}
-                                store</Col>
+                            </Col>
                         </Row>
                     )}
                     <Button bsStyle='success' onClick={() => addTerm()}>➕ Pridaj</Button>

@@ -28,17 +28,20 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Symboly konštánt</legend>
-                                    <FormGroup validationState={props.inputs.constants.feedback.message !== '' ? 'error' : null}>
+                                    <FormGroup
+                                        validationState={props.inputs.constants.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-constants'>
-                                                <span>𝓒<sub>𝓛</sub></span> = {'{'}</label>
+                                                <span>𝓒<sub>𝓛</sub></span> = &#123;</label>
                                             <FormControl id='language-editor-constants' type='text'
                                                          onChange={(e) => props.onConstantsChange(e.target.value)}
-                                                         value={props.inputs.constants.value}/>
-                                            <span className='input-group-addon'>{'}'}</span>
+                                                         value={props.inputs.constants.value}
+                                                         disabled={props.inputs.constants.locked}/>
+                                            <span className='input-group-addon'>&#125;</span>
                                             <span className="input-group-btn">
-                                                <Button onClick={(e) => e.preventDefault()}>🔒</Button>
+                                                <Button
+                                                    onClick={() => props.lockConstants()}>🔒</Button>
                                             </span>
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.constants.feedback.message}</HelpBlock>
@@ -50,17 +53,20 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Predikátové symboly</legend>
-                                    <FormGroup validationState={props.inputs.predicates.feedback.message !== '' ? 'error' : null}>
+                                    <FormGroup
+                                        validationState={props.inputs.predicates.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-predicates'>
-                                                <span>𝓟<sub>𝓛</sub></span> = {'{'}</label>
+                                                <span>𝓟<sub>𝓛</sub></span> = &#123;</label>
                                             <FormControl id='language-editor-predicates' type='text'
                                                          onChange={(e) => props.onPredicatesChange(e.target.value)}
-                                                         value={props.inputs.predicates.value}/>
-                                            <span className='input-group-addon'>{'}'}</span>
+                                                         value={props.inputs.predicates.value}
+                                                         disabled={props.inputs.predicates.locked}/>
+                                            <span className='input-group-addon'>&#125;</span>
                                             <span className="input-group-btn">
-                                                <Button onClick={(e) => e.preventDefault()}>🔒</Button>
+                                                <Button
+                                                    onClick={() => props.lockPredicates()}>🔒</Button>
                                             </span>
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.predicates.feedback.message}</HelpBlock>
@@ -72,17 +78,20 @@ function Language(props) {
                             <Col lg={12}>
                                 <fieldset>
                                     <legend>Funkčné symboly</legend>
-                                    <FormGroup validationState={props.inputs.functions.feedback.message !== '' ? 'error' : null}>
+                                    <FormGroup
+                                        validationState={props.inputs.functions.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
                                                    htmlFor='language-editor-functions'>
-                                                <span>𝓕<sub>𝓛</sub></span> = {'{'}</label>
+                                                <span>𝓕<sub>𝓛</sub></span> = &#123;</label>
                                             <FormControl id='language-editor-functions' type='text'
                                                          onChange={(e) => props.onFunctionsChange(e.target.value)}
-                                                         value={props.inputs.functions.value}/>
-                                            <span className='input-group-addon'>{'}'}</span>
+                                                         value={props.inputs.functions.value}
+                                                         disabled={props.inputs.functions.locked}/>
+                                            <span className='input-group-addon'>&#125;</span>
                                             <span className="input-group-btn">
-                                                <Button onClick={(e) => e.preventDefault()}>🔒</Button>
+                                                <Button
+                                                    onClick={() => props.lockFunctions()}>🔒</Button>
                                             </span>
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.functions.feedback.message}</HelpBlock>

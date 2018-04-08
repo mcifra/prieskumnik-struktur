@@ -1,5 +1,8 @@
 import React from 'react';
-import {Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover, Row} from "react-bootstrap";
+import {
+    Button, Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover,
+    Row
+} from "react-bootstrap";
 
 function VariablesValue(props) {
     const popoverHelp = (
@@ -35,7 +38,12 @@ function VariablesValue(props) {
                                         <FormControl value={props.value}
                                                      id='structure-editor-variables'
                                                      type='text'
-                                                     onChange={(e) => props.onInputChange(e.target.value)}/>
+                                                     onChange={(e) => props.onInputChange(e.target.value)}
+                                                     disabled={props.locked}/>
+                                        <span className="input-group-btn">
+                                        <Button
+                                            onClick={() => props.lockInput()}>&#128274;</Button>
+                                    </span>
                                     </InputGroup>
                                     <HelpBlock>{props.feedback}</HelpBlock>
                                 </FormGroup>

@@ -138,6 +138,42 @@ function rootReducer(state = s, action) {
         case 'SET_TERM_ANSWER':
             setTermAnswer(action.answer, action.index);
             return s;
+        case 'LOCK_CONSTANTS':
+            s.inputs.constants.locked = !s.inputs.constants.locked;
+            return s;
+        case 'LOCK_PREDICATES':
+            s.inputs.predicates.locked = !s.inputs.predicates.locked;
+            return s;
+        case 'LOCK_FUNCTIONS':
+            s.inputs.functions.locked = !s.inputs.functions.locked;
+            return s;
+        case 'LOCK_DOMAIN':
+            s.inputs.structure.domain.locked = !s.inputs.structure.domain.locked;
+            return s;
+        case 'LOCK_CONSTANT_VALUE':
+            s.inputs.structure.constants[action.constantName].locked = !s.inputs.structure.constants[action.constantName].locked;
+            return s;
+        case 'LOCK_PREDICATE_VALUE':
+            s.inputs.structure.predicates[action.predicateName].locked = !s.inputs.structure.predicates[action.predicateName].locked;
+            return s;
+        case 'LOCK_FUNCTION_VALUE':
+            s.inputs.structure.functions[action.functionName].locked = !s.inputs.structure.functions[action.functionName].locked;
+            return s;
+        case 'LOCK_VARIABLES':
+            s.inputs.variableValues.locked = !s.inputs.variableValues.locked;
+            return s;
+        case 'LOCK_EXPRESSION_VALUE':
+            if (action.expressionType === 'FORMULA')
+                s.expressions.formulas[action.expressionIndex].inputLocked = !s.expressions.formulas[action.expressionIndex].inputLocked;
+            else
+                s.expressions.terms[action.expressionIndex].inputLocked = !s.expressions.terms[action.expressionIndex].inputLocked;
+            return s;
+        case 'LOCK_EXPRESSION_ANSWER':
+            if (action.expressionType === 'FORMULA')
+                s.expressions.formulas[action.expressionIndex].answerLocked = !s.expressions.formulas[action.expressionIndex].answerLocked;
+            else
+                s.expressions.terms[action.expressionIndex].answerLocked = !s.expressions.terms[action.expressionIndex].answerLocked;
+            return s;
         default:
             return s;
     }

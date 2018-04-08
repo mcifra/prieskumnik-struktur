@@ -109,16 +109,52 @@ export const setTermAnswer = (answer, index) => ({
 });
 
 export const lockExpressionValue = (expressionType, expressionIndex) => ({
-    type: 'LOCK_VALUE',
+    type: 'LOCK_EXPRESSION_VALUE',
     expressionType,
     expressionIndex
 });
 
 export const lockExpressionAnswer = (expressionType, expressionIndex) => ({
-    type: 'LOCK_ANSWER',
+    type: 'LOCK_EXPRESSION_ANSWER',
     expressionType,
     expressionIndex
 });
+
+export const lockConstants = () => ({
+    type: 'LOCK_CONSTANTS'
+});
+
+export const lockPredicates = () => ({
+    type: 'LOCK_PREDICATES'
+});
+
+export const lockFunctions = () => ({
+    type: 'LOCK_FUNCTIONS'
+});
+
+export const lockDomain = () => ({
+    type: 'LOCK_DOMAIN'
+});
+
+export const lockConstantValue = (constantName) => ({
+    type: 'LOCK_CONSTANT_VALUE',
+    constantName
+});
+
+export const lockPredicateValue = (predicateName) => ({
+    type: 'LOCK_PREDICATE_VALUE',
+    predicateName
+});
+
+export const lockFunctionValue = (functionName) => ({
+    type: 'LOCK_FUNCTION_VALUE',
+    functionName
+});
+
+export const lockVariables = () => ({
+    type: 'LOCK_VARIABLES'
+});
+
 
 export const toggleTable = (itemType, name) => ({
     type: 'TOGGLE_EDIT_TABLE',

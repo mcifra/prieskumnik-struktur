@@ -40,14 +40,15 @@ function Structure(props) {
                                         validationState={props.inputs.structure.domain.feedback.message !== '' ? 'error' : null}>
                                         <InputGroup>
                                             <label className='input-group-addon'
-                                                   htmlFor='structure-editor-domain'><var>M</var> = {'{'}</label>
-                                                <FormControl value={props.inputs.structure.domain.value}
-                                                id='structure-editor-domain'
-                                                type='text'
-                                                onChange={(e) => props.onDomainChange(e.target.value)}/>
-                                                <span className='input-group-addon'>{'}'}</span>
+                                                   htmlFor='structure-editor-domain'><var>M</var> = &#123;</label>
+                                            <FormControl value={props.inputs.structure.domain.value}
+                                                         id='structure-editor-domain'
+                                                         type='text'
+                                                         onChange={(e) => props.onDomainChange(e.target.value)}
+                                                         disabled={props.inputs.structure.domain.locked}/>
+                                            <span className='input-group-addon'>&#125;</span>
                                             <span className="input-group-btn">
-                                                <Button onClick={(e) => e.preventDefault()}>🔒</Button>
+                                                <Button onClick={() => props.lockDomain()}>🔒</Button>
                                             </span>
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.structure.domain.feedback.message}</HelpBlock>
@@ -69,12 +70,17 @@ function Structure(props) {
                                                     <select value={props.inputs.structure.constants[constant].value}
                                                             id={'constant-' + constant}
                                                             className='form-control'
-                                                            onChange={(e) => props.onConstantValueChange(e.target.value, constant)}>
+                                                            onChange={(e) => props.onConstantValueChange(e.target.value, constant)}
+                                                            disabled={props.inputs.structure.constants[constant].locked}>
                                                         <option value={''}>Vyber hodnotu ...</option>
                                                         {[...props.structure.domain].map((item) =>
                                                             <option value={item}>{item}</option>
                                                         )}
                                                     </select>
+                                                    <span className="input-group-btn">
+                                                        <Button
+                                                            onClick={() => props.lockConstantValue(constant)}>&#128274;</Button>
+                                                    </span>
                                                 </InputGroup>
                                                 <HelpBlock>{props.inputs.structure.constants[constant].feedback.message}</HelpBlock>
                                             </FormGroup>
@@ -97,17 +103,22 @@ function Structure(props) {
                                                     <FormControl id={'predicate-' + name}
                                                                  value={props.inputs.structure.predicates[name].value}
                                                                  type='text'
-                                                                 onChange={(e) => props.onPredicateValueChangeText(e.target.value, name)}/>
+                                                                 onChange={(e) => props.onPredicateValueChangeText(e.target.value, name)}
+                                                                 disabled={props.inputs.structure.predicates[name].locked}/>
                                                     <InputGroup.Button>
                                                         <Button
-                                                            onClick={(e) => props.toggleTable('PREDICATE', name)}>T</Button>
+                                                            onClick={() => props.toggleTable('PREDICATE', name)}>T</Button>
+                                                        <Button
+                                                            onClick={() => props.lockPredicateValue(name)}>&#128274;</Button>
                                                     </InputGroup.Button>
                                                 </InputGroup>
                                                 {props.inputs.structure.predicates[name].editMode === 'TEXT' ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getPredicate(name.split('/')[0])}
                                                                      value={props.structure.iPredicate.get(name) ? props.structure.iPredicate.get(name) : []}
-                                                                     onInputChange={props.onPredicateValueChangeTable} type='PREDICATE'/>
+                                                                     onInputChange={props.onPredicateValueChangeTable}
+                                                                     type='PREDICATE'
+                                                                     disabled={props.inputs.structure.predicates[name].locked}/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.predicates[name].feedback.message}</HelpBlock>
                                             </FormGroup>
@@ -130,17 +141,22 @@ function Structure(props) {
                                                     <FormControl id={'function-' + name}
                                                                  value={props.inputs.structure.functions[name].value}
                                                                  type='text'
-                                                                 onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}/>
+                                                                 onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}
+                                                                 disabled={props.inputs.structure.functions[name].locked}/>
                                                     <InputGroup.Button>
                                                         <Button
-                                                            onClick={(e) => props.toggleTable('FUNCTION', name)}>T</Button>
+                                                            onClick={() => props.toggleTable('FUNCTION', name)}>T</Button>
+                                                        <Button
+                                                            onClick={() => props.lockFunctionValue(name)}>&#128274;</Button>
                                                     </InputGroup.Button>
                                                 </InputGroup>
                                                 {props.inputs.structure.functions[name].editMode === 'TEXT' ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getFunction(name.split('/')[0])}
                                                                      value={props.structure.iFunction.get(name) ? props.structure.iFunction.get(name) : new Map()}
-                                                                     onInputChange={props.onFunctionValueChangeTable} type='FUNCTION'/>
+                                                                     onInputChange={props.onFunctionValueChangeTable}
+                                                                     disabled={props.inputs.structure.functions[name].locked}
+                                                                     type='FUNCTION'/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.functions[name].feedback.message}</HelpBlock>
                                             </FormGroup>
