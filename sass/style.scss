@@ -60,4 +60,18 @@ h1 {
     font-size: 1.4rem;
     border: 0;
   }
+  .import-export-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    .btn {
+      margin-right: .5rem;
+    }
+    .bug-report {
+      float: right;
+    }
+  }
+  .btn-lock {
+    background: silver;
+  }
 }

@@ -11,12 +11,14 @@ import UniversalQuant from "../model/formula/Formula.UniversalQuant";
 import Negation from "../model/formula/Formula.Negation";
 import FunctionTerm from "../model/term/Term.FunctionTerm";
 import Implication from "../model/formula/Formula.Implication";
+import {FUNCTION, PREDICATE, STUDENT_MODE} from "../constants";
 
 let parser = require('../parser/grammar');
 
 let s = {
     structure: new Structure(new Language()),
     variableValues: new Map(),
+    mode: STUDENT_MODE,
     inputs: {
         constants: {value: '', feedback: {type: null, message: ''}, locked: false, parsed: []},
         predicates: {value: '', feedback: {type: null, message: ''}, locked: false, parsed: []},
@@ -38,6 +40,9 @@ let s = {
 function rootReducer(state = s, action) {
     s = copyState(state);
     switch (action.type) {
+        case 'SET_MODE':
+            s.mode = action.mode;
+            return s;
         case 'IMPORT_APP':
             importAppState(action.content);
             return s;
@@ -505,12 +510,12 @@ function setTermAnswer(answer, index) {
 }
 
 function toggleEditTable(action) {
-    if (action.itemType === 'PREDICATE') {
+    if (action.itemType === PREDICATE) {
         if (s.inputs.structure.predicates[action.name].editMode === 'TEXT')
             s.inputs.structure.predicates[action.name].editMode = 'TABLE';
         else
             s.inputs.structure.predicates[action.name].editMode = 'TEXT';
-    } else if (action.itemType === 'FUNCTION') {
+    } else if (action.itemType === FUNCTION) {
         if (s.inputs.structure.functions[action.name].editMode === 'TEXT')
             s.inputs.structure.functions[action.name].editMode = 'TABLE';
         else
@@ -562,6 +567,7 @@ const defaultExpression = () => ({
 });
 
 const copyState = (s) => ({
+    ...s,
     structure: s.structure,
     variableValues: s.variableValues,
     inputs: {

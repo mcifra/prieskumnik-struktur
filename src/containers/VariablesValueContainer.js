@@ -6,7 +6,8 @@ import {lockVariables} from "../actions";
 const mapStateToProps = (state) => ({
     feedback: state.inputs.variableValues.feedback.message,
     value: state.inputs.variableValues.value,
-    locked: state.inputs.variableValues.locked
+    locked: state.inputs.variableValues.locked,
+    mode: state.mode
 });
 
 const mapDispatchOnProps = {

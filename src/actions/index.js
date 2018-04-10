@@ -166,3 +166,8 @@ export const setVariablesValue = (value) => ({
     type: 'SET_VARIABLES_VALUE',
     value
 });
+
+export const setMode = (mode) => ({
+    type: 'SET_MODE',
+    mode
+});

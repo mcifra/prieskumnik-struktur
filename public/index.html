@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="theme-color" content="#000000">
+		<meta name="theme-color" content="#ffffff">
 		<!--
 		  manifest.json provides metadata used when your web app is added to the
 		  homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
@@ -11,7 +11,20 @@
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json">
 		<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114050305-1"></script>
+		<script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-114050305-1');
+		</script>
+
+
 		<link rel="stylesheet" href="css/bootstrap.min.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
 		<!-- jQuery -->
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -19,9 +32,13 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+		<script src="js/scripts.js"></script>
+
 		<link rel="stylesheet" href="css/style.css">
 
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
 
 		<!--
 		  Notice the use of %PUBLIC_URL% in the tags above.

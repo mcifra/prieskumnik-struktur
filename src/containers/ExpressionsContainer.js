@@ -9,7 +9,8 @@ import {lockExpressionAnswer, lockExpressionValue} from "../actions";
 const mapStateToProps = (state) => ({
     formulas: state.expressions.formulas,
     terms: state.expressions.terms,
-    domain: state.structure.domain
+    domain: state.structure.domain,
+    mode: state.mode
 });
 
 const mapDispatchToProps = {

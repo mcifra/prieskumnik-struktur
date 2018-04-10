@@ -3,6 +3,8 @@ import {
     Button, Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover,
     Row
 } from "react-bootstrap";
+import FontAwesome from 'react-fontawesome';
+import {STUDENT_MODE} from "../../constants";
 
 function Language(props) {
     const popoverHelp = (
@@ -15,6 +17,7 @@ function Language(props) {
     );
     return (
         <div className='language-editor'>
+
             <Panel>
                 <Panel.Heading>
                     <Panel.Title componentClass='h2'>Jazyk 𝓛</Panel.Title>
@@ -39,10 +42,13 @@ function Language(props) {
                                                          value={props.inputs.constants.value}
                                                          disabled={props.inputs.constants.locked}/>
                                             <span className='input-group-addon'>&#125;</span>
-                                            <span className="input-group-btn">
-                                                <Button
-                                                    onClick={() => props.lockConstants()}>🔒</Button>
-                                            </span>
+                                            {props.mode === STUDENT_MODE ? null : (
+                                                <span className="input-group-btn">
+                                                    <div className='btn btn-lock' onClick={() => props.lockConstants()}>
+                                                        <FontAwesome name={props.inputs.constants.locked ? 'unlock' : 'lock'}/>
+                                                    </div>
+                                                </span>
+                                            )}
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.constants.feedback.message}</HelpBlock>
                                     </FormGroup>
@@ -64,10 +70,13 @@ function Language(props) {
                                                          value={props.inputs.predicates.value}
                                                          disabled={props.inputs.predicates.locked}/>
                                             <span className='input-group-addon'>&#125;</span>
-                                            <span className="input-group-btn">
-                                                <Button
-                                                    onClick={() => props.lockPredicates()}>🔒</Button>
-                                            </span>
+                                            {props.mode === STUDENT_MODE ? null : (
+                                                <span className="input-group-btn">
+                                                    <div className='btn btn-lock' onClick={() => props.lockPredicates()}>
+                                                        <FontAwesome name={props.inputs.predicates.locked ? 'unlock' : 'lock'}/>
+                                                    </div>
+                                                </span>
+                                            )}
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.predicates.feedback.message}</HelpBlock>
                                     </FormGroup>
@@ -89,10 +98,13 @@ function Language(props) {
                                                          value={props.inputs.functions.value}
                                                          disabled={props.inputs.functions.locked}/>
                                             <span className='input-group-addon'>&#125;</span>
-                                            <span className="input-group-btn">
-                                                <Button
-                                                    onClick={() => props.lockFunctions()}>🔒</Button>
-                                            </span>
+                                            {props.mode === STUDENT_MODE ? null : (
+                                                <span className="input-group-btn">
+                                                    <div className='btn btn-lock' onClick={() => props.lockFunctions()}>
+                                                        <FontAwesome name={props.inputs.functions.locked ? 'unlock' : 'lock'}/>
+                                                    </div>
+                                                </span>
+                                            )}
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.functions.feedback.message}</HelpBlock>
                                     </FormGroup>

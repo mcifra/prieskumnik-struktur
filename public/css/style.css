@@ -47,3 +47,15 @@ h1 {
   margin-bottom: .5rem;
   font-size: 1.4rem;
   border: 0; }
+
+.app .import-export-bar {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center; }
+  .app .import-export-bar .btn {
+    margin-right: .5rem; }
+  .app .import-export-bar .bug-report {
+    float: right; }
+
+.app .btn-lock {
+  background: silver; }

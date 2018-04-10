@@ -5,6 +5,8 @@ import {
     Col, Form, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover,
     Row
 } from "react-bootstrap";
+import {FUNCTION, PREDICATE, STUDENT_MODE} from "../../constants";
+import FontAwesome from 'react-fontawesome';
 
 function Structure(props) {
     let constants = Object.keys(props.inputs.structure.constants);
@@ -47,9 +49,14 @@ function Structure(props) {
                                                          onChange={(e) => props.onDomainChange(e.target.value)}
                                                          disabled={props.inputs.structure.domain.locked}/>
                                             <span className='input-group-addon'>&#125;</span>
-                                            <span className="input-group-btn">
-                                                <Button onClick={() => props.lockDomain()}>🔒</Button>
-                                            </span>
+                                            {props.mode === STUDENT_MODE ? null : (
+                                                <span className="input-group-btn">
+                                                    <div className='btn btn-lock' onClick={() => props.lockDomain()}>
+                                                        <FontAwesome
+                                                            name={props.inputs.structure.domain.locked ? 'unlock' : 'lock'}/>
+                                                    </div>
+                                                </span>
+                                            )}
                                         </InputGroup>
                                         <HelpBlock>{props.inputs.structure.domain.feedback.message}</HelpBlock>
                                     </FormGroup>
@@ -77,10 +84,15 @@ function Structure(props) {
                                                             <option value={item}>{item}</option>
                                                         )}
                                                     </select>
-                                                    <span className="input-group-btn">
-                                                        <Button
-                                                            onClick={() => props.lockConstantValue(constant)}>&#128274;</Button>
-                                                    </span>
+                                                    {props.mode === STUDENT_MODE ? null : (
+                                                        <span className="input-group-btn">
+                                                            <div className='btn btn-lock'
+                                                                 onClick={() => props.lockConstantValue(constant)}>
+                                                                <FontAwesome
+                                                                    name={props.inputs.structure.constants[constant].locked ? 'unlock' : 'lock'}/>
+                                                            </div>
+                                                        </span>
+                                                    )}
                                                 </InputGroup>
                                                 <HelpBlock>{props.inputs.structure.constants[constant].feedback.message}</HelpBlock>
                                             </FormGroup>
@@ -106,18 +118,27 @@ function Structure(props) {
                                                                  onChange={(e) => props.onPredicateValueChangeText(e.target.value, name)}
                                                                  disabled={props.inputs.structure.predicates[name].locked}/>
                                                     <InputGroup.Button>
-                                                        <Button
-                                                            onClick={() => props.toggleTable('PREDICATE', name)}>T</Button>
-                                                        <Button
-                                                            onClick={() => props.lockPredicateValue(name)}>&#128274;</Button>
+                                                        {(parseInt(name.split('/')[1]) > 2 || props.domain.length === 0) ? null : (
+                                                            <Button
+                                                                onClick={() => props.toggleTable(PREDICATE, name)}>
+                                                                <FontAwesome name='table'/>
+                                                            </Button>
+                                                        )}
+                                                        {props.mode === STUDENT_MODE ? null : (
+                                                            <div className='btn btn-lock'
+                                                                 onClick={() => props.lockPredicateValue(name)}>
+                                                                <FontAwesome
+                                                                    name={props.inputs.structure.predicates[name].locked ? 'unlock' : 'lock'}/>
+                                                            </div>
+                                                        )}
                                                     </InputGroup.Button>
                                                 </InputGroup>
-                                                {props.inputs.structure.predicates[name].editMode === 'TEXT' ? null : (
+                                                {props.inputs.structure.predicates[name].editMode === 'TEXT' || props.domain.length === 0 ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getPredicate(name.split('/')[0])}
                                                                      value={props.structure.iPredicate.get(name) ? props.structure.iPredicate.get(name) : []}
                                                                      onInputChange={props.onPredicateValueChangeTable}
-                                                                     type='PREDICATE'
+                                                                     type={PREDICATE}
                                                                      disabled={props.inputs.structure.predicates[name].locked}/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.predicates[name].feedback.message}</HelpBlock>
@@ -144,19 +165,27 @@ function Structure(props) {
                                                                  onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}
                                                                  disabled={props.inputs.structure.functions[name].locked}/>
                                                     <InputGroup.Button>
-                                                        <Button
-                                                            onClick={() => props.toggleTable('FUNCTION', name)}>T</Button>
-                                                        <Button
-                                                            onClick={() => props.lockFunctionValue(name)}>&#128274;</Button>
+                                                        {(parseInt(name.split('/')[1]) > 2 || props.domain.length === 0) ? null : (
+                                                            <Button onClick={() => props.toggleTable(FUNCTION, name)}>
+                                                                <FontAwesome name='table'/>
+                                                            </Button>
+                                                        )}
+                                                        {props.mode === STUDENT_MODE ? null : (
+                                                            <div className='btn btn-lock'
+                                                                 onClick={() => props.lockFunctionValue(name)}>
+                                                                <FontAwesome
+                                                                    name={props.inputs.structure.functions[name].locked ? 'unlock' : 'lock'}/>
+                                                            </div>
+                                                        )}
                                                     </InputGroup.Button>
                                                 </InputGroup>
-                                                {props.inputs.structure.functions[name].editMode === 'TEXT' ? null : (
+                                                {props.inputs.structure.functions[name].editMode === 'TEXT' || props.domain.length === 0 ? null : (
                                                     <RelationalTable name={name} domain={props.structure.domain}
                                                                      arity={props.structure.language.getFunction(name.split('/')[0])}
                                                                      value={props.structure.iFunction.get(name) ? props.structure.iFunction.get(name) : new Map()}
                                                                      onInputChange={props.onFunctionValueChangeTable}
                                                                      disabled={props.inputs.structure.functions[name].locked}
-                                                                     type='FUNCTION'/>
+                                                                     type={FUNCTION}/>
                                                 )}
                                                 <HelpBlock>{props.inputs.structure.functions[name].feedback.message}</HelpBlock>
                                             </FormGroup>

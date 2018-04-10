@@ -3,6 +3,8 @@ import {
     Button, Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover,
     Row
 } from "react-bootstrap";
+import {STUDENT_MODE} from "../../constants";
+import FontAwesome from 'react-fontawesome';
 
 function VariablesValue(props) {
     const popoverHelp = (
@@ -40,10 +42,13 @@ function VariablesValue(props) {
                                                      type='text'
                                                      onChange={(e) => props.onInputChange(e.target.value)}
                                                      disabled={props.locked}/>
-                                        <span className="input-group-btn">
-                                        <Button
-                                            onClick={() => props.lockInput()}>&#128274;</Button>
-                                    </span>
+                                        {props.mode === STUDENT_MODE ? null : (
+                                            <span className="input-group-btn">
+                                                <div className='btn btn-lock' onClick={() => props.lockInput()}>
+                                                    <FontAwesome name={props.locked ? 'unlock' : 'lock'}/>
+                                                </div>
+                                            </span>
+                                        )}
                                     </InputGroup>
                                     <HelpBlock>{props.feedback}</HelpBlock>
                                 </FormGroup>

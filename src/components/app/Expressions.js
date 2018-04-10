@@ -11,10 +11,12 @@ import {
     FormControl,
     Popover
 } from "react-bootstrap";
+import {FORMULA, STUDENT_MODE, TERM} from "../../constants";
+import FontAwesome from 'react-fontawesome';
 
 function Expressions({
                          formulas, terms, onInputChange, addFormula, addTerm, setFormulaAnswer, setTermAnswer, domain, removeFormula, removeTerm,
-                         lockExpressionValue, lockExpressionAnswer
+                         lockExpressionValue, lockExpressionAnswer, mode
                      }) {
     const popoverHelp = (
         <Popover id='popover-trigger-click' title='Editor štruktúry'>
@@ -43,12 +45,16 @@ function Expressions({
                                                htmlFor={'formula-' + index}>
                                             <span>𝝋<sub>{index + 1}</sub></span></label>
                                         <FormControl type='text' value={formula.value}
-                                                     onChange={(e) => onInputChange(e.target.value, index, 'FORMULA')}
+                                                     onChange={(e) => onInputChange(e.target.value, index, FORMULA)}
                                                      id={'formula-' + index}
                                                      disabled={formula.inputLocked}/>
                                         <InputGroup.Button>
-                                            <Button onClick={() => removeFormula(index)}>✖</Button>
-                                            <Button onClick={() => lockExpressionValue('FORMULA', index)}>🔒</Button>
+                                            <Button onClick={() => removeFormula(index)}><FontAwesome name='trash'/></Button>
+                                            {mode === STUDENT_MODE ? null : (
+                                                <div className='btn btn-lock' onClick={() => lockExpressionValue(FORMULA, index)}>
+                                                    <FontAwesome name={formula.inputLocked ? 'unlock' : 'lock'}/>
+                                                </div>
+                                            )}
                                         </InputGroup.Button>
                                     </InputGroup>
                                     <HelpBlock>{formula.feedback.message}</HelpBlock>
@@ -66,9 +72,13 @@ function Expressions({
                                             <option value={'true'}>𝓜 ⊨ 𝝋[e]</option>
                                             <option value={'false'}>𝓜 ⊭ 𝝋[e]</option>
                                         </select>
-                                        <InputGroup.Button>
-                                            <Button onClick={() => lockExpressionAnswer('FORMULA', index)}>🔒</Button>
-                                        </InputGroup.Button>
+                                        {mode === STUDENT_MODE ? null : (
+                                            <InputGroup.Button>
+                                                <div className='btn btn-lock' onClick={() => lockExpressionAnswer(FORMULA, index)}>
+                                                    <FontAwesome name={formula.answerLocked ? 'unlock' : 'lock'}/>
+                                                </div>
+                                            </InputGroup.Button>
+                                        )}
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -77,7 +87,7 @@ function Expressions({
                             </Col>
                         </Row>
                     )}
-                    <Button bsStyle='success' onClick={() => addFormula()}>➕ Pridaj</Button>
+                    <Button bsStyle='success' onClick={() => addFormula()}><FontAwesome name='plus'/> Pridaj</Button>
                 </Panel.Body>
             </Panel>
 
@@ -99,12 +109,16 @@ function Expressions({
                                                htmlFor={'term-' + index}>
                                             𝝉<sub>{index + 1}</sub> = </label>
                                         <FormControl type='text' value={term.value}
-                                                     onChange={(e) => onInputChange(e.target.value, index, 'TERM')}
+                                                     onChange={(e) => onInputChange(e.target.value, index, TERM)}
                                                      id={'term-' + index}
                                                      disabled={term.inputLocked}/>
                                         <InputGroup.Button>
-                                            <Button onClick={() => removeTerm(index)}>✖</Button>
-                                            <Button onClick={() => lockExpressionValue('TERM', index)}>🔒</Button>
+                                            <Button onClick={() => removeTerm(index)}><FontAwesome name='trash'/></Button>
+                                            {mode === STUDENT_MODE ? null : (
+                                                <div className='btn btn-lock' onClick={() => lockExpressionValue(TERM, index)}>
+                                                    <FontAwesome name={term.inputLocked ? 'unlock' : 'lock'}/>
+                                                </div>
+                                            )}
                                         </InputGroup.Button>
                                     </InputGroup>
                                     <HelpBlock>{term.feedback.message}</HelpBlock>
@@ -124,9 +138,13 @@ function Expressions({
                                                 <option value={item}>{item}</option>
                                             )}
                                         </select>
-                                        <InputGroup.Button>
-                                            <Button onClick={() => lockExpressionAnswer('TERM', index)}>🔒</Button>
-                                        </InputGroup.Button>
+                                        {mode === STUDENT_MODE ? null : (
+                                            <InputGroup.Button>
+                                                <div className='btn btn-lock' onClick={() => lockExpressionAnswer(TERM, index)}>
+                                                    <FontAwesome name={term.answerLocked ? 'unlock' : 'lock'}/>
+                                                </div>
+                                            </InputGroup.Button>
+                                        )}
                                     </InputGroup>
                                 </FormGroup>
                             </Col>
@@ -135,7 +153,7 @@ function Expressions({
                             </Col>
                         </Row>
                     )}
-                    <Button bsStyle='success' onClick={() => addTerm()}>➕ Pridaj</Button>
+                    <Button bsStyle='success' onClick={() => addTerm()}><FontAwesome name='plus'/> Pridaj</Button>
                 </Panel.Body>
             </Panel>
         </React.Fragment>

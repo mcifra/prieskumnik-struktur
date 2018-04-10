@@ -4,7 +4,8 @@ import Language from '../components/app/Language';
 import {lockConstants, lockFunctions, lockPredicates} from "../actions";
 
 const mapStateToProps = (state) => ({
-    inputs: state.inputs
+    inputs: state.inputs,
+    mode: state.mode
 });
 
 const mapDispatchToProps = {
