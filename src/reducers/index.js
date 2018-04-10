@@ -536,6 +536,13 @@ function importAppState(content) {
         setPredicatesValues();
         setFunctionsValues();
         setVariables();
+        s.expressions.formulas.forEach(f => {
+            parseText(f.value, f, setParserOptions('formula'));
+        });
+        s.expressions.terms.forEach(t => {
+            parseText(t.value, t, setParserOptions('term'));
+        });
+        syncExpressionsValue();
     } catch (e) {
         console.error(e);
     }
