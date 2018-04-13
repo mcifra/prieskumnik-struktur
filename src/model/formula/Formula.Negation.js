@@ -8,28 +8,28 @@ import Formula from "./Formula";
  */
 class Negation extends Formula {
 
-    /**
-     *
-     * @param {Formula} subFormula
-     */
-    constructor(subFormula) {
-        super();
-        this.subFormula = subFormula;
-    }
+   /**
+    *
+    * @param {Formula} subFormula
+    */
+   constructor(subFormula) {
+      super();
+      this.subFormula = subFormula;
+   }
 
-    /**
-     *
-     * @param {Structure} structure
-     * @param {Map} e
-     * @return {boolean}
-     */
-    eval(structure, e) {
-        return !this.subFormula.eval(structure, e);
-    }
+   /**
+    *
+    * @param {Structure} structure
+    * @param {Map} e
+    * @return {boolean}
+    */
+   eval(structure, e) {
+      return !this.subFormula.eval(structure, e);
+   }
 
-    toString() {
-        return "-(" + this.subFormula.toString() + ")";
-    }
+   toString() {
+      return "-(" + this.subFormula.toString() + ")";
+   }
 }
 
 export default Negation;

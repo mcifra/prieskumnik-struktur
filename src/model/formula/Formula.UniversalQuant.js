@@ -8,37 +8,37 @@ import Formula from "./Formula";
  */
 class UniversalQuant extends Formula {
 
-    /**
-     *
-     * @param {string} variableName
-     * @param {Formula} subFormula
-     */
-    constructor(variableName, subFormula) {
-        super();
-        this.variableName = variableName;
-        this.subFormula = subFormula;
-    }
+   /**
+    *
+    * @param {string} variableName
+    * @param {Formula} subFormula
+    */
+   constructor(variableName, subFormula) {
+      super();
+      this.variableName = variableName;
+      this.subFormula = subFormula;
+   }
 
-    /**
-     *
-     * @param {Structure} structure
-     * @param {Map} e
-     * @return {boolean}
-     */
-    eval(structure, e) {
-        var eCopy = new Map(e);
-        for (let item of structure.domain) {
-            eCopy.set(this.variableName, item);
-            if (!this.subFormula.eval(structure, eCopy)) {
-                return false;
-            }
-        }
-        return true;
-    }
+   /**
+    *
+    * @param {Structure} structure
+    * @param {Map} e
+    * @return {boolean}
+    */
+   eval(structure, e) {
+      var eCopy = new Map(e);
+      for (let item of structure.domain) {
+         eCopy.set(this.variableName, item);
+         if (!this.subFormula.eval(structure, eCopy)) {
+            return false;
+         }
+      }
+      return true;
+   }
 
-    toString() {
-        return "V" + this.variableName + "(" + this.subFormula.toString() + ")";
-    }
+   toString() {
+      return "V" + this.variableName + "(" + this.subFormula.toString() + ")";
+   }
 
 }
 

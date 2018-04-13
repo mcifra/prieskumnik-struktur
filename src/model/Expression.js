@@ -6,17 +6,17 @@
  */
 class Expression {
 
-    constructor() {
+   constructor() {
 
-    }
+   }
 
-    toString() {
+   toString() {
 
-    }
+   }
 
-    eval(structure, e) {
-        return null;
-    }
+   eval(structure, e) {
+      return null;
+   }
 
 }
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-   Panel,
-   OverlayTrigger,
-   Row,
-   Col,
-   FormGroup,
-   InputGroup,
    Button,
-   HelpBlock,
+   Col,
    FormControl,
-   Popover
+   FormGroup,
+   HelpBlock,
+   InputGroup,
+   OverlayTrigger,
+   Panel,
+   Popover,
+   Row
 } from "react-bootstrap";
 import {EXPRESSION_LABEL, FORMULA, STUDENT_MODE, TERM} from "../../constants";
 import FontAwesome from 'react-fontawesome';
@@ -93,7 +93,7 @@ const Expressions = (props) => (
                                         name='trash'/></Button>
                                     {props.mode === STUDENT_MODE ? null : (
                                         <div className='btn btn-lock'
-                                             onClick={() => props.lockExpressionAnswer(expression.expressionType, index)}>
+                                             onClick={() => props.lockExpressionValue(expression.expressionType, index)}>
                                            <FontAwesome name={item.inputLocked ? 'unlock' : 'lock'}/>
                                         </div>
                                     )}

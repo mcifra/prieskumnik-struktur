@@ -9,6 +9,6 @@ export const FORMULA = 'FORMULA';
 export const TERM = 'TERM';
 
 export const EXPRESSION_LABEL = {
-    FORMULA: '𝝋',
-    TERM: '𝝉'
+   FORMULA: '𝝋',
+   TERM: '𝝉'
 };

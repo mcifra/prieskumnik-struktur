@@ -8,30 +8,30 @@ import Formula from "./Formula";
  */
 class EqualityAtom extends Formula {
 
-    /**
-     *
-     * @param {Term} subLeft
-     * @param {Term} subRight
-     */
-    constructor(subLeft, subRight) {
-        super();
-        this.subLeft = subLeft;
-        this.subRight = subRight;
-    }
+   /**
+    *
+    * @param {Term} subLeft
+    * @param {Term} subRight
+    */
+   constructor(subLeft, subRight) {
+      super();
+      this.subLeft = subLeft;
+      this.subRight = subRight;
+   }
 
-    /**
-     *
-     * @param {Structure} structure
-     * @param {Map} e
-     * @return {boolean}
-     */
-    eval(structure, e) {
-        return this.subLeft.eval(structure, e) === this.subRight.eval(structure, e);
-    }
+   /**
+    *
+    * @param {Structure} structure
+    * @param {Map} e
+    * @return {boolean}
+    */
+   eval(structure, e) {
+      return this.subLeft.eval(structure, e) === this.subRight.eval(structure, e);
+   }
 
-    toString() {
-        return "(" + this.subLeft.toString() + " = " + this.subRight.toString() + ")";
-    }
+   toString() {
+      return "(" + this.subLeft.toString() + " = " + this.subRight.toString() + ")";
+   }
 
 }
 

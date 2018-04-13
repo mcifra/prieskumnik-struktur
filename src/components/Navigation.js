@@ -6,34 +6,34 @@ import {Link} from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 
 class Navigation extends React.Component {
-    render() {
-        return (
-            <header>
-                <Navbar>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <Link to="/">Prieskumník štruktúr</Link>
-                        </Navbar.Brand>
-                        <Navbar.Toggle/>
-                    </Navbar.Header>
-                    <Navbar.Collapse>
-                        <Nav>
-                            <LinkContainer to='/plan'>
-                                <NavItem eventKey={2}>Etapy vývoja</NavItem>
-                            </LinkContainer>
-                            <LinkContainer to='/references'>
-                                <NavItem eventKey={3}>Zdroje</NavItem>
-                            </LinkContainer>
-                            {/*<LinkContainer to='/app'>*/}
-                                {/*<NavItem eventKey={4}>Prototyp</NavItem>*/}
-                            {/*</LinkContainer>*/}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+   render() {
+      return (
+          <header>
+             <Navbar>
+                <Navbar.Header>
+                   <Navbar.Brand>
+                      <Link to="/">Prieskumník štruktúr</Link>
+                   </Navbar.Brand>
+                   <Navbar.Toggle/>
+                </Navbar.Header>
+                <Navbar.Collapse>
+                   <Nav>
+                      <LinkContainer to='/plan'>
+                         <NavItem eventKey={2}>Etapy vývoja</NavItem>
+                      </LinkContainer>
+                      <LinkContainer to='/references'>
+                         <NavItem eventKey={3}>Zdroje</NavItem>
+                      </LinkContainer>
+                      {/*<LinkContainer to='/app'>*/}
+                      {/*<NavItem eventKey={4}>Prototyp</NavItem>*/}
+                      {/*</LinkContainer>*/}
+                   </Nav>
+                </Navbar.Collapse>
+             </Navbar>
 
-            </header>
-        );
-    }
+          </header>
+      );
+   }
 }
 
 export default Navigation;

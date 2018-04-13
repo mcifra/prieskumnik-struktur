@@ -4,17 +4,17 @@ import Language from '../components/app/Language';
 import {lockConstants, lockFunctions, lockPredicates} from "../actions";
 
 const mapStateToProps = (state) => ({
-    inputs: state.inputs,
-    mode: state.mode
+   inputs: state.inputs,
+   mode: state.mode
 });
 
 const mapDispatchToProps = {
-    onConstantsChange: setConstants,
-    onPredicatesChange: setPredicates,
-    onFunctionsChange: setFunctions,
-    lockConstants: lockConstants,
-    lockPredicates: lockPredicates,
-    lockFunctions: lockFunctions
+   onConstantsChange: setConstants,
+   onPredicatesChange: setPredicates,
+   onFunctionsChange: setFunctions,
+   lockConstants: lockConstants,
+   lockPredicates: lockPredicates,
+   lockFunctions: lockFunctions
 };
 
 const LanguageContainer = connect(
