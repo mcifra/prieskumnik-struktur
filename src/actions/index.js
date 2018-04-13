@@ -78,35 +78,53 @@ export const checkExpressionSyntax = (value, index, expressionType) => ({
     expressionType
 });
 
-export const addFormula = () => ({
-    type: 'ADD_FORMULA'
+export const addExpression = (expressionType) => ({
+    type: 'ADD_EXPRESSION',
+    expressionType
 });
 
-export const addTerm = () => ({
-    type: 'ADD_TERM'
-});
+// export const addFormula = () => ({
+//     type: 'ADD_FORMULA'
+// });
+//
+// export const addTerm = () => ({
+//     type: 'ADD_TERM'
+// });
 
-export const removeFormula = (index) => ({
-    type: 'REMOVE_FORMULA',
+export const removeExpression = (expressionType, index) => ({
+    type: 'REMOVE_EXPRESSION',
+    expressionType,
     index
 });
 
-export const removeTerm = (index) => ({
-    type: 'REMOVE_TERM',
-    index
-});
+// export const removeFormula = (index) => ({
+//     type: 'REMOVE_FORMULA',
+//     index
+// });
+//
+// export const removeTerm = (index) => ({
+//     type: 'REMOVE_TERM',
+//     index
+// });
 
-export const setFormulaAnswer = (answer, index) => ({
-    type: 'SET_FORMULA_ANSWER',
+export const setExpressionAnswer = (expressionType, answer, index) => ({
+    type: 'SET_EXPRESSION_ANSWER',
+    expressionType,
     answer,
     index
 });
 
-export const setTermAnswer = (answer, index) => ({
-    type: 'SET_TERM_ANSWER',
-    answer,
-    index
-});
+// export const setFormulaAnswer = (answer, index) => ({
+//     type: 'SET_FORMULA_ANSWER',
+//     answer,
+//     index
+// });
+//
+// export const setTermAnswer = (answer, index) => ({
+//     type: 'SET_TERM_ANSWER',
+//     answer,
+//     index
+// });
 
 export const lockExpressionValue = (expressionType, expressionIndex) => ({
     type: 'LOCK_EXPRESSION_VALUE',

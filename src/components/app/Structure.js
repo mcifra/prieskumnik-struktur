@@ -73,7 +73,7 @@ function Structure(props) {
                                                 validationState={props.inputs.structure.constants[constant].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
-                                                           htmlFor={'constant-' + constant}><var>i</var> ({constant})</label>
+                                                           htmlFor={'constant-' + constant}><var>i</var>({constant}) = </label>
                                                     <select value={props.inputs.structure.constants[constant].value}
                                                             id={'constant-' + constant}
                                                             className='form-control'
@@ -111,12 +111,13 @@ function Structure(props) {
                                                 validationState={props.inputs.structure.predicates[name].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
-                                                           htmlFor={'predicate-' + name}><var>i</var> ({name.split('/')[0]})</label>
+                                                           htmlFor={'predicate-' + name}><var>i</var>({name.split('/')[0]}) = &#123;</label>
                                                     <FormControl id={'predicate-' + name}
                                                                  value={props.inputs.structure.predicates[name].value}
                                                                  type='text'
                                                                  onChange={(e) => props.onPredicateValueChangeText(e.target.value, name)}
                                                                  disabled={props.inputs.structure.predicates[name].locked}/>
+                                                    <span className='input-group-addon'>&#125;</span>
                                                     <InputGroup.Button>
                                                         {(parseInt(name.split('/')[1]) > 2 || props.domain.length === 0) ? null : (
                                                             <Button
@@ -158,12 +159,13 @@ function Structure(props) {
                                                 validationState={props.inputs.structure.functions[name].feedback.message !== '' ? 'error' : null}>
                                                 <InputGroup>
                                                     <label className='input-group-addon'
-                                                           htmlFor={'function-' + name}><var>i</var> ({name.split('/')[0]})</label>
+                                                           htmlFor={'function-' + name}><var>i</var>({name.split('/')[0]}) = &#123;</label>
                                                     <FormControl id={'function-' + name}
                                                                  value={props.inputs.structure.functions[name].value}
                                                                  type='text'
                                                                  onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}
                                                                  disabled={props.inputs.structure.functions[name].locked}/>
+                                                    <span className='input-group-addon'>&#125;</span>
                                                     <InputGroup.Button>
                                                         {(parseInt(name.split('/')[1]) > 2 || props.domain.length === 0) ? null : (
                                                             <Button onClick={() => props.toggleTable(FUNCTION, name)}>
