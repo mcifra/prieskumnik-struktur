@@ -28,11 +28,11 @@ const popoverHelpTerm = (
     </Popover>
 );
 
-const getFormulaAnswers = (index) => (
+const getFormulaAnswers = () => (
     <React.Fragment>
        <option value={'-1'}>⊨/⊭?</option>
-       <option value={'true'}>𝓜 ⊨ 𝝋<sub>{index + 1}</sub>[e]</option>
-       <option value={'false'}>𝓜 ⊭ 𝝋[e]</option>
+       <option value={'true'}>⊨</option>
+       <option value={'false'}>⊭</option>
     </React.Fragment>
 );
 
@@ -49,14 +49,14 @@ function prepareExpressions(formulas, terms) {
    let f = {
       items: formulas,
       expressionType: FORMULA,
-      answers: (index, domain) => getFormulaAnswers(index),
+      answers: () => getFormulaAnswers(),
       help: popoverHelpFormula,
       panelTitle: 'Splnenie formúl v štruktúre 𝓜'
    };
    let t = {
       items: terms,
       expressionType: TERM,
-      answers: (index, domain) => getTermAnswers(domain),
+      answers: (domain) => getTermAnswers(domain),
       help: popoverHelpTerm,
       panelTitle: 'Hodnoty termov v 𝓜'
    };
@@ -111,8 +111,13 @@ const Expressions = (props) => (
                                          onChange={(e) => props.setExpressionAnswer(expression.expressionType, e.target.value, index)}
                                          id={expression.expressionType.toLowerCase() + '-answer-' + index}
                                          disabled={item.answerLocked}>
-                                    {expression.answers(index, props.domain)}
+                                    {expression.answers(props.domain)}
                                  </select>
+                                 {expression.expressionType === TERM ? null : (
+                                     <span className='input-group-addon'>
+                                       𝝋<sub>{index + 1}</sub>[e]
+                                     </span>
+                                 )}
                                  {props.mode === STUDENT_MODE ? null : (
                                      <InputGroup.Button>
                                         <div className='btn btn-lock'
