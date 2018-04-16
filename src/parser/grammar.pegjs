@@ -343,7 +343,6 @@ IdentifierPart
     / UnicodeDigit
     / "\u200C"
     / "\u200D"
-    / Emoji
 
 UnicodeLetter "letter"
     = Lu

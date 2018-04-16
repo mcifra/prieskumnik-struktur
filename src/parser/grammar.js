@@ -7639,9 +7639,6 @@ function peg$parse(input, options) {
               s0 = peg$FAILED;
               if (peg$silentFails === 0) { peg$fail(peg$c147); }
             }
-            if (s0 === peg$FAILED) {
-              s0 = peg$parseEmoji();
-            }
           }
         }
       }
