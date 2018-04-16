@@ -39,14 +39,14 @@ function Language(props) {
                                                value={props.inputs.constants.value}
                                                disabled={props.inputs.constants.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
-                                  {props.mode === STUDENT_MODE ? null : (
+                                  {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock' onClick={() => props.lockConstants()}>
                                                         <FontAwesome
                                                             name={props.inputs.constants.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  )}
+                                  ) : null }
                                </InputGroup>
                                <HelpBlock>{props.inputs.constants.feedback.message}</HelpBlock>
                             </FormGroup>
@@ -68,7 +68,7 @@ function Language(props) {
                                                value={props.inputs.predicates.value}
                                                disabled={props.inputs.predicates.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
-                                  {props.mode === STUDENT_MODE ? null : (
+                                  {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock'
                                                          onClick={() => props.lockPredicates()}>
@@ -76,7 +76,7 @@ function Language(props) {
                                                             name={props.inputs.predicates.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  )}
+                                  ) : null }
                                </InputGroup>
                                <HelpBlock>{props.inputs.predicates.feedback.message}</HelpBlock>
                             </FormGroup>
@@ -98,14 +98,14 @@ function Language(props) {
                                                value={props.inputs.functions.value}
                                                disabled={props.inputs.functions.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
-                                  {props.mode === STUDENT_MODE ? null : (
+                                  {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock' onClick={() => props.lockFunctions()}>
                                                         <FontAwesome
                                                             name={props.inputs.functions.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  )}
+                                  ) : null }
                                </InputGroup>
                                <HelpBlock>{props.inputs.functions.feedback.message}</HelpBlock>
                             </FormGroup>

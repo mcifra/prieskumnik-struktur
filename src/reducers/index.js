@@ -19,6 +19,7 @@ let s = {
    structure: new Structure(new Language()),
    variableValues: new Map(),
    mode: STUDENT_MODE,
+   teacherMode: false,
    inputs: {
       constants: {value: '', feedback: {type: null, message: ''}, locked: false, parsed: []},
       predicates: {value: '', feedback: {type: null, message: ''}, locked: false, parsed: []},
@@ -40,9 +41,12 @@ let s = {
 function rootReducer(state = s, action) {
    s = copyState(state);
    switch (action.type) {
-      case 'SET_MODE':
-         s.mode = action.mode;
+      case 'TOGGLE_TEACHER_MODE':
+         s.teacherMode = !s.teacherMode;
          return s;
+      // case 'SET_MODE':
+      //    s.mode = action.mode;
+      //    return s;
       case 'IMPORT_APP':
          importAppState(action.content);
          return s;
@@ -262,7 +266,6 @@ function setDomain() {
 function setConstantsValues() {
    let constants = Object.keys(s.inputs.structure.constants);
    constants.forEach(c => {
-      console.log(c, s.inputs.structure.constants[c]);
       setConstantValue(c, s.inputs.structure.constants[c].value);
    })
 }

@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
    feedback: state.inputs.variableValues.feedback.message,
    value: state.inputs.variableValues.value,
    locked: state.inputs.variableValues.locked,
-   mode: state.mode
+   teacherMode: state.teacherMode,
 });
 
 const mapDispatchOnProps = {

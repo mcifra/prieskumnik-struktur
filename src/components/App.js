@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Col, Row} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import {createStore} from 'redux';
 import reducer from '../reducers/index';
 import {Provider} from 'react-redux';
@@ -8,8 +8,8 @@ import VariablesValueContainer from "../containers/VariablesValueContainer";
 import LanguageContainer from '../containers/LanguageContainer';
 import StructureContainer from '../containers/StructureContainer';
 import DownloadButton from './app/lib/DownloadButton';
-import {STUDENT_MODE, TEACHER_MODE} from "../constants";
-import {setMode} from "../actions";
+import {setMode, toggleTeacherMode} from "../actions";
+import Toggle from 'react-toggle';
 
 const store = createStore(reducer);
 
@@ -33,6 +33,8 @@ function importState(e) {
 function exportState() {
    let state = store.getState();
    let json = JSON.stringify({mode: state.mode, inputs: state.inputs, expressions: state.expressions});
+   if (exerciseName.length === 0)
+      exerciseName = 'struktura';
    return {
       mime: 'application/json',
       filename: exerciseName + '.json',
@@ -43,20 +45,31 @@ function exportState() {
 const App = () => (
     <Provider store={store}>
        <div className={"app"}>
-          <div className='row import-export-bar'>
-             <div className='col-md-6'>
-                <Button bsStyle='info' onClick={e => store.dispatch(setMode(STUDENT_MODE))}>Študent mód</Button>
-                <Button bsStyle='info' onClick={e => store.dispatch(setMode(TEACHER_MODE))}>Učiteľ mód</Button>
-                <label className="btn btn-info">
-                   Import cvičenia <input type="file" name='jsonFile' onChange={e => importState(e)} hidden={true}
-                                          style={{display: 'none'}}/>
-                </label>
-                <DownloadButton genFile={exportState} downloadTitle='Uloženie cvičenia'
-                                className='btn btn-info'/>
-             </div>
-             <div className='col-md-6'>
-                <span className='bug-report'>Ak ste objavili chybu, <a
-                    href='https://github.com/mcifra/prieskumnik-struktur/issues'>oznámte nám ju</a>.</span>
+          <div className='row'>
+             <div className='col-md-12'>
+                <div className='import-export-bar'>
+                   <div className='form-inline'>
+                      <div className='form-group'>
+                         <label className='exercise-name-label' htmlFor="exercise-name">Cvičenie: </label>
+                         <input type="text" className="exercise-name-input form-control" id="exercise-name"
+                                placeholder="struktura"
+                                onChange={(e) => exerciseName = e.target.value}/>
+                      </div>
+                      <DownloadButton genFile={exportState} downloadTitle='Uložiť'
+                                      className='btn btn-lock'/>
+                   </div>
+                   <label className="btn btn-lock">
+                      Importovať cvičenie <input type="file" name='jsonFile' onChange={e => importState(e)}
+                                                 hidden={true}
+                                                 style={{display: 'none'}}/>
+                   </label>
+                   <label className='teacher-mode'>
+                      <Toggle
+                          defaultChecked={store.getState().teacherMode}
+                          onChange={() => store.dispatch(toggleTeacherMode())}/>
+                      <span className='teacher-mode-span'>Učiteľský mód</span>
+                   </label>
+                </div>
              </div>
           </div>
           <Row>

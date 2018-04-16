@@ -35,13 +35,13 @@ function VariablesValue(props) {
                                             onChange={(e) => props.onInputChange(e.target.value)}
                                             disabled={props.locked}/>
                                <span className='input-group-addon'>&#125;</span>
-                               {props.mode === STUDENT_MODE ? null : (
+                               {props.teacherMode ? (
                                    <span className="input-group-btn">
                                                 <div className='btn btn-lock' onClick={() => props.lockInput()}>
                                                     <FontAwesome name={props.locked ? 'unlock' : 'lock'}/>
                                                 </div>
                                             </span>
-                               )}
+                               ) : null }
                             </InputGroup>
                             <HelpBlock>{props.feedback}</HelpBlock>
                          </FormGroup>

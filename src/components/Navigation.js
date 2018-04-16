@@ -25,6 +25,9 @@ class Navigation extends React.Component {
                          <NavItem eventKey={3}>Zdroje</NavItem>
                       </LinkContainer>
                    </Nav>
+                   <ul class="nav navbar-nav navbar-right">
+                      <li><a href="https://github.com/mcifra/prieskumnik-struktur/issues" target='_blank'>Oznámenie chyby</a></li>
+                   </ul>
                 </Navbar.Collapse>
              </Navbar>
           </header>

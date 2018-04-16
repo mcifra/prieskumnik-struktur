@@ -15,7 +15,7 @@ import {lockConstantValue, lockDomain, lockFunctionValue, lockPredicateValue} fr
 const mapStateToProps = (state) => ({
    inputs: state.inputs,
    structure: state.structure,
-   mode: state.mode,
+   teacherMode: state.teacherMode,
    domain: [...state.structure.domain]
 });
 

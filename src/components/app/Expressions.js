@@ -78,7 +78,7 @@ const Expressions = (props) => (
                      <Row key={index}>
                         <Col sm={7}>
                            <FormGroup
-                               validationState={item.value ? (item.validSyntax ? 'success' : 'error') : null}>
+                               validationState={item.feedback.message ? 'error': null}>
                               <InputGroup>
                                  <label className='input-group-addon'
                                         htmlFor={expression.expressionType.toLowerCase() + '-' + index}>
@@ -91,12 +91,12 @@ const Expressions = (props) => (
                                     <Button
                                         onClick={() => props.removeExpression(expression.expressionType, index)}><FontAwesome
                                         name='trash'/></Button>
-                                    {props.mode === STUDENT_MODE ? null : (
+                                    {props.teacherMode ? (
                                         <div className='btn btn-lock'
                                              onClick={() => props.lockExpressionValue(expression.expressionType, index)}>
                                            <FontAwesome name={item.inputLocked ? 'unlock' : 'lock'}/>
                                         </div>
-                                    )}
+                                    ) : null }
                                  </InputGroup.Button>
                               </InputGroup>
                               <HelpBlock>{item.feedback.message}</HelpBlock>
@@ -118,7 +118,7 @@ const Expressions = (props) => (
                                        𝝋<sub>{index + 1}</sub>[e]
                                      </span>
                                  )}
-                                 {props.mode === STUDENT_MODE ? null : (
+                                 {props.teacherMode ? (
                                      <InputGroup.Button>
                                         <div className='btn btn-lock'
                                              onClick={() => props.lockExpressionAnswer(expression.expressionType, index)}>
@@ -126,7 +126,7 @@ const Expressions = (props) => (
                                                name={item.answerLocked ? 'unlock' : 'lock'}/>
                                         </div>
                                      </InputGroup.Button>
-                                 )}
+                                 ) : null }
                               </InputGroup>
                            </FormGroup>
                         </Col>

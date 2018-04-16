@@ -57,14 +57,14 @@ function Structure(props) {
                                                onChange={(e) => props.onDomainChange(e.target.value)}
                                                disabled={props.inputs.structure.domain.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
-                                  {props.mode === STUDENT_MODE ? null : (
+                                  {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock' onClick={() => props.lockDomain()}>
                                                         <FontAwesome
                                                             name={props.inputs.structure.domain.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  )}
+                                  ) : null }
                                </InputGroup>
                                <HelpBlock>{props.inputs.structure.domain.feedback.message}</HelpBlock>
                             </FormGroup>
@@ -92,7 +92,7 @@ function Structure(props) {
                                                  <option value={item}>{item}</option>
                                              )}
                                           </select>
-                                          {props.mode === STUDENT_MODE ? null : (
+                                          {props.teacherMode ? (
                                               <span className="input-group-btn">
                                                             <div className='btn btn-lock'
                                                                  onClick={() => props.lockConstantValue(constant)}>
@@ -100,7 +100,7 @@ function Structure(props) {
                                                                     name={props.inputs.structure.constants[constant].locked ? 'unlock' : 'lock'}/>
                                                             </div>
                                                         </span>
-                                          )}
+                                          ) : null }
                                        </InputGroup>
                                        <HelpBlock>{props.inputs.structure.constants[constant].feedback.message}</HelpBlock>
                                     </FormGroup>
@@ -134,13 +134,13 @@ function Structure(props) {
                                                     <FontAwesome name='table'/>
                                                  </Button>
                                              )}
-                                             {props.mode === STUDENT_MODE ? null : (
+                                             {props.teacherMode ? (
                                                  <div className='btn btn-lock'
                                                       onClick={() => props.lockPredicateValue(name)}>
                                                     <FontAwesome
                                                         name={props.inputs.structure.predicates[name].locked ? 'unlock' : 'lock'}/>
                                                  </div>
-                                             )}
+                                             ) : null }
                                           </InputGroup.Button>
                                        </InputGroup>
                                        {props.inputs.structure.predicates[name].editMode === 'TEXT' || props.domain.length === 0 ? null : (
@@ -182,13 +182,13 @@ function Structure(props) {
                                                     <FontAwesome name='table'/>
                                                  </Button>
                                              )}
-                                             {props.mode === STUDENT_MODE ? null : (
+                                             {props.teacherMode ? (
                                                  <div className='btn btn-lock'
                                                       onClick={() => props.lockFunctionValue(name)}>
                                                     <FontAwesome
                                                         name={props.inputs.structure.functions[name].locked ? 'unlock' : 'lock'}/>
                                                  </div>
-                                             )}
+                                             ) : null }
                                           </InputGroup.Button>
                                        </InputGroup>
                                        {props.inputs.structure.functions[name].editMode === 'TEXT' || props.domain.length === 0 ? null : (

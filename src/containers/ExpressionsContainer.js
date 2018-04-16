@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
       formulas: state.expressions.formulas,
       terms: state.expressions.terms,
       domain: [...state.structure.domain],
-      mode: state.mode
+      teacherMode: state.teacherMode
    }
 };
 

@@ -147,7 +147,11 @@ export const setVariablesValue = (value) => ({
    value
 });
 
-export const setMode = (mode) => ({
-   type: 'SET_MODE',
-   mode
+// export const setMode = (mode) => ({
+//    type: 'SET_MODE',
+//    mode
+// });
+
+export const toggleTeacherMode = () => ({
+   type: 'TOGGLE_TEACHER_MODE'
 });
