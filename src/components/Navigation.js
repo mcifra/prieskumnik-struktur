@@ -24,13 +24,9 @@ class Navigation extends React.Component {
                       <LinkContainer to='/references'>
                          <NavItem eventKey={3}>Zdroje</NavItem>
                       </LinkContainer>
-                      {/*<LinkContainer to='/app'>*/}
-                      {/*<NavItem eventKey={4}>Prototyp</NavItem>*/}
-                      {/*</LinkContainer>*/}
                    </Nav>
                 </Navbar.Collapse>
              </Navbar>
-
           </header>
       );
    }

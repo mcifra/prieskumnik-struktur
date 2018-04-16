@@ -13,6 +13,8 @@ import {setMode} from "../actions";
 
 const store = createStore(reducer);
 
+let exerciseName = 'struktura';
+
 // po kazdej zmene stavu sa vypise
 store.subscribe(() => {
    let state = store.getState();
@@ -33,7 +35,7 @@ function exportState() {
    let json = JSON.stringify({mode: state.mode, inputs: state.inputs, expressions: state.expressions});
    return {
       mime: 'application/json',
-      filename: 'struktura.json',
+      filename: exerciseName + '.json',
       contents: json
    }
 }
