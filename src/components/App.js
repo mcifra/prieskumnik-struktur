@@ -13,7 +13,7 @@ import Toggle from 'react-toggle';
 
 const store = createStore(reducer);
 
-let exerciseName = 'struktura';
+let exerciseName = '';
 
 // po kazdej zmene stavu sa vypise
 store.subscribe(() => {

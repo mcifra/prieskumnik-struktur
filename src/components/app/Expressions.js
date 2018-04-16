@@ -131,7 +131,7 @@ const Expressions = (props) => (
                            </FormGroup>
                         </Col>
                         <Col sm={2}>
-                           {item.answerValue !== '' ? (item.answerValue === item.expressionValue ?
+                           {item.answerValue !== '' && item.answerValue !== '-1' ? (item.answerValue === item.expressionValue ?
                                <strong className="text-success"><FontAwesome
                                    name='check'/>&nbsp;Správne</strong> :
                                <strong className="text-danger"><FontAwesome

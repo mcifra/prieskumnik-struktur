@@ -44,9 +44,6 @@ function rootReducer(state = s, action) {
       case 'TOGGLE_TEACHER_MODE':
          s.teacherMode = !s.teacherMode;
          return s;
-      // case 'SET_MODE':
-      //    s.mode = action.mode;
-      //    return s;
       case 'IMPORT_APP':
          importAppState(action.content);
          return s;
