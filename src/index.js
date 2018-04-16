@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Plan from './components/Plan';
 import References from './components/References';
 import App from './components/App';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 
 const Main = () => (
     <main className="container">
@@ -27,9 +27,9 @@ const MainApp = () => (
 );
 
 ReactDOM.render((
-    <BrowserRouter>
+    <HashRouter>
        <MainApp/>
-    </BrowserRouter>
+    </HashRouter>
 ), document.getElementById('root'));
 
 registerServiceWorker();
