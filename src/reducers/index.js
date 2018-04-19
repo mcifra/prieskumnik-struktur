@@ -11,7 +11,7 @@ import UniversalQuant from "../model/formula/Formula.UniversalQuant";
 import Negation from "../model/formula/Formula.Negation";
 import FunctionTerm from "../model/term/Term.FunctionTerm";
 import Implication from "../model/formula/Formula.Implication";
-import {FORMULA, FUNCTION, PREDICATE, STUDENT_MODE} from "../constants";
+import {FORMULA, FUNCTION, PREDICATE, STUDENT_MODE, TERM} from "../constants";
 
 let parser = require('../parser/grammar');
 
@@ -54,6 +54,7 @@ function rootReducer(state = s, action) {
             setPredicates();
             setFunctions();
             setVariables();
+            syncExpressionsValue(true);
          }
          return s;
       case 'SET_PREDICATES':
@@ -63,6 +64,7 @@ function rootReducer(state = s, action) {
             setConstants();
             setFunctions();
             setVariables();
+            syncExpressionsValue(true);
          }
          return s;
       case 'SET_FUNCTIONS':
@@ -72,6 +74,7 @@ function rootReducer(state = s, action) {
             setPredicates();
             setConstants();
             setVariables();
+            syncExpressionsValue(true);
          }
          return s;
       case 'SET_DOMAIN':
@@ -456,11 +459,15 @@ function removeTerm(index) {
 
 // po zmene domeny sa zoberie hodnota z .parsed
 // a znova sa vyraz vyhodnoti, neparsuje sa znova
-function syncExpressionsValue() {
+function syncExpressionsValue(parse = false) {
    s.expressions.formulas.forEach(formula => {
+      if (parse)
+         parseText(formula.value, formula, setParserOptions(FORMULA.toLowerCase()));
       evalExpression(formula);
    });
    s.expressions.terms.forEach(term => {
+      if (parse)
+         parseText(term.value, term, setParserOptions(TERM.toLowerCase()));
       evalExpression(term);
    });
 }
