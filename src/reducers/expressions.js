@@ -105,7 +105,9 @@ function checkExpressionSyntax(action) {
    let expressionText = action.value;
    let expression = s.terms[action.index];
    if (action.expressionType === FORMULA) {
-      expressionText = '(' + expressionText + ')';
+      if (expressionText.length > 0) {
+         expressionText = '(' + expressionText + ')';
+      }
       expression = s.formulas[action.index];
    }
    functions.parseText(expressionText, expression, setParserOptions(action.expressionType.toLowerCase()));
