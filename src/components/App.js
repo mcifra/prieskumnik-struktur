@@ -1,14 +1,14 @@
 import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 import {createStore} from 'redux';
-import reducer from '../reducers/index';
+import reducer from '../reducers/root';
 import {Provider} from 'react-redux';
 import ExpressionsContainer from '../containers/ExpressionsContainer';
 import VariablesValueContainer from "../containers/VariablesValueContainer";
 import LanguageContainer from '../containers/LanguageContainer';
 import StructureContainer from '../containers/StructureContainer';
 import DownloadButton from './app/lib/DownloadButton';
-import {setMode, toggleTeacherMode} from "../actions";
+import {toggleTeacherMode} from "../actions";
 import Toggle from 'react-toggle';
 
 const store = createStore(reducer);
@@ -32,7 +32,12 @@ function importState(e) {
 
 function exportState() {
    let state = store.getState();
-   let json = JSON.stringify({mode: state.mode, inputs: state.inputs, expressions: state.expressions});
+   let json = JSON.stringify({
+      common: state.common,
+      language: state.language,
+      structure: state.structure,
+      expressions: state.expressions
+   });
    if (exerciseName.length === 0)
       exerciseName = 'struktura';
    return {

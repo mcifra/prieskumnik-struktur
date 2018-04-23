@@ -1,7 +1,6 @@
 import React from 'react';
 import {Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Panel, Popover, Row} from "react-bootstrap";
 import FontAwesome from 'react-fontawesome';
-import {STUDENT_MODE} from "../../constants";
 
 function Language(props) {
    const popoverHelp = (
@@ -29,26 +28,26 @@ function Language(props) {
                          <fieldset>
                             <legend>Symboly konštánt</legend>
                             <FormGroup
-                                validationState={props.inputs.constants.feedback.message !== '' ? 'error' : null}>
+                                validationState={props.language.constants.feedback.message !== '' ? 'error' : null}>
                                <InputGroup>
                                   <label className='input-group-addon'
                                          htmlFor='language-editor-constants'>
                                      <span>𝓒<sub>𝓛</sub></span> = &#123;</label>
                                   <FormControl id='language-editor-constants' type='text'
                                                onChange={(e) => props.onConstantsChange(e.target.value)}
-                                               value={props.inputs.constants.value}
-                                               disabled={props.inputs.constants.locked}/>
+                                               value={props.language.constants.value}
+                                               disabled={props.language.constants.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
                                   {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock' onClick={() => props.lockConstants()}>
                                                         <FontAwesome
-                                                            name={props.inputs.constants.locked ? 'unlock' : 'lock'}/>
+                                                            name={props.language.constants.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
                                   ) : null }
                                </InputGroup>
-                               <HelpBlock>{props.inputs.constants.feedback.message}</HelpBlock>
+                               <HelpBlock>{props.language.constants.feedback.message}</HelpBlock>
                             </FormGroup>
                          </fieldset>
                       </Col>
@@ -58,27 +57,27 @@ function Language(props) {
                          <fieldset>
                             <legend>Predikátové symboly</legend>
                             <FormGroup
-                                validationState={props.inputs.predicates.feedback.message !== '' ? 'error' : null}>
+                                validationState={props.language.predicates.feedback.message !== '' ? 'error' : null}>
                                <InputGroup>
                                   <label className='input-group-addon'
                                          htmlFor='language-editor-predicates'>
                                      <span>𝓟<sub>𝓛</sub></span> = &#123;</label>
                                   <FormControl id='language-editor-predicates' type='text'
                                                onChange={(e) => props.onPredicatesChange(e.target.value)}
-                                               value={props.inputs.predicates.value}
-                                               disabled={props.inputs.predicates.locked}/>
+                                               value={props.language.predicates.value}
+                                               disabled={props.language.predicates.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
                                   {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock'
                                                          onClick={() => props.lockPredicates()}>
                                                         <FontAwesome
-                                                            name={props.inputs.predicates.locked ? 'unlock' : 'lock'}/>
+                                                            name={props.language.predicates.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
                                   ) : null }
                                </InputGroup>
-                               <HelpBlock>{props.inputs.predicates.feedback.message}</HelpBlock>
+                               <HelpBlock>{props.language.predicates.feedback.message}</HelpBlock>
                             </FormGroup>
                          </fieldset>
                       </Col>
@@ -88,26 +87,26 @@ function Language(props) {
                          <fieldset>
                             <legend>Funkčné symboly</legend>
                             <FormGroup
-                                validationState={props.inputs.functions.feedback.message !== '' ? 'error' : null}>
+                                validationState={props.language.functions.feedback.message !== '' ? 'error' : null}>
                                <InputGroup>
                                   <label className='input-group-addon'
                                          htmlFor='language-editor-functions'>
                                      <span>𝓕<sub>𝓛</sub></span> = &#123;</label>
                                   <FormControl id='language-editor-functions' type='text'
                                                onChange={(e) => props.onFunctionsChange(e.target.value)}
-                                               value={props.inputs.functions.value}
-                                               disabled={props.inputs.functions.locked}/>
+                                               value={props.language.functions.value}
+                                               disabled={props.language.functions.locked}/>
                                   <span className='input-group-addon'>&#125;</span>
                                   {props.teacherMode ? (
                                       <span className="input-group-btn">
                                                     <div className='btn btn-lock' onClick={() => props.lockFunctions()}>
                                                         <FontAwesome
-                                                            name={props.inputs.functions.locked ? 'unlock' : 'lock'}/>
+                                                            name={props.language.functions.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
                                   ) : null }
                                </InputGroup>
-                               <HelpBlock>{props.inputs.functions.feedback.message}</HelpBlock>
+                               <HelpBlock>{props.language.functions.feedback.message}</HelpBlock>
                             </FormGroup>
                          </fieldset>
                       </Col>

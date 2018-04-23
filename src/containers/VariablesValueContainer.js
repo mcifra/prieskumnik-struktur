@@ -4,10 +4,10 @@ import VariablesValue from "../components/app/VariablesValue";
 import {lockVariables} from "../actions";
 
 const mapStateToProps = (state) => ({
-   feedback: state.inputs.variableValues.feedback.message,
-   value: state.inputs.variableValues.value,
-   locked: state.inputs.variableValues.locked,
-   teacherMode: state.teacherMode,
+   feedback: state.structure.variables.feedback.message,
+   value: state.structure.variables.value,
+   locked: state.structure.variables.locked,
+   teacherMode: state.common.teacherMode,
 });
 
 const mapDispatchOnProps = {

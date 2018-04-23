@@ -13,10 +13,11 @@ import Structure from '../components/app/Structure';
 import {lockConstantValue, lockDomain, lockFunctionValue, lockPredicateValue} from "../actions";
 
 const mapStateToProps = (state) => ({
-   inputs: state.inputs,
+   language: state.language,
    structure: state.structure,
-   teacherMode: state.teacherMode,
-   domain: [...state.structure.domain]
+   structureObject: state.structureObject,
+   teacherMode: state.common.teacherMode,
+   domain: [...state.structureObject.domain]
 });
 
 const mapDispatchToProps = {
