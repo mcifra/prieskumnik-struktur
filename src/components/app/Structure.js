@@ -20,27 +20,32 @@ function Structure(props) {
    let constants = Object.keys(props.structure.constants);
    let predicates = Object.keys(props.structure.predicates);
    let functions = Object.keys(props.structure.functions);
-   const popoverHelp = (
-       <Popover id='popover-trigger-click' title='Editor štruktúry'>
-          Pomocou editoru štruktúry sa definuje štruktúra. Prvky <strong>domény</strong> sa oddeľujú čiarkami.
-          Pridaním nového symbolu do jazyka sa automaticky pridá vstup na zadanie interpretácie.
-          Interpretácia <strong>konštanty</strong> sa vyberá zo selectu, ktorý automaticky obsahuje prvky z
-          domény. Interpretácia <strong>predikátového symbolu</strong> s&nbsp;aritou&nbsp;<var>n</var> sa zapisuje vo
-          formáte <code>(prvok<sub>1</sub>, …, prvok<sub><var>n</var></sub>)</code>.
-          Interpretácia <strong>funkčného symbolu</strong> s&nbsp;aritou&nbsp;<var>n</var> sa zapisuje vo
-          formáte <code>(prvok<sub>1</sub>, …, prvok<sub><var>n</var></sub>, hodnota)</code>.
-       </Popover>
+   const help = (
+       <div className="collapse" id="help-structure">
+          <div className="well">
+             Pomocou editoru štruktúry sa definuje štruktúra. Prvky <strong>domény</strong> sa oddeľujú čiarkami.
+             Pridaním nového symbolu do jazyka sa automaticky pridá vstup na zadanie interpretácie.
+             Interpretácia <strong>konštanty</strong> sa vyberá zo selectu, ktorý automaticky obsahuje prvky z
+             domény. Interpretácia <strong>predikátového symbolu</strong> s&nbsp;aritou&nbsp;<var>n</var> sa zapisuje vo
+             formáte <code>(prvok<sub>1</sub>, …, prvok<sub><var>n</var></sub>)</code>.
+             Interpretácia <strong>funkčného symbolu</strong> s&nbsp;aritou&nbsp;<var>n</var> sa zapisuje vo
+             formáte <code>(prvok<sub>1</sub>, …, prvok<sub><var>n</var></sub>, hodnota)</code>.
+          </div>
+       </div>
    );
    return (
        <div className="structure-editor">
           <Panel>
              <Panel.Heading>
                 <Panel.Title componentClass='h2'>Štruktúra 𝓜 = (<var>M</var>, <var>i</var>)</Panel.Title>
-                <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
-                   <span>?</span>
-                </OverlayTrigger>
+                <span data-toggle="collapse" data-target="#help-structure"
+                      aria-expanded="false"
+                      aria-controls="collapseExample">
+                    ?
+                 </span>
              </Panel.Heading>
              <Panel.Body>
+                {help}
                 <Form>
                    <Row>
                       <Col lg={12}>
@@ -198,7 +203,7 @@ function Structure(props) {
                                                             onInputChange={props.onFunctionValueChangeTable}
                                                             disabled={props.structure.functions[name].locked}
                                                             type={FUNCTION}/>
-                                       ) : null }
+                                       ) : null}
                                        <HelpBlock>{props.structure.functions[name].feedback.message}</HelpBlock>
                                     </FormGroup>
                                 )}

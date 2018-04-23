@@ -5,21 +5,26 @@ import FontAwesome from 'react-fontawesome';
 
 function VariablesValue(props) {
    const popoverHelp = (
-       <Popover id='popover-trigger-click' title='Editor štruktúry'>
-          Tu sa definujú hodnoty premenných. Za premennú sa považuje každý symbol, ktorý nie je v jazyku. Syntax
-          zapisovania je v tvare <code>(premenná, hodnota)</code>.
-       </Popover>
+       <div className="collapse" id="help-variables">
+          <div className="well">
+             Tu sa definujú hodnoty premenných. Za premennú sa považuje každý symbol, ktorý nie je v jazyku. Syntax
+             zapisovania má formát <code>(premenná, hodnota)</code>.
+          </div>
+       </div>
    );
    return (
        <div className='language-editor'>
           <Panel>
              <Panel.Heading>
                 <Panel.Title componentClass='h2'>Ohodnotenie premenných</Panel.Title>
-                <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
-                   <span>?</span>
-                </OverlayTrigger>
+                <span data-toggle="collapse" data-target="#help-variables"
+                      aria-expanded="false"
+                      aria-controls="collapseExample">
+                    ?
+                 </span>
              </Panel.Heading>
              <Panel.Body>
+                {popoverHelp}
                 <Row>
                    <Col lg={12}>
                       <fieldset>
@@ -41,7 +46,7 @@ function VariablesValue(props) {
                                                     <FontAwesome name={props.locked ? 'unlock' : 'lock'}/>
                                                 </div>
                                             </span>
-                               ) : null }
+                               ) : null}
                             </InputGroup>
                             <HelpBlock>{props.feedback}</HelpBlock>
                          </FormGroup>

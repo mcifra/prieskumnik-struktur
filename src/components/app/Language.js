@@ -3,13 +3,15 @@ import {Col, FormControl, FormGroup, HelpBlock, InputGroup, OverlayTrigger, Pane
 import FontAwesome from 'react-fontawesome';
 
 function Language(props) {
-   const popoverHelp = (
-       <Popover id='popover-trigger-click' title='Editor jazyka'>
-          Pomocou editoru jazyka sa definuje jazyk. <strong>Konštanty</strong> sa píšu oddelene
-          čiarkou. <strong>Predikáty</strong> sa píšu oddelené čiarkami, vo
-          formáte <code>predikat/arita</code>. <strong>Funkcie</strong> sa píšu oddelené čiarkami, vo
-          formáte <code>funkcia/arita</code>.
-       </Popover>
+   const help = (
+       <div className="collapse" id="help-language">
+          <div className="well">
+             Tu sa definuje jazyk. <strong>Symboly konštánt</strong> sa definujú oddelene
+             čiarkou. <strong>Symboly predikátov</strong> sa definujú oddelené čiarkami, vo
+             formáte <code>predikat/arita</code>. <strong>Symboly funkcií</strong> sa definujú oddelené čiarkami, vo
+             formáte <code>funkcia/arita</code>.
+          </div>
+       </div>
    );
    return (
        <div className='language-editor'>
@@ -17,11 +19,14 @@ function Language(props) {
           <Panel>
              <Panel.Heading>
                 <Panel.Title componentClass='h2'>Jazyk 𝓛</Panel.Title>
-                <OverlayTrigger trigger='click' placement='bottom' overlay={popoverHelp}>
-                   <span>?</span>
-                </OverlayTrigger>
+                <span data-toggle="collapse" data-target="#help-language"
+                      aria-expanded="false"
+                      aria-controls="collapseExample">
+                    ?
+                 </span>
              </Panel.Heading>
              <Panel.Body>
+                {help}
                 <div className={'bs-example-form'}>
                    <Row>
                       <Col lg={12}>
@@ -45,7 +50,7 @@ function Language(props) {
                                                             name={props.language.constants.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  ) : null }
+                                  ) : null}
                                </InputGroup>
                                <HelpBlock>{props.language.constants.feedback.message}</HelpBlock>
                             </FormGroup>
@@ -75,7 +80,7 @@ function Language(props) {
                                                             name={props.language.predicates.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  ) : null }
+                                  ) : null}
                                </InputGroup>
                                <HelpBlock>{props.language.predicates.feedback.message}</HelpBlock>
                             </FormGroup>
@@ -104,7 +109,7 @@ function Language(props) {
                                                             name={props.language.functions.locked ? 'unlock' : 'lock'}/>
                                                     </div>
                                                 </span>
-                                  ) : null }
+                                  ) : null}
                                </InputGroup>
                                <HelpBlock>{props.language.functions.feedback.message}</HelpBlock>
                             </FormGroup>

@@ -135,6 +135,14 @@ class Home extends React.Component {
                                </thead>
                                <tbody>
                                <tr>
+                                  <td className='col-md-3'>23.04 - 29.04.</td>
+                                  <td className='col-md-9'>Písanie práce, zmena štruktúry stavu aplikácie.</td>
+                               </tr>
+                               <tr>
+                                  <td className='col-md-3'>16.04 - 22.04.</td>
+                                  <td className='col-md-9'>Písanie práce, testovanie</td>
+                               </tr>
+                               <tr>
                                   <td className='col-md-3'>09.04 - 15.04.</td>
                                   <td className='col-md-9'>Refaktorizácia, opravy chýb, písanie práce.</td>
                                </tr>
