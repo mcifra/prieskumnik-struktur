@@ -6,10 +6,8 @@ import {
    FormGroup,
    HelpBlock,
    InputGroup,
-   OverlayTrigger,
    Panel,
-   Popover,
-   Row
+   Row,
 } from "react-bootstrap";
 import {EXPRESSION_LABEL, FORMULA, STUDENT_MODE, TERM} from "../../constants";
 import FontAwesome from 'react-fontawesome';
