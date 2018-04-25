@@ -29,8 +29,10 @@ function expressionsReducer(state = s, action, structure2, variables) {
          syncExpressionsValue(true);
          return state;
       case 'SET_CONSTANT_VALUE':
-      case 'SET_PREDICATE_VALUE':
-      case 'SET_FUNCTION_VALUE':
+      case 'SET_PREDICATE_VALUE_TEXT':
+      case 'SET_PREDICATE_VALUE_TABLE':
+      case 'SET_FUNCTION_VALUE_TEXT':
+      case 'SET_FUNCTION_VALUE_TABLE':
       case 'SET_VARIABLES_VALUE':
       case 'SET_DOMAIN':
          syncExpressionsValue();
