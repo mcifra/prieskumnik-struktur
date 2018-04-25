@@ -10,29 +10,9 @@ function structureReducer(s, action, struct) {
    structure = struct;
    switch (action.type) {
       case 'SET_CONSTANTS':
-         syncLanguageWithStructure(state.constants, structure.language.constants, {
-             value: '',
-             feedback: {type: 'error', message: 'Interpretačná hodnota konštanty nesmie byť prázdna'},
-             locked: false
-          });
-         setVariables();
-         return state;
       case 'SET_PREDICATES':
-         syncLanguageWithStructure(state.predicates, structure.language.predicates, {
-            value: '',
-            feedback: {type: null, message: ''},
-            locked: false,
-            tableEnabled: false
-         });
-         setVariables();
-         return state;
       case 'SET_FUNCTIONS':
-         syncLanguageWithStructure(state.functions, structure.language.functions, {
-            value: '',
-            feedback: {type: null, message: ''},
-            locked: false,
-            tableEnabled: false
-         });
+         syncLanguageWithStructure();
          setVariables();
          return state;
       case 'SET_CONSTANT_VALUE':
@@ -145,7 +125,27 @@ function setFunctionsValues() {
    })
 }
 
-function syncLanguageWithStructure(stateSymbols, structureSymbols, defaultStateObject) {
+function syncLanguageWithStructure() {
+   syncSymbolsWithStructure(state.constants, structure.language.constants, {
+      value: '',
+      feedback: {type: 'error', message: 'Interpretačná hodnota konštanty nesmie byť prázdna'},
+      locked: false
+   });
+   syncSymbolsWithStructure(state.predicates, structure.language.predicates, {
+      value: '',
+      feedback: {type: null, message: ''},
+      locked: false,
+      tableEnabled: false
+   });
+   syncSymbolsWithStructure(state.functions, structure.language.functions, {
+      value: '',
+      feedback: {type: null, message: ''},
+      locked: false,
+      tableEnabled: false
+   });
+}
+
+function syncSymbolsWithStructure(stateSymbols, structureSymbols, defaultStateObject) {
    let inputs = Object.keys(stateSymbols);
    inputs.forEach(e => {
       if (!structureSymbols.has(e)) {
