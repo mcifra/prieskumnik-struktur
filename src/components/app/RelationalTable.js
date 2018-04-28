@@ -1,4 +1,5 @@
 import React from 'react';
+import {Table} from 'react-bootstrap';
 
 function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange, disabled) {
    let value = functionValues.get(JSON.stringify(params));
@@ -16,8 +17,6 @@ function renderFunctionValueSelect(functionName, functionValues, params, domain,
 
 function RelationalTable(props) {
    let domain = [...props.domain];
-   if (props.arity > 2)
-      return <p>Nepodporovaná arita</p>;
    let arity1 = (
        <tr>
           <td>{''}</td>
@@ -55,7 +54,7 @@ function RelationalTable(props) {
    );
 
    return (
-       <table class="table table-bordered">
+       <Table bordered responsive>
           <thead>
           <tr>
              <th>{props.name}</th>
@@ -67,7 +66,7 @@ function RelationalTable(props) {
           <tbody>
           {props.arity == 1 ? arity1 : arity2}
           </tbody>
-       </table>
+       </Table>
    )
 }
 

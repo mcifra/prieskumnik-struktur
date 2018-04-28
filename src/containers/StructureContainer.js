@@ -6,7 +6,6 @@ import {
    setFunctionValueText,
    setPredicateValueTable,
    setPredicateValueText,
-   setVariablesValue,
    toggleTable
 } from "../actions/index";
 import Structure from '../components/app/Structure';
@@ -21,13 +20,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-   onDomainChange: setDomain,
-   onConstantValueChange: setConstantValue,
-   onPredicateValueChangeText: setPredicateValueText,
-   onPredicateValueChangeTable: setPredicateValueTable,
-   onFunctionValueChangeText: setFunctionValueText,
-   onFunctionValueChangeTable: setFunctionValueTable,
-   onVariablesValueChange: setVariablesValue,
+   setDomain: setDomain,
+   setConstantValue: setConstantValue,
+   setPredicateValueText: setPredicateValueText,
+   setPredicateValueTable: setPredicateValueTable,
+   setFunctionValueText: setFunctionValueText,
+   setFunctionValueTable: setFunctionValueTable,
    toggleTable: toggleTable,
    lockDomain: lockDomain,
    lockConstantValue: lockConstantValue,

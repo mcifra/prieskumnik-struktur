@@ -9,8 +9,9 @@ import {
    Panel,
    Row,
 } from "react-bootstrap";
-import {EXPRESSION_LABEL, FORMULA, STUDENT_MODE, TERM} from "../../constants";
+import {EXPRESSION_LABEL, FORMULA, TERM} from "../../constants";
 import FontAwesome from 'react-fontawesome';
+import LockButton from './buttons/LockButton';
 
 const popoverHelpFormula = (
     <div className="collapse" id="help-formula">
@@ -39,7 +40,8 @@ const popoverHelpTerm = (
        <div className="well">
           Tu sa pridávajú termy a je možné zistiť ich hodnotu na základe vyššie definovanej štruktúry. Všetky termy
           musia byť definované v jazyku. Každý symbol premennej, symbol konštanty a funkčný symbol sa považuje za term.
-          Predikátový symbol nie je term. Povolené symboly spojok, atómov a kvantifikátorov sú rovnaké, ako pri formulách.
+          Predikátový symbol nie je term. Povolené symboly spojok, atómov a kvantifikátorov sú rovnaké, ako pri
+          formulách.
        </div>
     </div>
 );
@@ -111,10 +113,9 @@ const Expressions = (props) => (
                                         onClick={() => props.removeExpression(expression.expressionType, index)}><FontAwesome
                                         name='trash'/></Button>
                                     {props.teacherMode ? (
-                                        <div className='btn btn-lock'
-                                             onClick={() => props.lockExpressionValue(expression.expressionType, index)}>
-                                           <FontAwesome name={item.inputLocked ? 'unlock' : 'lock'}/>
-                                        </div>
+                                        <LockButton
+                                            lockFn={() => props.lockExpressionValue(expression.expressionType, index)}
+                                            locked={item.inputLocked}/>
                                     ) : null}
                                  </InputGroup.Button>
                               </InputGroup>
@@ -126,7 +127,7 @@ const Expressions = (props) => (
                               <InputGroup>
                                  <label className='input-group-addon'
                                         htmlFor={expression.expressionType.toLowerCase() + '-answer-' + index}>𝓜</label>
-                                 <select className='form-control' value={item.answerValue}
+                                 <select className='form-control bootstrap-select' value={item.answerValue}
                                          onChange={(e) => props.setExpressionAnswer(expression.expressionType, e.target.value, index)}
                                          id={expression.expressionType.toLowerCase() + '-answer-' + index}
                                          disabled={item.answerLocked}>
@@ -139,11 +140,9 @@ const Expressions = (props) => (
                                  )}
                                  {props.teacherMode ? (
                                      <InputGroup.Button>
-                                        <div className='btn btn-lock'
-                                             onClick={() => props.lockExpressionAnswer(expression.expressionType, index)}>
-                                           <FontAwesome
-                                               name={item.answerLocked ? 'unlock' : 'lock'}/>
-                                        </div>
+                                        <LockButton
+                                            lockFn={() => props.lockExpressionAnswer(expression.expressionType, index)}
+                                            locked={item.answerLocked}/>
                                      </InputGroup.Button>
                                  ) : null}
                               </InputGroup>

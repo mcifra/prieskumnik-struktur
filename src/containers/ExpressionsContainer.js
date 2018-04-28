@@ -9,14 +9,12 @@ import {
    setExpressionAnswer
 } from "../actions";
 
-const mapStateToProps = (state) => {
-   return {
-      formulas: state.expressions.formulas,
-      terms: state.expressions.terms,
-      domain: [...state.structureObject.domain],
-      teacherMode: state.common.teacherMode
-   }
-};
+const mapStateToProps = (state) => ({
+   formulas: state.expressions.formulas,
+   terms: state.expressions.terms,
+   domain: [...state.structureObject.domain],
+   teacherMode: state.common.teacherMode
+});
 
 const mapDispatchToProps = {
    onInputChange: checkExpressionSyntax,

@@ -105,66 +105,61 @@ function setDomain() {
 }
 
 function setConstantsValues() {
-   let constants = Object.keys(state.constants);
-   constants.forEach(c => {
+   Object.keys(state.constants).forEach(c => {
       setConstantValue(c, state.constants[c].value);
    })
 }
 
 function setPredicatesValues() {
-   let predicates = Object.keys(state.predicates);
-   predicates.forEach(predicate => {
+   Object.keys(state.predicates).forEach(predicate => {
       setPredicateValue(predicate);
    })
 }
 
 function setFunctionsValues() {
-   let functions = Object.keys(state.functions);
-   functions.forEach(f => {
+   Object.keys(state.functions).forEach(f => {
       setFunctionValue(f);
    })
 }
 
 function syncLanguageWithStructure() {
-   syncSymbolsWithStructure(state.constants, structure.language.constants, {
-      value: '',
-      feedback: {type: 'error', message: 'Interpretačná hodnota konštanty nesmie byť prázdna'},
-      locked: false
+   deleteUnusedInputs();
+   insertNewInputs();
+}
+
+function deleteUnusedInputs() {
+   Object.keys(state.constants).forEach(e => {
+      if (!structure.language.hasConstant(e)) {
+         delete state.constants[e];
+      }
    });
-   syncSymbolsWithStructure(state.predicates, structure.language.predicates, {
-      value: '',
-      feedback: {type: null, message: ''},
-      locked: false,
-      tableEnabled: false
+   Object.keys(state.predicates).forEach(e => {
+      if (!structure.language.hasPredicate(e)) {
+         delete state.predicates[e];
+      }
    });
-   syncSymbolsWithStructure(state.functions, structure.language.functions, {
-      value: '',
-      feedback: {type: null, message: ''},
-      locked: false,
-      tableEnabled: false
+   Object.keys(state.functions).forEach(e => {
+      if (!structure.language.hasFunction(e)) {
+         delete state.functions[e];
+      }
    });
 }
 
-function syncSymbolsWithStructure(stateSymbols, structureSymbols, defaultStateObject) {
-   let inputs = Object.keys(stateSymbols);
-   inputs.forEach(e => {
-      if (!structureSymbols.has(e)) {
-         delete stateSymbols[e];
+function insertNewInputs() {
+   structure.language.getConstants().forEach(e => {
+      if (!state.constants[e]) {
+         state.constants[e] = constantDefaultInput();
       }
    });
-   if (structureSymbols instanceof Map) {
-      structureSymbols.forEach((value, key) => {
-         if (!stateSymbols[key + '/' + value]) {
-            stateSymbols[key + '/' + value] = defaultStateObject;
-         }
-      })
-   } else {
-      structureSymbols.forEach(e => {
-         if (!stateSymbols[e]) {
-            stateSymbols[e] = defaultStateObject;
-         }
-      })
-   }
+   structure.language.predicates.forEach((arity, predicate) => {
+      if (!state.predicates[predicate + '/' + arity])
+         state.predicates[predicate + '/' + arity] = predicateFunctionDefaultInput()
+   });
+   structure.language.functions.forEach((arity, func) => {
+      if (!state.functions[func + '/' + arity]) {
+         state.functions[func + '/' + arity] = predicateFunctionDefaultInput();
+      }
+   });
 }
 
 function setVariables() {
@@ -286,5 +281,18 @@ function predicateValueToString(value) {
    }
    return res;
 }
+
+const constantDefaultInput = () => ({
+   value: '',
+   feedback: {type: 'error', message: 'Interpretačná hodnota konštanty nesmie byť prázdna'},
+   locked: false
+});
+
+const predicateFunctionDefaultInput = () => ({
+   value: '',
+   feedback: {type: null, message: ''},
+   locked: false,
+   tableEnabled: false
+});
 
 export default structureReducer;

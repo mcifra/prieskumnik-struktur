@@ -9,9 +9,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-   onConstantsChange: setConstants,
-   onPredicatesChange: setPredicates,
-   onFunctionsChange: setFunctions,
+   setConstants: setConstants,
+   setPredicates: setPredicates,
+   setFunctions: setFunctions,
    lockConstants: lockConstants,
    lockPredicates: lockPredicates,
    lockFunctions: lockFunctions
