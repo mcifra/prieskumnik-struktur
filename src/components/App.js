@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Row} from 'react-bootstrap';
+import {Col, Row, Modal, Button, ButtonToolbar} from 'react-bootstrap';
 import {createStore} from 'redux';
 import reducer from '../reducers/root';
 import {Provider} from 'react-redux';
@@ -10,10 +10,9 @@ import StructureContainer from '../containers/StructureContainer';
 import DownloadButton from './app/lib/DownloadButton';
 import {toggleTeacherMode} from "../actions";
 import Toggle from 'react-toggle';
+import FontAwesome from 'react-fontawesome';
 
 const store = createStore(reducer);
-
-let exerciseName = '';
 
 // po kazdej zmene stavu sa vypise
 store.subscribe(() => {
@@ -21,78 +20,116 @@ store.subscribe(() => {
    console.log('STATE:', state);
 });
 
-function importState(e) {
-   let file = e.target.files[0];
-   let fr = new FileReader();
-   fr.onload = function (e) {
-      store.dispatch({type: 'IMPORT_APP', content: e.target.result});
-   };
-   fr.readAsText(file);
-}
+class App extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         modalShow: false,
+         exerciseName: ''
+      };
+      this.exportState = this.exportState.bind(this);
+      this.importState = this.importState.bind(this);
+   }
 
-function exportState() {
-   let state = store.getState();
-   let json = JSON.stringify({
-      common: state.common,
-      language: state.language,
-      structure: state.structure,
-      expressions: state.expressions
-   });
-   if (exerciseName.length === 0)
-      exerciseName = 'struktura';
-   return {
-      mime: 'application/json',
-      filename: exerciseName + '.json',
-      contents: json
+   exportState() {
+      let state = store.getState();
+      let json = JSON.stringify({
+         common: state.common,
+         language: state.language,
+         structure: state.structure,
+         expressions: state.expressions
+      });
+      if (this.state.exerciseName.length === 0)
+         this.state.exerciseName = 'struktura';
+      return {
+         mime: 'application/json',
+         filename: this.state.exerciseName + '.json',
+         contents: json
+      }
+   }
+
+   importState(e) {
+      let file = e.target.files[0];
+      let fr = new FileReader();
+      fr.onload = function (e) {
+         store.dispatch({type: 'IMPORT_APP', content: e.target.result});
+      };
+      fr.readAsText(file);
+   }
+
+   render() {
+      return (
+          <Provider store={store}>
+             <div className='app'>
+                <Row>
+                   <div className='toolbar'>
+                      <div className='col-xs-7 toolbar-import-export'>
+                         <ButtonToolbar>
+                            <button className='btn btn-lock' onClick={() => this.setState({modalShow: true})}>
+                               <FontAwesome name='download'/>
+                               <span className='toolbar-btn-label-1'>Uložiť</span>
+                               <span className='toolbar-btn-label-2'>cvičenie</span>
+                            </button>
+                            <label className="btn btn-lock">
+                               <FontAwesome name='upload'/>
+                               <span className='toolbar-btn-label-1'>Importovať</span>
+                               <span className='toolbar-btn-label-2'>cvičenie</span>
+                               <input type="file" name='jsonFile'
+                                      onChange={e => this.importState(e)}
+                                      hidden={true}
+                                      style={{display: 'none'}}/>
+                            </label>
+                         </ButtonToolbar>
+                      </div>
+                      <div className='col-xs-5 toolbar-mode-toggle'>
+                         <label className='teacher-mode'>
+                            <Toggle
+                                defaultChecked={store.getState().teacherMode}
+                                onChange={() => store.dispatch(toggleTeacherMode())}/>
+                            <span className='teacher-mode-span'>Učiteľský mód</span>
+                         </label>
+                      </div>
+                      <Modal show={this.state.modalShow} onHide={() => this.setState({modalShow: false})}>
+                         <Modal.Header>
+                            <Modal.Title>Uložiť štruktúru</Modal.Title>
+                         </Modal.Header>
+                         <Modal.Body>
+                            <div className='form-inline'>
+                               <div className='form-group'>
+                                  <label className='exercise-name-label' htmlFor="exercise-name">Cvičenie: </label>
+                                  <input type="text" className="exercise-name-input form-control" id="exercise-name"
+                                         placeholder="struktura"
+                                         onChange={(e) => this.setState({exerciseName: e.target.value})}/>
+                               </div>
+
+                            </div>
+                         </Modal.Body>
+                         <Modal.Footer>
+                            <DownloadButton genFile={this.exportState} downloadTitle='Uložiť'
+                                            className='btn btn-success'/>
+                            <Button bsStyle='primary' onClick={() => this.setState({modalShow: false})}>Zrušiť</Button>
+                         </Modal.Footer>
+                      </Modal>
+                   </div>
+                </Row>
+                <Row>
+                   <Col md={6}>
+                      <LanguageContainer/>
+                      <VariablesValueContainer/>
+                   </Col>
+                   <Col md={6}>
+                      <StructureContainer/>
+                   </Col>
+                </Row>
+                <Row>
+                   <Col lg={12}>
+                      <ExpressionsContainer/>
+                   </Col>
+                </Row>
+             </div>
+          </Provider>
+      );
    }
 }
-
-const App = () => (
-    <Provider store={store}>
-       <div className={"app"}>
-          <div className='row'>
-             <div className='col-md-12'>
-                <div className='import-export-bar'>
-                   <div className='form-inline'>
-                      <div className='form-group'>
-                         <label className='exercise-name-label' htmlFor="exercise-name">Cvičenie: </label>
-                         <input type="text" className="exercise-name-input form-control" id="exercise-name"
-                                placeholder="struktura"
-                                onChange={(e) => exerciseName = e.target.value}/>
-                      </div>
-                      <DownloadButton genFile={exportState} downloadTitle='Uložiť'
-                                      className='btn btn-lock'/>
-                   </div>
-                   <label className="btn btn-lock">
-                      Importovať cvičenie <input type="file" name='jsonFile' onChange={e => importState(e)}
-                                                 hidden={true}
-                                                 style={{display: 'none'}}/>
-                   </label>
-                   <label className='teacher-mode'>
-                      <Toggle
-                          defaultChecked={store.getState().teacherMode}
-                          onChange={() => store.dispatch(toggleTeacherMode())}/>
-                      <span className='teacher-mode-span'>Učiteľský mód</span>
-                   </label>
-                </div>
-             </div>
-          </div>
-          <Row>
-             <Col md={6}>
-                <LanguageContainer/>
-                <VariablesValueContainer/>
-             </Col>
-             <Col md={6}>
-                <StructureContainer/>
-             </Col>
-          </Row>
-          <Row>
-             <Col lg={12}>
-                <ExpressionsContainer/>
-             </Col>
-          </Row>
-       </div>
-    </Provider>
-);
 
 export default App;
