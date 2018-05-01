@@ -88,6 +88,20 @@ h1 {
   border: 1px solid #ccc;
   color: black; }
 
+.app .expression .feedback {
+  text-align: center;
+  padding-top: 7px;
+  padding-bottom: 7px; }
+
+.app .expression .input-group {
+  margin-bottom: .5rem !important; }
+
+.app .expression .no-padding-right {
+  padding-right: 0 !important; }
+
+.app .expression .no-padding-left {
+  padding-left: 0 !important; }
+
 .input-group-addon {
   color: black; }
 
@@ -101,7 +115,9 @@ h1 {
 .teacher-mode {
   display: inline-flex;
   align-items: center;
-  margin-left: 1rem; }
+  margin: 0;
+  padding-top: 6px;
+  padding-bottom: 6px; }
   .teacher-mode .teacher-mode-span {
     font-size: 1.4rem;
     padding-left: .5rem; }
