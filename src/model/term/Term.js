@@ -9,13 +9,13 @@ import Expression from "../Expression";
  */
 class Term extends Expression {
 
-   constructor() {
-      super();
-   }
+  constructor() {
+    super();
+  }
 
-   toString() {
-      return null;
-   }
+  toString() {
+    return null;
+  }
 
 }
 

@@ -8,30 +8,30 @@ import Formula from "./Formula";
  */
 class Disjunction extends Formula {
 
-   /**
-    *
-    * @param {Formula} subLeft
-    * @param {Formula} subRight
-    */
-   constructor(subLeft, subRight) {
-      super();
-      this.subLeft = subLeft;
-      this.subRight = subRight;
-   }
+  /**
+   *
+   * @param {Formula} subLeft
+   * @param {Formula} subRight
+   */
+  constructor(subLeft, subRight) {
+    super();
+    this.subLeft = subLeft;
+    this.subRight = subRight;
+  }
 
-   /**
-    *
-    * @param {Structure} structure
-    * @param {Map} e
-    * @return {boolean}
-    */
-   eval(structure, e) {
-      return this.subLeft.eval(structure, e) || this.subRight.eval(structure, e);
-   }
+  /**
+   *
+   * @param {Structure} structure
+   * @param {Map} e
+   * @return {boolean}
+   */
+  eval(structure, e) {
+    return this.subLeft.eval(structure, e) || this.subRight.eval(structure, e);
+  }
 
-   toString() {
-      return "(" + this.subLeft.toString() + " || " + this.subRight.toString() + ")";
-   }
+  toString() {
+    return "(" + this.subLeft.toString() + " || " + this.subRight.toString() + ")";
+  }
 }
 
 export default Disjunction;

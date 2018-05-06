@@ -31,17 +31,17 @@ s.setFunctionValue("fun2", ["c", "a"], "b");
 
 
 test("t1", () => {
-   expect(fun1.toString()).toBe("fun1(C1)");
+  expect(fun1.toString()).toBe("fun1(C1)");
 });
 
 test("t2", () => {
-   expect(fun1.interpret(s, e)).toBe("a");
+  expect(fun1.interpret(s, e)).toBe("a");
 });
 
 test("t3", () => {
-   expect(fun2.interpret(s, e)).toBe("b");
+  expect(fun2.interpret(s, e)).toBe("b");
 });
 
 test("t4", () => {
-   expect(fun2.toString()).toBe("fun2(C1, x)");
+  expect(fun2.toString()).toBe("fun2(C1, x)");
 });

@@ -18,13 +18,13 @@ var c3 = new Constant("C3");
 
 
 test("t1", () => {
-   expect(c1.toString()).toBe("C1");
+  expect(c1.toString()).toBe("C1");
 });
 
 test("t2", () => {
-   expect(c1.interpret(s, e)).toBe("c");
+  expect(c1.interpret(s, e)).toBe("c");
 });
 
 test("t3", () => {
-   expect(c2.interpret(s, e)).toBe("d");
+  expect(c2.interpret(s, e)).toBe("d");
 });
