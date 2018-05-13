@@ -30,26 +30,30 @@ function structureReducer(s, action, struct) {
       functions.parseText(action.value, state.predicates[action.predicateName], {startRule: 'tuples'});
       setPredicateValue(action.predicateName);
       return state;
-    case SET_FUNCTION_VALUE_TEXT:
-      functions.parseText(action.value, state.functions[action.functionName], {startRule: 'tuples'});
-      setFunctionValue(action.functionName);
-      return state;
     case SET_PREDICATE_VALUE_TABLE:
-      if (action.checked)
+      if (action.checked) {
         addPredicateValue(action.predicateName, action.value);
-      else
+      } else {
         removePredicateValue(action.predicateName, action.value);
+      }
       let predicateValue = structure.getPredicateValue(action.predicateName);
       state.predicates[action.predicateName].parsed = predicateValue;
       state.predicates[action.predicateName].value = predicateValueToString(predicateValue);
       return state;
+    case SET_FUNCTION_VALUE_TEXT:
+      functions.parseText(action.value, state.functions[action.functionName], {startRule: 'tuples'});
+      setFunctionValue(action.functionName);
+      return state;
     case SET_FUNCTION_VALUE_TABLE:
       let tuple = action.value;
-      addFunctionValue(action.functionName, tuple);
-      let functionValue = structure.getFunctionValueArray(action.functionName);
-      state.functions[action.functionName].parsed = functionValue;
-      state.functions[action.functionName].value = predicateValueToString(functionValue);
-      if (state.functions[action.functionName].errorMessage.length === 0 && !checkFunctionValue(action.functionName)) {
+      let params = tuple.slice(0, tuple.length - 1);
+      let value  = tuple[tuple.length - 1];
+      structure.changeFunctionValue(action.functionName, params, value);
+      let fValue = structure.getFunctionValueArray(action.functionName);
+      state.functions[action.functionName].parsed = fValue;
+      state.functions[action.functionName].value = predicateValueToString(fValue);
+      state.functions[action.functionName].errorMessage = '';
+      if (!checkFunctionValue(action.functionName)) {
         state.functions[action.functionName].errorMessage = 'Funkcia nie je definovaná pre všetky argumenty';
       }
       return state;
@@ -235,20 +239,33 @@ function setFunctionValue(functionName) {
   }
   structure.clearFunctionValue(functionName);
   state.functions[functionName].errorMessage = '';
+  let usedParams = [];
   state.functions[functionName].parsed.forEach(tuple => {
-    addFunctionValue(functionName, tuple);
+    try {
+      let params = tuple.slice(0, tuple.length - 1);
+      let stringifiedParams = JSON.stringify(params);
+      let value = tuple[tuple.length - 1];
+      if (usedParams.indexOf(stringifiedParams) > -1) {
+        structure.removeFunctionValue(functionName, params);
+        throw `Funkcia je viackrát definovaná pre argumenty ${params}`;
+      } else {
+        usedParams.push(stringifiedParams);
+        structure.setFunctionValue(functionName, params, value);
+      }
+    } catch (e) {
+      console.error(e);
+      state.functions[functionName].errorMessage = e;
+    }
   });
-  if (state.functions[functionName].errorMessage.length === 0 && !checkFunctionValue(functionName)) {
-    state.functions[functionName].errorMessage = 'Funkcia nie je definovaná pre všetky argumenty';
-  }
-}
-
-function addFunctionValue(functionName, tuple) {
-  try {
-    structure.setFunctionValue(functionName, tuple);
-  } catch (e) {
-    console.error(e);
-    state.functions[functionName].errorMessage = e;
+  let validValue = checkFunctionValue(functionName);
+  if (!validValue) {
+    if (state.functions[functionName].errorMessage.length === 0) {
+      state.functions[functionName].errorMessage = 'Funkcia nie je definovaná pre všetky argumenty';
+    }
+  } else {
+    if (state.functions[functionName].errorMessage === 'Funkcia nie je definovaná pre všetky argumenty') {
+      state.functions[functionName].errorMessage = '';
+    }
   }
 }
 
@@ -256,7 +273,9 @@ function checkFunctionValue(functionName) {
   let arity = parseInt(functionName.split('/')[1]);
   if (structure.domain.size > 0) {
     if (!structure.iFunction.has(functionName) ||
-       structure.iFunction.get(functionName).size !== structure.domainCombinations.get(arity).length) {
+       Object.keys(structure.iFunction.get(functionName)).length != structure.domainCombinations.get(arity).length) {
+      console.log('domain combinations:', structure.domainCombinations);
+      console.log('iFunction:', structure.iFunction.get(functionName));
       return false;
     }
   }

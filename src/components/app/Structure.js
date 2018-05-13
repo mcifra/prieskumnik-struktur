@@ -188,7 +188,7 @@ function Structure(props) {
                          {props.structure.functions[name].tableEnabled && props.domain.length > 0 ? (
                             <RelationalTable name={name} domain={props.structureObject.domain}
                                              arity={props.structureObject.language.getFunction(name.split('/')[0])}
-                                             value={props.structureObject.iFunction.get(name) ? props.structureObject.iFunction.get(name) : new Map()}
+                                             value={props.structureObject.iFunction.has(name) ? props.structureObject.iFunction.get(name) : {}}
                                              onInputChange={props.setFunctionValueTable}
                                              disabled={props.structure.functions[name].locked}
                                              type={FUNCTION}/>

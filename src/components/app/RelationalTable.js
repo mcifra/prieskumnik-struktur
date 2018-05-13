@@ -2,9 +2,10 @@ import React from 'react';
 import {Table} from 'react-bootstrap';
 
 function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange, disabled) {
-  let value = functionValues.get(JSON.stringify(params));
-  if (value === undefined)
+  let value = functionValues[JSON.stringify(params)];
+  if (!value) {
     value = '';
+  }
   return (
      <select onChange={(e) => onChange(params.concat([e.target.value]), functionName)} value={value}>
        <option value=''>{''}</option>

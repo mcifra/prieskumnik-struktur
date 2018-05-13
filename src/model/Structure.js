@@ -165,71 +165,95 @@ class Structure {
     this.iPredicate.set(predicateName, []);
   }
 
-  setFunctionValue(functionName, tuple) {
-    let p = functionName.split('/')[0];
-    if (tuple.length !== this.language.getFunction(p) + 1) {
-      throw 'N-tica ' + tuple + ' nemá povolený počet prvkov';
+  /**
+   * nastavi hodnotu funkcie pri textovom rezime
+   * @param {string} functionName name/arity
+   * @param {array} params
+   * @param {string} value
+   */
+  setFunctionValue(functionName, params, value) {
+    let fn = functionName.split('/')[0];
+    let stringifiedParams = JSON.stringify(params);
+    if (params.length !== this.language.getFunction(fn)) {
+      throw `Počet parametrov ${params} nezodpovedá arite funkcie`;
     }
-    let params = tuple.slice(0, tuple.length - 1);
-    if (this.iFunction.has(functionName) && this.iFunction.get(functionName).has(JSON.stringify(params))) {
-      if (params.length === 1) {
-        throw `Funkcia už je definovaná pre argument ${params}`;
-      } else {
-        throw `Funkcia už je definovaná pre argumenty ${params}`;
-      }
-    }
-    let value = tuple[tuple.length - 1];
-    if (!value) {
-      // vyuzitie pri tabulke
-      this.removeFunctionValue(functionName, params);
-      return;
-    }
-    let illegalItems = tuple.filter(item => !this.domain.has(item)); // prvky ktore nie su v domene
+    let illegalItems = [...params, value].filter(item => !this.domain.has(item)); // prvky ktore nie su v domene
     if (illegalItems.length > 0) {
-      throw 'Prvok ' + illegalItems[0] + ' nie je v doméne štruktúry';
+      throw `Prvok ${illegalItems[0]} nie je v doméne štruktúry`;
     }
     if (!this.iFunction.has(functionName)) {
-      this.iFunction.set(functionName, new Map());
+      this.iFunction.set(functionName, {});
     }
-    this.iFunction.get(functionName).set(JSON.stringify(params), value);
-  }
-
-  removeFunctionValue(functionName, tuple) {
-    let m = this.iFunction.get(functionName);
-    if (m)
-      m.delete(JSON.stringify(tuple));
+    this.iFunction.get(functionName)[stringifiedParams] = value;
   }
 
   /**
-   *
+   * zmeni hodnotu funkcie pri tabulkovom rezime
+   * @param {string} functionName name/arity
+   * @param {array} params
+   * @param {string} value
+   */
+  changeFunctionValue(functionName, params, value) {
+    if (value.length === 0) {
+      this.removeFunctionValue(functionName, params);
+      return;
+    }
+    if (!this.iFunction.has(functionName)) {
+      this.iFunction.set(functionName, {});
+      this.iFunction.get(functionName)[JSON.stringify(params)] = value;
+      return;
+    }
+    this.iFunction.get(functionName)[JSON.stringify(params)] = value;
+  }
+
+  /**
+   * odstrani hodnotu funkcie pri tabulkovom rezime
+   * @param {string} functionName name/arity
+   * @param {array} params
+   */
+  removeFunctionValue(functionName, params) {
+    if (this.iFunction.has(functionName) && this.iFunction.get(functionName).hasOwnProperty(JSON.stringify(params))) {
+      delete this.iFunction.get(functionName)[JSON.stringify(params)];
+    }
+  }
+
+  /**
+   * vrati hodnotu funkcie
    * @param {string} functionName
    * @param {Array} functionParams
-   * @return {string|null}
+   * @return {Object}
    */
   getFunctionValue(functionName, functionParams = null) {
+    if (!this.iFunction.has(functionName)) {
+      return null;
+    }
     if (functionParams) {
-      if (!this.iFunction.has(functionName))
-        return null;
-      return this.iFunction.get(functionName).get(JSON.stringify(functionParams));
+      return this.iFunction.get(functionName)[JSON.stringify(functionParams)];
     }
     return this.iFunction.get(functionName);
   }
 
   getFunctionValueArray(functionName) {
-    if (!this.iFunction.has(functionName) || !this.iFunction.get(functionName))
-      return [];
     let res = [];
-    this.iFunction.get(functionName).forEach((value, params) => {
-      let tuple = JSON.parse(params);
-      tuple.push(value);
+    let values = this.iFunction.get(functionName);
+    if (!values) {
+      return res;
+    }
+    for (let key in values) {
+      if (!values.hasOwnProperty(key)) {
+        continue;
+      }
+      let tuple = JSON.parse(key);
+      tuple.push(values[key]);
       res.push(tuple);
-    });
+    }
     return res;
   }
 
   clearFunctionValue(functionName) {
-    if (this.iFunction.has(functionName))
-      this.iFunction.get(functionName).clear();
+    if (this.iFunction.has(functionName)) {
+      this.iFunction.set(functionName, {});
+    }
   }
 
 }
