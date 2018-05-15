@@ -1,4 +1,4 @@
-import {FORMULA, TERM} from "../constants";
+import {defaultExpressionData, FORMULA, TERM} from "../constants";
 import EqualityAtom from "../model/formula/Formula.EqualityAtom";
 import Disjunction from "../model/formula/Formula.Disjunction";
 import PredicateAtom from "../model/formula/Formula.PredicateAtom";
@@ -71,9 +71,9 @@ function expressionsReducer(state = s, action, structure2, variables) {
 
 function addExpression(expressionType) {
   if (expressionType === FORMULA) {
-    s.formulas.push(defaultExpression());
+    s.formulas.push(defaultExpressionData());
   } else if (expressionType === TERM) {
-    s.terms.push(defaultExpression());
+    s.terms.push(defaultExpressionData());
   }
 }
 
@@ -88,7 +88,10 @@ function removeExpression(expressionType, expressionIndex) {
 function syncExpressionsValue(parse = false) {
   s.formulas.forEach(formula => {
     if (parse) {
-      functions.parseText(formula.value, formula, setParserOptions(FORMULA.toLowerCase()));
+      let temp = formula.value;
+      functions.parseText(`(${temp})`, formula, setParserOptions(FORMULA.toLowerCase()));
+      // noinspection JSUndefinedPropertyAssignment
+      formula.value = temp;
     }
     evalExpression(formula);
   });
@@ -158,15 +161,6 @@ function lockExpressionValue(expressionType, expressionIndex) {
     s.terms[expressionIndex].inputLocked = !s.terms[expressionIndex].inputLocked;
   }
 }
-
-const defaultExpression = () => ({
-  value: '',
-  expressionValue: null,
-  answerValue: '',
-  errorMessage: '',
-  inputLocked: false,
-  answerLocked: false
-});
 
 const setParserOptions = (startRule) => ({
   startRule: startRule,

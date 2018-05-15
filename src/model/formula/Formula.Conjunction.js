@@ -22,16 +22,21 @@ class Conjunction extends Formula {
   /**
    *
    * @param {Structure} structure
-   * @param {Map} e
+   * @param {Map} e variables valuation
    * @return {boolean}
    */
   eval(structure, e) {
     return this.subLeft.eval(structure, e) && this.subRight.eval(structure, e);
   }
 
+  /**
+   *
+   * @returns {string}
+   */
   toString() {
-    return "(" + this.subLeft.toString() + " && " + this.subRight.toString() + ")";
+    return `(${this.subLeft.toString()}) ∧ (${this.subRight.toString()})`;
   }
+
 }
 
 export default Conjunction;

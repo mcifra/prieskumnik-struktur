@@ -11,7 +11,7 @@ class PredicateAtom extends Formula {
   /**
    *
    * @param {string} name
-   * @param {Array} terms
+   * @param {Term[]} terms
    */
   constructor(name, terms = []) {
     super();
@@ -38,15 +38,19 @@ class PredicateAtom extends Formula {
     return value.findIndex(e => JSON.stringify(e) === JSON.stringify(translatedTerms)) > -1;
   }
 
+  /**
+   *
+   * @returns {string}
+   */
   toString() {
-    var res = this.name + "(";
-    for (var i = 0; i < this.terms.length; i++) {
+    let res = this.name + '(';
+    for (let i = 0; i < this.terms.length; i++) {
       if (i > 0) {
-        res += ", ";
+        res += ', ';
       }
       res += this.terms[i].toString();
     }
-    res += ")";
+    res += ')';
     return res;
   }
 

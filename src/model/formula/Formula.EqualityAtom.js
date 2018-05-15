@@ -26,11 +26,15 @@ class EqualityAtom extends Formula {
    * @return {boolean}
    */
   eval(structure, e) {
-    return this.subLeft.eval(structure, e) === this.subRight.eval(structure, e);
+    return this.subLeft.eval(structure, e) == this.subRight.eval(structure, e);
   }
 
+  /**
+   *
+   * @returns {string}
+   */
   toString() {
-    return "(" + this.subLeft.toString() + " = " + this.subRight.toString() + ")";
+    return `(${this.subLeft.toString()}) = (${this.subRight.toString()})`;
   }
 
 }

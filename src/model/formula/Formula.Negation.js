@@ -27,9 +27,14 @@ class Negation extends Formula {
     return !this.subFormula.eval(structure, e);
   }
 
+  /**
+   *
+   * @returns {string}
+   */
   toString() {
-    return "-(" + this.subFormula.toString() + ")";
+    return `¬(${this.subFormula.toString()})`;
   }
+
 }
 
 export default Negation;

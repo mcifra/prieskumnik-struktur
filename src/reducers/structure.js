@@ -1,4 +1,4 @@
-import {PREDICATE} from "../constants";
+import {defaultInputData, PREDICATE} from "../constants";
 import {
   IMPORT_APP, LOCK_CONSTANT_VALUE, LOCK_DOMAIN, LOCK_FUNCTION_VALUE, LOCK_PREDICATE_VALUE, LOCK_VARIABLES,
   SET_CONSTANT_VALUE, SET_CONSTANTS, SET_DOMAIN, SET_FUNCTION_VALUE_TABLE, SET_FUNCTION_VALUE_TEXT, SET_FUNCTIONS,
@@ -9,6 +9,10 @@ import {
 import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
 
 let functions = require('./functions');
+
+const constantDefaultInput = () => ({...defaultInputData(), errorMessage: EMPTY_CONSTANT_VALUE});
+const predicateDefaultInput = () => ({...defaultInputData(), tableEnabled: false});
+const functionDefaultInput = () => predicateDefaultInput();
 
 let state = {};
 let structure = null;
@@ -317,20 +321,5 @@ function predicateValueToString(value) {
   }
   return res;
 }
-
-const constantDefaultInput = () => ({
-  value: '',
-  errorMessage: EMPTY_CONSTANT_VALUE,
-  locked: false
-});
-
-const predicateDefaultInput = () => ({
-  value: '',
-  errorMessage: '',
-  locked: false,
-  tableEnabled: false
-});
-
-const functionDefaultInput = () => predicateDefaultInput();
 
 export default structureReducer;

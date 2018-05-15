@@ -10,7 +10,7 @@ class Variable extends Term {
 
   /**
    *
-   * @param {string} name Name of variable
+   * @param {string} name
    */
   constructor(name) {
     super();
@@ -20,20 +20,24 @@ class Variable extends Term {
   /**
    * Return intepretation of variable.
    * @param {Structure} structure
-   * @param {Map} e
-   * @return {string}
+   * @param {Map} e variables valuation
+   * @return {string} domain item
    */
   eval(structure, e) {
     if (!e.has(this.name)) {
-      // hodnota nie je definovana
-      throw 'Hodnota premennej ' + this.name + ' nie je definovaná';
+      throw `Hodnota premennej ${this.name} nie je definovaná`;
     }
     return e.get(this.name);
   }
 
+  /**
+   * Return string representation of variable
+   * @returns {string}
+   */
   toString() {
     return this.name;
   }
+
 }
 
 export default Variable;

@@ -14,7 +14,7 @@ class Term extends Expression {
   }
 
   toString() {
-    return null;
+    return '';
   }
 
 }

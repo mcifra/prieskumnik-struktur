@@ -26,7 +26,7 @@ class UniversalQuant extends Formula {
    * @return {boolean}
    */
   eval(structure, e) {
-    var eCopy = new Map(e);
+    let eCopy = new Map(e);
     for (let item of structure.domain) {
       eCopy.set(this.variableName, item);
       if (!this.subFormula.eval(structure, eCopy)) {
@@ -36,8 +36,12 @@ class UniversalQuant extends Formula {
     return true;
   }
 
+  /**
+   *
+   * @returns {string}
+   */
   toString() {
-    return "V" + this.variableName + "(" + this.subFormula.toString() + ")";
+    return `∀${this.variableName} (${this.subFormula.toString()})`;
   }
 
 }

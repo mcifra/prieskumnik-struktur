@@ -14,7 +14,7 @@ class Formula extends Expression {
   }
 
   toString() {
-    return null;
+    return '';
   }
 
 }

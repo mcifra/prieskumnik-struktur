@@ -1,4 +1,3 @@
-export const TEACHER_MODE = 'TEACHER';
 export const STUDENT_MODE = 'STUDENT';
 
 export const FUNCTION = 'FUNCTION';
@@ -12,3 +11,13 @@ export const EXPRESSION_LABEL = {
   FORMULA: '𝝋',
   TERM: '𝝉'
 };
+
+export const defaultInputData = () => ({value: '', locked: false, errorMessage: ''});
+export const defaultExpressionData = () => ({
+  value: '',
+  expressionValue: null,
+  answerValue: '',
+  errorMessage: '',
+  inputLocked: false,
+  answerLocked: false
+});

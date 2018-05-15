@@ -20,17 +20,20 @@ class Constant extends Term {
   /**
    * Return intepretation of the constant
    * @param {Structure} structure Structure
-   * @param {Map} e
-   * @return {string} Name of variable
+   * @param {Map} e variables valuation
+   * @return {string} domain item
    */
   eval(structure, e) {
     if (!structure.getConstantValue(this.name)) {
-      // hodnota nie je definovana
-      throw 'Hodnota konštanty ' + this.name + ' nie je definovaná';
+      throw `Hodnota konštanty ${this.name} nie je definovaná`;
     }
     return structure.getConstantValue(this.name);
   }
 
+  /**
+   * Return string representation of constant
+   * @returns {string}
+   */
   toString() {
     return this.name;
   }

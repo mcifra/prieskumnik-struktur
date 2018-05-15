@@ -1,10 +1,10 @@
+import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
+
 /**
  * Represent structure
  * @author Milan Cifra
  * @class
  */
-import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
-
 class Structure {
 
   /**

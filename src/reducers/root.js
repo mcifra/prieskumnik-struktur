@@ -5,6 +5,8 @@ import structureReducer from "./structure";
 import expressionsReducer from "./expressions";
 import commonReducer from "./common";
 import {IMPORT_APP} from "../constants/action_types";
+import {defaultInputData} from "../constants";
+import {EMPTY_DOMAIN} from "../constants/messages";
 
 const defaultState = {
   structureObject: new Structure(new Language()),
@@ -12,16 +14,16 @@ const defaultState = {
     teacherMode: false
   },
   language: {
-    constants: {value: '', locked: false, errorMessage: '', parsed: []},
-    predicates: {value: '', locked: false, errorMessage: '', parsed: []},
-    functions: {value: '', locked: false, errorMessage: '', parsed: []},
+    constants: defaultInputData(),
+    predicates: defaultInputData(),
+    functions: defaultInputData(),
   },
   structure: {
     constants: {},
     predicates: {},
     functions: {},
-    variables: {value: '', locked: false, errorMessage: '', parsed: [], object: new Map()},
-    domain: {value: '', locked: false, errorMessage: 'Doména nesmie byť prázdna', parsed: []},
+    variables: {...defaultInputData(), object: new Map()},
+    domain: {...defaultInputData(), errorMessage: EMPTY_DOMAIN},
   },
   expressions: {
     formulas: [],
@@ -29,10 +31,21 @@ const defaultState = {
   }
 };
 
+function checkImportedState(state) {
+  if (!state.common || !state.language || !state.structure) {
+    throw 'State is not valid!';
+  }
+  if (!state.language.constants || !state.language.predicates || !state.language.functions) {
+    throw 'State is not valid!';
+  }
+
+}
+
 function root(state = defaultState, action) {
   if (action.type === IMPORT_APP) {
     try {
       state = JSON.parse(action.content);
+      checkImportedState(state);
       state.structureObject = new Structure(new Language());
       state.structure.variables.object = new Map();
     } catch (e) {
