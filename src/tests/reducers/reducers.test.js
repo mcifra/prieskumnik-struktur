@@ -1,12 +1,12 @@
-import reducer from '../reducers/root';
-import Structure from "../model/Structure";
-import Language from "../model/Language";
-import {STUDENT_MODE} from "../constants";
+import reducer from '../../reducers/root';
+import Structure from "../../model/Structure";
+import Language from "../../model/Language";
+import {STUDENT_MODE} from "../../constants/index";
 import {
   setConstants, setConstantValue, setDomain, setFunctions, setFunctionValueText, setPredicates, setPredicateValueText,
   toggleTeacherMode
-} from "../actions";
-import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
+} from "../../actions/index";
+import {EMPTY_CONSTANT_VALUE} from "../../constants/messages";
 
 describe('reducer', () => {
   it('vratenie init stavu', () => {

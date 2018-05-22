@@ -12,6 +12,7 @@ import {toggleTeacherMode} from "../../actions/index";
 import Toggle from 'react-toggle';
 import FontAwesome from 'react-fontawesome';
 import {importAppState} from "../../actions";
+import {DEFAULT_FILE_NAME} from "../../constants";
 
 const store = createStore(reducer);
 
@@ -41,7 +42,7 @@ class App extends React.Component {
       expressions: state.expressions
     });
     if (this.state.exerciseName.length === 0) {
-      this.state.exerciseName = 'struktura';
+      this.state.exerciseName = DEFAULT_FILE_NAME;
     }
     return {
       mime: 'application/json',
@@ -100,7 +101,7 @@ class App extends React.Component {
                      <div className='form-group'>
                        <label className='exercise-name-label' htmlFor="exercise-name">Cvičenie: </label>
                        <input type="text" className="exercise-name-input form-control" id="exercise-name"
-                              placeholder="struktura"
+                              placeholder={DEFAULT_FILE_NAME}
                               onChange={(e) => this.setState({exerciseName: e.target.value})}/>
                      </div>
                    </div>

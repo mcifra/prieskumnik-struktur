@@ -2,6 +2,7 @@ import {
   IMPORT_APP, LOCK_CONSTANTS, LOCK_FUNCTIONS, LOCK_PREDICATES, SET_CONSTANTS, SET_FUNCTIONS,
   SET_PREDICATES
 } from "../constants/action_types";
+import {RULE_CONSTANTS, RULE_FUNCTIONS, RULE_PREDICATES} from "../constants/parser_start_rules";
 
 let functions = require('./functions');
 
@@ -13,19 +14,19 @@ function languageReducer(s, action, struct) {
   structure = struct;
   switch (action.type) {
     case SET_CONSTANTS:
-      functions.parseText(action.value, state.constants, {startRule: 'constants'});
+      functions.parseText(action.value, state.constants, {startRule: RULE_CONSTANTS});
       setConstants();
       setPredicates();
       setFunctions();
       return state;
     case SET_PREDICATES:
-      functions.parseText(action.value, state.predicates, {startRule: 'predicates'});
+      functions.parseText(action.value, state.predicates, {startRule: RULE_PREDICATES});
       setPredicates();
       setConstants();
       setFunctions();
       return state;
     case SET_FUNCTIONS:
-      functions.parseText(action.value, state.functions, {startRule: 'functions'});
+      functions.parseText(action.value, state.functions, {startRule: RULE_FUNCTIONS});
       setFunctions();
       setPredicates();
       setConstants();
@@ -70,13 +71,11 @@ function setFunctions() {
   state.functions.errorMessage = structure.setLanguageFunctions(state.functions.parsed);
 }
 
-function copyState(state) {
-  return {
-    ...state,
-    constants: {...state.constants},
-    predicates: {...state.predicates},
-    functions: {...state.functions}
-  }
-}
+const copyState = (state) => ({
+  ...state,
+  constants: {...state.constants},
+  predicates: {...state.predicates},
+  functions: {...state.functions}
+});
 
 export default languageReducer;

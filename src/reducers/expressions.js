@@ -19,6 +19,7 @@ import {
   SET_PREDICATE_VALUE_TEXT,
   SET_PREDICATES, SET_VARIABLES_VALUE
 } from "../constants/action_types";
+import {RULE_FORMULA, RULE_TERM} from "../constants/parser_start_rules";
 
 let functions = require('./functions');
 
@@ -89,7 +90,7 @@ function syncExpressionsValue(parse = false) {
   s.formulas.forEach(formula => {
     if (parse) {
       let temp = formula.value;
-      functions.parseText(`(${temp})`, formula, setParserOptions(FORMULA.toLowerCase()));
+      functions.parseText(`(${temp})`, formula, setParserOptions(RULE_FORMULA));
       // noinspection JSUndefinedPropertyAssignment
       formula.value = temp;
     }
@@ -97,7 +98,7 @@ function syncExpressionsValue(parse = false) {
   });
   s.terms.forEach(term => {
     if (parse) {
-      functions.parseText(term.value, term, setParserOptions(TERM.toLowerCase()));
+      functions.parseText(term.value, term, setParserOptions(RULE_TERM));
     }
     evalExpression(term);
   });

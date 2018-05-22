@@ -1,8 +1,8 @@
-import reducer from '../reducers/root';
-import Language from "../model/Language";
-import Structure from "../model/Structure";
-import {setConstants, setConstantValue, setDomain} from "../actions";
-import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
+import reducer from '../../reducers/root';
+import Language from "../../model/Language";
+import Structure from "../../model/Structure";
+import {setConstants, setConstantValue, setDomain} from "../../actions/index";
+import {EMPTY_CONSTANT_VALUE} from "../../constants/messages";
 
 describe('constants', () => {
   let defaultState = () => ({

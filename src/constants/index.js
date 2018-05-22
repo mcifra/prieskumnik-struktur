@@ -21,3 +21,5 @@ export const defaultExpressionData = () => ({
   inputLocked: false,
   answerLocked: false
 });
+
+export const DEFAULT_FILE_NAME = 'struktura';

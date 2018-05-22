@@ -3,7 +3,6 @@ import RelationalTable from "./RelationalTable";
 import {
   Col,
   Form,
-  FormControl,
   FormGroup,
   HelpBlock,
   InputGroup,
@@ -12,7 +11,6 @@ import {
 } from "react-bootstrap";
 import {FUNCTION, PREDICATE} from "../../constants";
 import LockButton from "./buttons/LockButton";
-import TableButton from "./buttons/TableButton";
 import TextInput from "./inputs/TextInput";
 
 const help = (
@@ -139,52 +137,15 @@ function Structure(props) {
                     {functions.map((name) =>
                        <FormGroup
                           validationState={props.structure.functions[name].errorMessage.length > 0 ? 'error' : null}>
-                         {/*<TextInput onChange={(e) => props.onFunctionValueChangeText(e.target.value, name)}*/}
-                         {/*onLock={() => props.lockFunctionValue(name)}*/}
-                         {/*textData={props.structure.functions[name]}*/}
-                         {/*label={<span><var>i</var>({name.split('/')[0]}) = &#123;</span>}*/}
-                         {/*teacherMode={props.teacherMode}*/}
-                         {/*id={'function-' + name}*/}
-                         {/*toggleTable={() => props.toggleTable(FUNCTION, name)}*/}
-                         {/*arity={parseInt(name.split('/')[1])}*/}
-                         {/*domain={props.domain}/>*/}
-                         <div className='input-group input-group-functions'>
-                           <label className='input-group-addon'
-                                  htmlFor={'function-' + name}><var>i</var>({name.split('/')[0]})
-                             = &#123;</label>
-                           <FormControl id={'function-' + name}
-                                        value={props.structure.functions[name].value}
-                                        type='text'
-                                        onChange={(e) => props.setFunctionValueText(e.target.value, name)}
-                                        disabled={props.structure.functions[name].locked}/>
-                           <InputGroup.Addon>&#125;</InputGroup.Addon>
-                           {props.teacherMode || (parseInt(name.split('/')[1]) <= 2 && props.domain.length > 0) ? (
-                              <InputGroup.Button>
-                                {(parseInt(name.split('/')[1]) > 2 || props.domain.length === 0) ? null : (
-                                   <TableButton onClick={() => props.toggleTable(FUNCTION, name)}/>
-                                )}
-                                {props.teacherMode ? (
-                                   <LockButton lockFn={() => props.lockFunctionValue(name)}
-                                               locked={props.structure.functions[name].locked}/>
-                                ) : null}
-                              </InputGroup.Button>
-                           ) : null}
-                         </div>
-                         {/*<InputGroup>*/}
-                         {/*<label className='input-group-addon'*/}
-                         {/*htmlFor={'function-' + name}>u &#123;(x<sub>i</sub>, y<sub>i</sub>) =</label>*/}
-                         {/*<select value={[...props.structureObject.domain][0]}*/}
-                         {/*id={'nieco-'+name}*/}
-                         {/*className='form-control bootstrap-select'*/}
-                         {/*onChange={(e) => null}>*/}
-                         {/*<option value={''}>Vyber hodnotu ...</option>*/}
-                         {/*{[...props.structureObject.domain].map((item) =>*/}
-                         {/*<option value={item}>{item}</option>*/}
-                         {/*)}*/}
-                         {/*</select>*/}
-                         {/*<InputGroup.Addon>| (x<sub>i</sub>, y<sub>i</sub>) notin ...</InputGroup.Addon>*/}
-                         {/*</InputGroup>*/}
-
+                         <TextInput onChange={(e) => props.setFunctionValueText(e.target.value, name)}
+                                    onLock={() => props.lockFunctionValue(name)}
+                                    textData={props.structure.functions[name]}
+                                    label={<span><var>i</var>({name.split('/')[0]}) = &#123;</span>}
+                                    teacherMode={props.teacherMode}
+                                    id={'function-' + name}
+                                    toggleTable={() => props.toggleTable(FUNCTION, name)}
+                                    arity={parseInt(name.split('/')[1])}
+                                    domain={props.domain}/>
                          {props.structure.functions[name].tableEnabled && props.domain.length > 0 ? (
                             <RelationalTable name={name} domain={props.structureObject.domain}
                                              arity={props.structureObject.language.getFunction(name.split('/')[0])}

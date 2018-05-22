@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
+import {PREDICATE} from "../../constants";
 
 function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange, disabled) {
   let value = functionValues[JSON.stringify(params)];
@@ -23,7 +24,7 @@ function RelationalTable(props) {
        <td>{''}</td>
        {domain.map((item, index) =>
           <td>
-            {props.type === 'PREDICATE' ? (
+            {props.type === PREDICATE ? (
                <input type='checkbox'
                       onChange={(e) => props.onInputChange([item], props.name, e.target.checked)}
                       checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item])) > -1}
@@ -41,7 +42,7 @@ function RelationalTable(props) {
        <th>{item}</th>
        {domain.map((item2, index2) =>
           <td>
-            {props.type === 'PREDICATE' ? (
+            {props.type === PREDICATE ? (
                <input type='checkbox'
                       onChange={(e) => props.onInputChange([item, item2], props.name, e.target.checked)}
                       checked={props.value.findIndex((e) => JSON.stringify(e) === JSON.stringify([item, item2])) > -1}

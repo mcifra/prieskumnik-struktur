@@ -6,7 +6,11 @@ import {
   SET_PREDICATE_VALUE_TEXT,
   SET_PREDICATES, SET_VARIABLES_VALUE, TOGGLE_EDIT_TABLE
 } from "../constants/action_types";
-import {EMPTY_CONSTANT_VALUE} from "../constants/messages";
+import {
+  EMPTY_CONSTANT_VALUE, EMPTY_DOMAIN, FUNCTION_ALREADY_DEFINED, FUNCTION_NOT_FULL_DEFINED, ITEM_IN_LANGUAGE,
+  ITEM_NOT_IN_DOMAIN
+} from "../constants/messages";
+import {RULE_DOMAIN, RULE_PREDICATES_FUNCTIONS_VALUE, RULE_VARIABLE_VALUATION} from "../constants/parser_start_rules";
 
 let functions = require('./functions');
 
@@ -31,7 +35,7 @@ function structureReducer(s, action, struct) {
       setConstantValue(action.constantName, action.value);
       return state;
     case SET_PREDICATE_VALUE_TEXT:
-      functions.parseText(action.value, state.predicates[action.predicateName], {startRule: 'tuples'});
+      functions.parseText(action.value, state.predicates[action.predicateName], {startRule: RULE_PREDICATES_FUNCTIONS_VALUE});
       setPredicateValue(action.predicateName);
       return state;
     case SET_PREDICATE_VALUE_TABLE:
@@ -45,7 +49,7 @@ function structureReducer(s, action, struct) {
       state.predicates[action.predicateName].value = predicateValueToString(predicateValue);
       return state;
     case SET_FUNCTION_VALUE_TEXT:
-      functions.parseText(action.value, state.functions[action.functionName], {startRule: 'tuples'});
+      functions.parseText(action.value, state.functions[action.functionName], {startRule: RULE_PREDICATES_FUNCTIONS_VALUE});
       setFunctionValue(action.functionName);
       return state;
     case SET_FUNCTION_VALUE_TABLE:
@@ -58,15 +62,15 @@ function structureReducer(s, action, struct) {
       state.functions[action.functionName].value = predicateValueToString(fValue);
       state.functions[action.functionName].errorMessage = '';
       if (!checkFunctionValue(action.functionName)) {
-        state.functions[action.functionName].errorMessage = 'Funkcia nie je definovaná pre všetky argumenty';
+        state.functions[action.functionName].errorMessage = FUNCTION_NOT_FULL_DEFINED;
       }
       return state;
     case SET_VARIABLES_VALUE:
-      functions.parseText(action.value, state.variables, {structure: structure, startRule: 'e_tuples',});
+      functions.parseText(action.value, state.variables, {structure: structure, startRule: RULE_VARIABLE_VALUATION});
       setVariables();
       return state;
     case SET_DOMAIN:
-      functions.parseText(action.value, state.domain, {startRule: 'domain'});
+      functions.parseText(action.value, state.domain, {startRule: RULE_DOMAIN});
       setDomain();
       setConstantsValues();
       setPredicatesValues();
@@ -110,11 +114,7 @@ function setDomain() {
   if (!state.domain.parsed) {
     return;
   }
-  if (state.domain.parsed.length === 0) {
-    state.domain.errorMessage = 'Doména nesmie byť prázdna';
-  } else {
-    state.domain.errorMessage = '';
-  }
+  state.domain.errorMessage = state.domain.parsed.length > 0 ? '' : EMPTY_DOMAIN;
   structure.setDomain(state.domain.parsed);
 }
 
@@ -190,10 +190,10 @@ function setVariables() {
     let variable = tuple[0];
     let value = tuple[1];
     if (structure.language.hasItem(variable)) {
-      errorMessage = `Jazyk už obsahuje prvok ${variable}`;
+      errorMessage = ITEM_IN_LANGUAGE(variable);
     }
     else if (!structure.hasDomainItem(value)) {
-      errorMessage = `Doména štruktúry neobsahuje prvok ${value}`;
+      errorMessage = ITEM_NOT_IN_DOMAIN(value);
     }
     else {
       state.variables.object.set(variable, value);
@@ -251,7 +251,7 @@ function setFunctionValue(functionName) {
       let value = tuple[tuple.length - 1];
       if (usedParams.indexOf(stringifiedParams) > -1) {
         structure.removeFunctionValue(functionName, params);
-        throw `Funkcia je viackrát definovaná pre argumenty ${params}`;
+        throw FUNCTION_ALREADY_DEFINED(params);
       } else {
         usedParams.push(stringifiedParams);
         structure.setFunctionValue(functionName, params, value);
@@ -264,10 +264,10 @@ function setFunctionValue(functionName) {
   let validValue = checkFunctionValue(functionName);
   if (!validValue) {
     if (state.functions[functionName].errorMessage.length === 0) {
-      state.functions[functionName].errorMessage = 'Funkcia nie je definovaná pre všetky argumenty';
+      state.functions[functionName].errorMessage = FUNCTION_NOT_FULL_DEFINED;
     }
   } else {
-    if (state.functions[functionName].errorMessage === 'Funkcia nie je definovaná pre všetky argumenty') {
+    if (state.functions[functionName].errorMessage === FUNCTION_NOT_FULL_DEFINED) {
       state.functions[functionName].errorMessage = '';
     }
   }
@@ -278,8 +278,6 @@ function checkFunctionValue(functionName) {
   if (structure.domain.size > 0) {
     if (!structure.iFunction.has(functionName) ||
        Object.keys(structure.iFunction.get(functionName)).length != structure.domainCombinations.get(arity).length) {
-      console.log('domain combinations:', structure.domainCombinations);
-      console.log('iFunction:', structure.iFunction.get(functionName));
       return false;
     }
   }
