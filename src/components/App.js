@@ -1,18 +1,18 @@
 import React from 'react';
 import {Col, Row, Modal, Button, ButtonToolbar} from 'react-bootstrap';
 import {createStore} from 'redux';
-import reducer from '../../reducers/root';
+import reducer from '../reducers/root';
 import {Provider} from 'react-redux';
-import ExpressionsContainer from '../../containers/ExpressionsContainer';
-import VariablesValueContainer from "../../containers/VariablesValueContainer";
-import LanguageContainer from '../../containers/LanguageContainer';
-import StructureContainer from '../../containers/StructureContainer';
+import ExpressionsContainer from '../containers/ExpressionsContainer';
+import VariablesValueContainer from "../containers/VariablesValueContainer";
+import LanguageContainer from '../containers/LanguageContainer';
+import StructureContainer from '../containers/StructureContainer';
 import DownloadButton from './lib/DownloadButton';
-import {toggleTeacherMode} from "../../actions/index";
+import {toggleTeacherMode} from "../actions/index";
 import Toggle from 'react-toggle';
 import FontAwesome from 'react-fontawesome';
-import {importAppState} from "../../actions";
-import {DEFAULT_FILE_NAME} from "../../constants";
+import {importAppState} from "../actions/index";
+import {DEFAULT_FILE_NAME} from "../constants/index";
 
 const store = createStore(reducer);
 

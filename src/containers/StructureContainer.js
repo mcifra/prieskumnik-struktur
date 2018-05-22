@@ -8,7 +8,7 @@ import {
   setPredicateValueText,
   toggleTable
 } from "../actions/index";
-import Structure from '../components/app/Structure';
+import Structure from '../components/Structure';
 import {lockConstantValue, lockDomain, lockFunctionValue, lockPredicateValue} from "../actions";
 
 const mapStateToProps = (state) => ({

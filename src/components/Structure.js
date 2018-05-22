@@ -9,7 +9,7 @@ import {
   Panel,
   Row
 } from "react-bootstrap";
-import {FUNCTION, PREDICATE} from "../../constants";
+import {FUNCTION, PREDICATE} from "../constants/index";
 import LockButton from "./buttons/LockButton";
 import TextInput from "./inputs/TextInput";
 

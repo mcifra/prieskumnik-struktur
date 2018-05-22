@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import {setConstants, setFunctions, setPredicates} from "../actions/index";
-import Language from '../components/app/Language';
+import Language from '../components/Language';
 import {lockConstants, lockFunctions, lockPredicates} from "../actions";
 
 const mapStateToProps = (state) => ({

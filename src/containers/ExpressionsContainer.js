@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import Expressions from "../components/app/Expressions";
+import Expressions from "../components/Expressions";
 import {
   addExpression,
   checkExpressionSyntax,

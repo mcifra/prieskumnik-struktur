@@ -8,7 +8,7 @@ import {
   Panel,
   Row,
 } from "react-bootstrap";
-import {EXPRESSION_LABEL, FORMULA, TERM} from "../../constants";
+import {EXPRESSION_LABEL, FORMULA, TERM} from "../constants/index";
 import FontAwesome from 'react-fontawesome';
 import LockButton from './buttons/LockButton';
 

@@ -1,6 +1,6 @@
 import {setVariablesValue} from "../actions/index";
 import {connect} from 'react-redux';
-import VariablesValue from "../components/app/VariablesValue";
+import VariablesValue from "../components/VariablesValue";
 import {lockVariables} from "../actions";
 
 const mapStateToProps = (state) => ({

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import {PREDICATE} from "../../constants";
+import {PREDICATE} from "../constants/index";
 
 function renderFunctionValueSelect(functionName, functionValues, params, domain, onChange, disabled) {
   let value = functionValues[JSON.stringify(params)];
