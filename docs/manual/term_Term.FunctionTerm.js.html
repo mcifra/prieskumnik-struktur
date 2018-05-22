@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: formula/Formula.Implication.js</title>
+    <title>JSDoc: Source: term/Term.FunctionTerm.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: formula/Formula.Implication.js</h1>
+    <h1 class="page-title">Source: term/Term.FunctionTerm.js</h1>
 
     
 
@@ -26,48 +26,63 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Formula from "./Formula";
+            <pre class="prettyprint source linenums"><code>import Term from "./Term";
 
 /**
- * Represent implication
+ * Represent function term
  * @author Milan Cifra
  * @class
- * @extends Formula
+ * @extends Term
  */
-class Implication extends Formula {
+class FunctionTerm extends Term {
 
   /**
    *
-   * @param {Formula} subLeft
-   * @param {Formula} subRight
+   * @param {string} name name of the function
+   * @param {Term[]} terms parameters of function
    */
-  constructor(subLeft, subRight) {
+  constructor(name, terms) {
     super();
-    this.subLeft = subLeft;
-    this.subRight = subRight;
+    this.name = name;
+    this.terms = terms;
   }
 
   /**
-   *
+   * Return intepretation of function.
    * @param {Structure} structure
-   * @param {Map} e
-   * @return {boolean}
+   * @param {Map} e variables valuation
+   * @returns {string} domain item
    */
   eval(structure, e) {
-    return (!this.subLeft.eval(structure, e)) || this.subRight.eval(structure, e);
+    let interpretedParams = [];
+    this.terms.forEach(term => {
+      interpretedParams.push(term.eval(structure, e));
+    });
+    if (!structure.getFunctionValue(this.name + '/' + structure.language.getFunction(this.name), interpretedParams)) {
+      throw `Hodnota funkčného symbolu ${this.name}(${interpretedParams}) nie je definovaná`;
+    }
+    return structure.getFunctionValue(this.name + '/' + structure.language.getFunction(this.name), interpretedParams);
   }
 
   /**
-   *
+   * Return string representation of function term
    * @returns {string}
    */
   toString() {
-    return `(${this.subLeft.toString()}) → (${this.subRight.toString()})`;
+    let res = this.name + '(';
+    for (let i = 0; i &lt; this.terms.length; i++) {
+      if (i > 0) {
+        res += ', ';
+      }
+      res += this.terms[i].toString();
+    }
+    res += ')';
+    return res;
   }
 
 }
 
-export default Implication;</code></pre>
+export default FunctionTerm;</code></pre>
         </article>
     </section>
 

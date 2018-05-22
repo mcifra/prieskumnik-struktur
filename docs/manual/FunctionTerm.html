@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Function</title>
+    <title>JSDoc: Class: FunctionTerm</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Function</h1>
+    <h1 class="page-title">Class: FunctionTerm</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Function<span class="signature">(name, terms)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>FunctionTerm<span class="signature">(name, terms)</span><span class="type-signature"></span></h2>
         
             <div class="class-description">Represent function term</div>
         
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Function"><span class="type-signature"></span>new Function<span class="signature">(name, terms)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FunctionTerm"><span class="type-signature"></span>new FunctionTerm<span class="signature">(name, terms)</span><span class="type-signature"></span></h4>
     
 
     
@@ -101,7 +101,7 @@
 
             
 
-            <td class="description last">Name of the function</td>
+            <td class="description last">name of the function</td>
         </tr>
 
     
@@ -124,7 +124,7 @@
 
             
 
-            <td class="description last">Function terms (parameters)</td>
+            <td class="description last">parameters of function</td>
         </tr>
 
     
@@ -172,7 +172,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="term_Term.Function.js.html">term/Term.FunctionTerm.js</a>, <a href="term_Term.Function.js.html#line9">line 9</a>
+        <a href="term_Term.FunctionTerm.js.html">term/Term.FunctionTerm.js</a>, <a href="term_Term.FunctionTerm.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -237,7 +237,7 @@
     
 
     
-    <h4 class="name" id="interpret"><span class="type-signature"></span>interpret<span class="signature">(structure, e)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="eval"><span class="type-signature"></span>eval<span class="signature">(structure, e)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -297,7 +297,7 @@
 
             
 
-            <td class="description last">Structure</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -320,7 +320,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">variables valuation</td>
         </tr>
 
     
@@ -340,11 +340,6 @@
 
     
 
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Term.html#interpret">Term#interpret</a>
-    </li></ul></dd>
     
 
     
@@ -366,7 +361,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="term_Term.Function.js.html">term/Term.FunctionTerm.js</a>, <a href="term_Term.Function.js.html#line28">line 28</a>
+        <a href="term_Term.FunctionTerm.js.html">term/Term.FunctionTerm.js</a>, <a href="term_Term.FunctionTerm.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -393,9 +388,113 @@
 
         
 <div class="param-desc">
-    Name of variable
+    domain item
 </div>
 
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Return string representation of function term
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="term_Term.FunctionTerm.js.html">term/Term.FunctionTerm.js</a>, <a href="term_Term.FunctionTerm.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -432,13 +531,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Conjunction.html">Conjunction</a></li><li><a href="Constant.html">Constant</a></li><li><a href="Disjunction.html">Disjunction</a></li><li><a href="EqualitySymbol.html">EqualitySymbol</a></li><li><a href="ExistentialQuant.html">ExistentialQuant</a></li><li><a href="Expression.html">Expression</a></li><li><a href="Formula.html">Formula</a></li><li><a href="Function.html">Function</a></li><li><a href="Implication.html">Implication</a></li><li><a href="Language.html">Language</a></li><li><a href="PredicateSymbol.html">PredicateSymbol</a></li><li><a href="Structure.html">Structure</a></li><li><a href="Term.html">Term</a></li><li><a href="UniversalQuant.html">UniversalQuant</a></li><li><a href="Variable.html">Variable</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Conjunction.html">Conjunction</a></li><li><a href="Constant.html">Constant</a></li><li><a href="Disjunction.html">Disjunction</a></li><li><a href="EqualityAtom.html">EqualityAtom</a></li><li><a href="ExistentialQuant.html">ExistentialQuant</a></li><li><a href="Expression.html">Expression</a></li><li><a href="Formula.html">Formula</a></li><li><a href="FunctionTerm.html">FunctionTerm</a></li><li><a href="Implication.html">Implication</a></li><li><a href="Language.html">Language</a></li><li><a href="Negation.html">Negation</a></li><li><a href="PredicateAtom.html">PredicateAtom</a></li><li><a href="Structure.html">Structure</a></li><li><a href="Term.html">Term</a></li><li><a href="UniversalQuant.html">UniversalQuant</a></li><li><a href="Variable.html">Variable</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 19 2017 22:16:05 GMT+0100 (Stredoeurópsky čas (normálny))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 21 2018 17:44:17 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

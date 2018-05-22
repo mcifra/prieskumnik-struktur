@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: formula/Formula.Implication.js</title>
+    <title>JSDoc: Source: formula/Formula.Negation.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: formula/Formula.Implication.js</h1>
+    <h1 class="page-title">Source: formula/Formula.Negation.js</h1>
 
     
 
@@ -29,22 +29,20 @@
             <pre class="prettyprint source linenums"><code>import Formula from "./Formula";
 
 /**
- * Represent implication
+ * Represent negation
  * @author Milan Cifra
  * @class
  * @extends Formula
  */
-class Implication extends Formula {
+class Negation extends Formula {
 
   /**
    *
-   * @param {Formula} subLeft
-   * @param {Formula} subRight
+   * @param {Formula} subFormula
    */
-  constructor(subLeft, subRight) {
+  constructor(subFormula) {
     super();
-    this.subLeft = subLeft;
-    this.subRight = subRight;
+    this.subFormula = subFormula;
   }
 
   /**
@@ -54,7 +52,7 @@ class Implication extends Formula {
    * @return {boolean}
    */
   eval(structure, e) {
-    return (!this.subLeft.eval(structure, e)) || this.subRight.eval(structure, e);
+    return !this.subFormula.eval(structure, e);
   }
 
   /**
@@ -62,12 +60,12 @@ class Implication extends Formula {
    * @returns {string}
    */
   toString() {
-    return `(${this.subLeft.toString()}) → (${this.subRight.toString()})`;
+    return `¬(${this.subFormula.toString()})`;
   }
 
 }
 
-export default Implication;</code></pre>
+export default Negation;</code></pre>
         </article>
     </section>
 

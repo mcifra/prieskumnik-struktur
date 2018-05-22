@@ -26,92 +26,161 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>import {CONSTANT_IN_LANGUAGE, FUNCTION_IN_LANGUAGE, PREDICATE_IN_LANGUAGE} from "../constants/messages";
+
+/**
  * Represent language of logic
  * @author Milan Cifra
  * @class
  */
 class Language {
 
-    /**
-     *
-     * @param {Set.&lt;string>} constants Names of constants
-     * @param {Map.&lt;string, int>} functions Names of functions
-     * @param {Map.&lt;string, int>} predicates Names of predicates
-     */
-    constructor(constants = new Set(), functions = new Map(), predicates = new Map()) {
-        this.constants = constants;
-        this.functions = functions;
-        this.predicates = predicates;
-    }
+  constructor() {
+    this.constants = new Set();
+    this.functions = new Map();
+    this.predicates = new Map();
+  }
 
-    /**
-     * Add constant name to the language
-     * @param {string} constantName Constant name
-     */
-    addConstant(constantName) {
-        this.constants.add(constantName);
-    }
+  getConstants() {
+    return this.constants;
+  }
 
-    /**
-     * Add function name to the language
-     * @param {string} functionName Name of function
-     * @param {int} arity Arity of function
-     */
-    addFunction(functionName, arity) {
-        this.functions.set(functionName, arity);
-    }
+  hasItem(item) {
+    return this.hasConstant(item) || this.hasFunction(item) || this.hasPredicate(item);
+  }
 
-    /**
-     * Add predicate name to the language
-     * @param {string} predicateName Name of the predicate
-     * @param {int} arity Arity of predicate
-     */
-    addPredicate(predicateName, arity) {
-        this.predicates.set(predicateName, arity);
-    }
+  clearConstants() {
+    this.constants.clear();
+  }
 
-    hasConstant(constantName) {
-        return this.constants.has(constantName);
-    }
+  clearFunctions() {
+    this.functions.clear();
+  }
 
-    hasFunction(functionName) {
-        return this.functions.has(functionName);
-    }
+  clearPredicates() {
+    this.predicates.clear();
+  }
 
-    hasPredicate(predicateName) {
-        return this.predicates.has(predicateName);
-    }
+  setConstants(constants) {
+    this.clearConstants();
+    let message = '';
+    constants.forEach(c => {
+      if (this.functions.has(c)) {
+        message = `${FUNCTION_IN_LANGUAGE} ${c}`;
+        return;
+      }
+      if (this.predicates.has(c)) {
+        message = `${PREDICATE_IN_LANGUAGE} ${c}`;
+        return;
+      }
+      this.addConstant(c);
+    });
+    return message;
+  }
 
-    deleteConstant(constantName) {
-        this.constants.delete(constantName);
-    }
+  setPredicates(predicates) {
+    this.clearPredicates();
+    let message = '';
+    predicates.forEach(p => {
+      if (this.constants.has(p.name)) {
+        message = `${CONSTANT_IN_LANGUAGE}  ${p.name}`;
+        return;
+      }
+      if (this.functions.has(p.name)) {
+        message = `${FUNCTION_IN_LANGUAGE} ${p.name}`;
+        return;
+      }
+      this.addPredicate(p.name, p.arity);
+    });
+    return message;
+  }
 
-    deleteFunction(functionName) {
-        this.functions.delete(functionName);
-    }
+  setFunctions(functions) {
+    this.clearFunctions();
+    let message = '';
+    functions.forEach(f => {
+      if (this.constants.has(f.name)) {
+        message = `${CONSTANT_IN_LANGUAGE} ${f.name}`;
+        return;
+      }
+      if (this.predicates.has(f.name)) {
+        message = `${PREDICATE_IN_LANGUAGE} ${f.name}`;
+        return;
+      }
+      this.addFunction(f.name, parseInt(f.arity));
+    });
+    return message;
+  }
 
-    deletePredicate(predicateName) {
-        this.predicates.delete(predicateName);
-    }
+  /**
+   * Add constant name to the language
+   * @param {string} constantName Constant name
+   */
+  addConstant(constantName) {
+    this.constants.add(constantName);
+  }
 
-    /**
-     * Return arity of the function
-     * @param {string} functionName
-     * @return {int} arity of the function
-     */
-    getFunction(functionName) {
-        return this.functions.get(functionName);
-    }
+  /**
+   * Add predicate name to the language
+   * @param {string} predicateName Name of the predicate
+   * @param {int} arity Arity of predicate
+   */
+  addPredicate(predicateName, arity) {
+    this.predicates.set(predicateName, arity);
+  }
 
-    /**
-     * Return arity of the predicate
-     * @param {string} predicateName
-     * @return {int} arity of the predicate
-     */
-    getPredicate(predicateName) {
-        return this.predicates.get(predicateName);
+  /**
+   * Add function name to the language
+   * @param {string} functionName Name of function
+   * @param {int} arity Arity of function
+   */
+  addFunction(functionName, arity) {
+    this.functions.set(functionName, arity);
+  }
+
+  hasConstant(constantName) {
+    return this.constants.has(constantName);
+  }
+
+  hasPredicate(predicateName) {
+    let splited = predicateName.split('/');
+    if (splited.length !== 2) {
+      return this.predicates.has(splited[0]);
     }
+    if (isNaN(parseInt(splited[1]))) {
+      return false;
+    }
+    return this.predicates.has(splited[0]) &amp;&amp; this.predicates.get(splited[0]) === parseInt(splited[1]);
+  }
+
+  hasFunction(functionName) {
+    let splited = functionName.split('/');
+    if (splited.length !== 2) {
+      return this.functions.has(splited[0]);
+    }
+    if (isNaN(parseInt(splited[1]))) {
+      return false;
+    }
+    return this.functions.has(splited[0]) &amp;&amp; this.functions.get(splited[0]) === parseInt(splited[1]);
+  }
+
+  /**
+   * Return arity of the function
+   * @param {string} functionName
+   * @return {int} arity of the function
+   */
+  getFunction(functionName) {
+    return this.functions.get(functionName);
+  }
+
+  /**
+   * Return arity of the predicate
+   * @param {string} predicateName
+   * @return {int} arity of the predicate
+   */
+  getPredicate(predicateName) {
+    return this.predicates.get(predicateName);
+  }
 
 }
 
@@ -125,13 +194,13 @@ export default Language;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Conjunction.html">Conjunction</a></li><li><a href="Constant.html">Constant</a></li><li><a href="Disjunction.html">Disjunction</a></li><li><a href="EqualitySymbol.html">EqualitySymbol</a></li><li><a href="ExistentialQuant.html">ExistentialQuant</a></li><li><a href="Expression.html">Expression</a></li><li><a href="Formula.html">Formula</a></li><li><a href="Function.html">Function</a></li><li><a href="Implication.html">Implication</a></li><li><a href="Language.html">Language</a></li><li><a href="PredicateSymbol.html">PredicateSymbol</a></li><li><a href="Structure.html">Structure</a></li><li><a href="Term.html">Term</a></li><li><a href="UniversalQuant.html">UniversalQuant</a></li><li><a href="Variable.html">Variable</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Conjunction.html">Conjunction</a></li><li><a href="Constant.html">Constant</a></li><li><a href="Disjunction.html">Disjunction</a></li><li><a href="EqualityAtom.html">EqualityAtom</a></li><li><a href="ExistentialQuant.html">ExistentialQuant</a></li><li><a href="Expression.html">Expression</a></li><li><a href="Formula.html">Formula</a></li><li><a href="FunctionTerm.html">FunctionTerm</a></li><li><a href="Implication.html">Implication</a></li><li><a href="Language.html">Language</a></li><li><a href="Negation.html">Negation</a></li><li><a href="PredicateAtom.html">PredicateAtom</a></li><li><a href="Structure.html">Structure</a></li><li><a href="Term.html">Term</a></li><li><a href="UniversalQuant.html">UniversalQuant</a></li><li><a href="Variable.html">Variable</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Nov 19 2017 22:16:05 GMT+0100 (Stredoeurópsky čas (normálny))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 21 2018 17:44:17 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>
