@@ -36,7 +36,8 @@ const Language = (props) => (
                           textData={props.language.constants}
                           label={<span>𝓒<sub>𝓛</sub> = &#123;</span>}
                           teacherMode={props.teacherMode}
-                          id='language-editor-constants'/>
+                          id='language-editor-constants'
+                          placeholder='a, b, c, ...'/>
                <HelpBlock>{props.language.constants.errorMessage}</HelpBlock>
              </FormGroup>
            </fieldset>
@@ -53,7 +54,8 @@ const Language = (props) => (
                           textData={props.language.predicates}
                           label={<span>𝓟<sub>𝓛</sub> = &#123;</span>}
                           teacherMode={props.teacherMode}
-                          id='language-editor-predicates'/>
+                          id='language-editor-predicates'
+                          placeholder='likes/2, hates/2, man/1, ...'/>
                <HelpBlock>{props.language.predicates.errorMessage}</HelpBlock>
              </FormGroup>
            </fieldset>
@@ -70,7 +72,8 @@ const Language = (props) => (
                           textData={props.language.functions}
                           label={<span>𝓕<sub>𝓛</sub> = &#123;</span>}
                           teacherMode={props.teacherMode}
-                          id='language-editor-functions'/>
+                          id='language-editor-functions'
+                          placeholder='mother/1, father/1, ...'/>
                <HelpBlock>{props.language.functions.errorMessage}</HelpBlock>
              </FormGroup>
            </fieldset>

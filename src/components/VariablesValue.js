@@ -34,7 +34,8 @@ const VariablesValue = (props) => (
                           textData={props.variables}
                           label={<span><var>e</var> = &#123;</span>}
                           teacherMode={props.teacherMode}
-                          id='editor-variables'/>
+                          id='editor-variables'
+                          placeholder='(x,1), (y,2), (z,3), ...'/>
                <HelpBlock>{props.variables.errorMessage}</HelpBlock>
              </FormGroup>
            </fieldset>

@@ -55,7 +55,8 @@ function Structure(props) {
                             textData={props.structure.domain}
                             label={<span><var>M</var> = &#123;</span>}
                             teacherMode={props.teacherMode}
-                            id='language-editor-domain'/>
+                            id='language-editor-domain'
+                            placeholder='1, 2, 3, 🐶, ...'/>
                  <HelpBlock>{props.structure.domain.errorMessage}</HelpBlock>
                </FormGroup>
              </fieldset>
@@ -112,7 +113,8 @@ function Structure(props) {
                                   id={'predicate-' + name}
                                   toggleTable={() => props.toggleTable(PREDICATE, name)}
                                   arity={parseInt(name.split('/')[1])}
-                                  domain={props.domain}/>
+                                  domain={props.domain}
+                                  placeholder='(1,2), (2,2), (3,1), ...'/>
                        {props.structure.predicates[name].tableEnabled && props.domain.length > 0 ? (
                           <RelationalTable name={name} domain={props.structureObject.domain}
                                            arity={props.structureObject.language.getPredicate(name.split('/')[0])}
@@ -144,7 +146,8 @@ function Structure(props) {
                                   id={'function-' + name}
                                   toggleTable={() => props.toggleTable(FUNCTION, name)}
                                   arity={parseInt(name.split('/')[1])}
-                                  domain={props.domain}/>
+                                  domain={props.domain}
+                                  placeholder='(1,2), (2,2), (3,1), ...'/>
                        {props.structure.functions[name].tableEnabled && props.domain.length > 0 ? (
                           <RelationalTable name={name} domain={props.structureObject.domain}
                                            arity={props.structureObject.language.getFunction(name.split('/')[0])}

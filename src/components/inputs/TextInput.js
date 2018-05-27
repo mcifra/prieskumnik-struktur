@@ -3,7 +3,7 @@ import {InputGroup, FormControl} from 'react-bootstrap';
 import LockButton from "../buttons/LockButton";
 import TableButton from "../buttons/TableButton";
 
-const TextInput = ({onChange, onLock, textData, label, teacherMode, id, toggleTable, arity, domain}) => (
+const TextInput = ({onChange, onLock, textData, label, teacherMode, id, toggleTable, arity, domain, placeholder}) => (
    <InputGroup>
      <label className='input-group-addon'
             htmlFor={id}>{label}</label>
@@ -11,7 +11,8 @@ const TextInput = ({onChange, onLock, textData, label, teacherMode, id, toggleTa
                   type='text'
                   onChange={(e) => onChange(e)}
                   value={textData.value}
-                  disabled={textData.locked}/>
+                  disabled={textData.locked}
+                  placeholder={placeholder}/>
      <InputGroup.Addon>&#125;</InputGroup.Addon>
      {toggleTable || teacherMode ? (
         <InputGroup.Button>
